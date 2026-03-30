@@ -152,33 +152,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-wrapper">
-                            <form class="contact-form" action="https://formspree.io/f/mdkqwrzk" method="POST">
-                                <div class="form-group">
-                                    <label for="name" data-i18n="contact.formName">Name</label>
-                                    <input type="text" id="name" name="name" placeholder="Your Name"
-                                        data-i18n-placeholder="contact.formNamePlaceholder" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email" data-i18n="contact.formEmail">Email</label>
-                                    <input type="email" id="email" name="email" placeholder="Your Email"
-                                        data-i18n-placeholder="contact.formEmailPlaceholder" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="subject" data-i18n="contact.formSubject">Subject</label>
-                                    <input type="text" id="subject" name="subject" placeholder="Inquiry Subject"
-                                        data-i18n-placeholder="contact.formSubjectPlaceholder" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message" data-i18n="contact.formMessage">Message</label>
-                                    <textarea id="message" name="message" rows="5" placeholder="Your Message"
-                                        data-i18n-placeholder="contact.formMessagePlaceholder" required></textarea>
-                                </div>
-                                <button type="submit" class="btn-submit">
-                                    <span data-i18n="contact.formSubmit">Send Message</span>
-                                </button>
-                                <div id="form-status" class="form-status"></div>
-                            </form>
+                        <div class="form-cta">
+                            <p data-i18n="contact.ctaText">期待与您的艺术对话</p>
+                            <a href="mailto:zhoujingart@outlook.com" class="cta-button">
+                                <i class="fas fa-paper-plane"></i>
+                                <span data-i18n="contact.ctaButton">立即联系</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -202,7 +181,6 @@
     <script src="js/language.js"></script>
     <script src="js/wechat.js"></script>
     <script src="js/mobile-menu.js"></script>
-    <script src="js/contact-form.js"></script>
 </body>
 
 </html>

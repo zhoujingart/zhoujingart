@@ -156,16 +156,7 @@ const translations = {
         languages: { zh: "中文 & English", en: "Chinese & English" },
         ctaText: { zh: "期待与您的艺术对话", en: "Looking forward to our artistic dialogue" },
         ctaButton: { zh: "立即联系", en: "Contact Now" },
-        wechat: { zh: "微信二维码", en: "WeChat QR Code" },
-        formName: { zh: "姓名", en: "Name" },
-        formNamePlaceholder: { zh: "您的姓名", en: "Your Name" },
-        formEmail: { zh: "邮箱", en: "Email" },
-        formEmailPlaceholder: { zh: "您的邮箱", en: "Your Email" },
-        formSubject: { zh: "主题", en: "Subject" },
-        formSubjectPlaceholder: { zh: "咨询主题", en: "Inquiry Subject" },
-        formMessage: { zh: "留言", en: "Message" },
-        formMessagePlaceholder: { zh: "您的留言", en: "Your Message" },
-        formSubmit: { zh: "发送消息", en: "Send Message" }
+        wechat: { zh: "微信二维码", en: "WeChat QR Code" }
     },
 
     // 关于艺术家
@@ -374,16 +365,6 @@ class LanguageManager {
                 }
             } else {
                 element.textContent = translation;
-            }
-        });
-
-        // 更新所有带有 data-i18n-placeholder 属性的元素
-        const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
-        placeholderElements.forEach(element => {
-            const key = element.getAttribute('data-i18n-placeholder');
-            const translation = this.getTranslation(key);
-            if (translation) {
-                element.setAttribute('placeholder', translation);
             }
         });
 

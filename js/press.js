@@ -349,7 +349,6 @@ function toggleImageZoom(e) {
 // 初始化模态框事件监听器
 function initPressModal() {
     const modal = document.getElementById('pressImageModal');
-    if (!modal) return;
     const closeBtn = modal.querySelector('.modal-close');
     const modalImage = document.getElementById('pressModalImage');
 
