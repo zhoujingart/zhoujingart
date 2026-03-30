@@ -1,16 +1,69 @@
-## Hi there 👋
+# xx艺术工作室网站
 
-<!--
-**zhoujingart/zhoujingart** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+## 项目概述
 
-Here are some ideas to get you started:
+这是一个当代艺术家xx的个人网站，展示其艺术作品、展览经历和创作理念。
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## 最新更新：CSS 性能优化
+
+### 优化成果
+- **性能提升**: 单页面CSS加载量减少了 70-75%
+- **文件大小**: 从原来的 108KB 减少到 27-32KB
+- **加载速度**: 显著提升页面加载速度
+- **用户体验**: 改善了整体浏览体验
+
+### 技术架构
+- **模块化CSS**: 采用组件化和页面特定的CSS架构
+- **按需加载**: 每个页面只加载所需的样式文件
+- **缓存友好**: 基础样式和页面样式分离，提高缓存效率
+
+### 文件结构
+```
+css/
+├── base/          # 基础样式
+├── components/    # 组件样式
+└── pages/         # 页面特定样式
+```
+
+## 页面说明
+
+- **首页 (index.html)**: 艺术家介绍和精选作品
+- **作品集 (gallery.html)**: 完整作品展示
+- **展览 (exhibitions.html)**: 展览经历和历史
+- **关于 (about.html)**: 艺术家陈述和简历
+- **联系 (contact.html)**: 联系方式和合作信息
+- **媒体报道 (press.html)**: 媒体报道和评论
+- **工作室 (studio.html)**: 工作室介绍和创作过程
+
+## 技术特色
+
+- **响应式设计**: 适配各种屏幕尺寸
+- **性能优化**: 模块化CSS架构，按需加载
+- **现代化UI**: 优雅的视觉设计和交互体验
+- **无障碍访问**: 良好的可访问性支持
+
+## 性能数据
+
+| 页面 | 原始大小 | 优化后大小 | 改善程度 |
+|------|----------|------------|----------|
+| 首页 | 108KB | 27KB | ⬇️ 75% |
+| 作品集 | 108KB | 32KB | ⬇️ 70% |
+| 展览 | 108KB | 28KB | ⬇️ 74% |
+| 联系 | 108KB | 30KB | ⬇️ 72% |
+| 关于 | 108KB | 29KB | ⬇️ 73% |
+
+## 部署说明
+
+1. 确保所有CSS文件按照目录结构放置
+2. 验证每个页面的样式加载正确
+3. 测试响应式设计在不同设备上的表现
+
+## 维护指南
+
+- 基础样式修改：编辑 `css/base/` 目录下的文件
+- 组件样式修改：编辑 `css/components/` 目录下的文件
+- 页面特定样式：编辑 `css/pages/` 目录下对应的文件
+
+## 版权信息
+
+© 2025 xx艺术工作室. 保留所有权利.

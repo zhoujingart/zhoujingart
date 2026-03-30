@@ -1,0 +1,195 @@
+/* About Page Styles */
+
+/* Bio Section */
+.bio-section {
+    padding: 4rem 0 8rem;
+}
+
+.bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.bio-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.bio-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* Removed grayscale filter as requested */
+    transition: transform 0.5s ease;
+}
+
+.bio-image:hover img {
+    transform: scale(1.02);
+}
+
+.bio-content {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+}
+
+.bio-content p {
+    margin-bottom: 1.5rem;
+}
+
+.bio-content .lead-text {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+}
+
+/* Statement Section */
+.statement-section {
+    padding: 6rem 0;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.3s ease;
+}
+
+.statement-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.statement-section .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.statement-section .subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.statement-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    line-height: 1.9;
+    color: var(--text-muted);
+}
+
+.statement-text p {
+    margin-bottom: 2rem;
+}
+
+.statement-text .highlight {
+    font-style: italic;
+    color: var(--text-color);
+    font-size: 1.4rem;
+    margin-top: 3rem;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 2rem 0;
+}
+
+/* CV Section */
+.cv-section {
+    padding: 8rem 0;
+}
+
+.cv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+}
+
+.cv-category {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cv-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 4rem;
+}
+
+.cv-list li {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: baseline;
+}
+
+.cv-year {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.cv-detail {
+    flex-grow: 1;
+}
+
+.cv-download {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.btn-download {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+}
+
+.btn-download:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+    border-color: var(--text-color);
+}
+
+.btn-download i {
+    margin-left: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bio-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .cv-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .statement-section .section-title {
+        font-size: 2.2rem;
+    }
+}

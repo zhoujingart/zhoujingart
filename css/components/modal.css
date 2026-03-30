@@ -1,0 +1,470 @@
+/* 通用模态框组件样式 */
+
+/* 图片查看器模态框 */
+.image-viewer-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.image-viewer-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.image-viewer-modal .viewer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.image-viewer-modal .viewer-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    text-align: center;
+}
+
+.image-viewer-modal .viewer-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.image-viewer-modal .viewer-info {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.image-viewer-modal .viewer-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.image-viewer-modal .viewer-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.image-viewer-modal .viewer-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 作品模态框样式 */
+.artwork-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.artwork-modal.show {
+    opacity: 1;
+}
+
+.artwork-modal .modal-content {
+    background: var(--white);
+    border-radius: 20px;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 1200px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.artwork-modal .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: var(--transition);
+}
+
+.artwork-modal .modal-close:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.artwork-modal .modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: var(--transition);
+}
+
+.artwork-modal .modal-nav:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.artwork-modal .modal-nav-prev {
+    left: 1rem;
+}
+
+.artwork-modal .modal-nav-next {
+    right: 1rem;
+}
+
+.artwork-modal .modal-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 80vh;
+}
+
+.modal-image-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--background-color);
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-info-section {
+    padding: 3rem;
+    overflow-y: auto;
+}
+
+.modal-title {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-family: var(--font-serif);
+    font-weight: 400;
+}
+
+.modal-artwork-details .detail-group {
+    margin-bottom: 2rem;
+}
+
+.modal-artwork-details .detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.modal-artwork-details .label {
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.modal-artwork-details .value {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.modal-artwork-details .price-item .value {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.artwork-status-modal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.artwork-description h4 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-family: var(--font-serif);
+}
+
+.artwork-description p {
+    line-height: 1.8;
+    color: var(--text-color);
+}
+
+.artwork-actions-modal {
+    margin-top: 2rem;
+}
+
+.inquiry-btn {
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 600;
+}
+
+.inquiry-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(201, 169, 110, 0.3);
+}
+
+/* 证书查看器样式 */
+.certificate-viewer-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    z-index: 10001;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.certificate-viewer-modal.show {
+    opacity: 1;
+}
+
+.certificate-viewer-modal .viewer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.certificate-viewer-modal .viewer-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    text-align: center;
+}
+
+.certificate-viewer-modal .viewer-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.certificate-viewer-modal .viewer-info {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.certificate-viewer-modal .viewer-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.certificate-viewer-modal .viewer-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.certificate-viewer-modal .viewer-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* 作品查看器样式 */
+.artwork-viewer-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    z-index: 10001;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.artwork-viewer-modal.show {
+    opacity: 1;
+}
+
+.artwork-viewer-modal .viewer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.artwork-viewer-modal .viewer-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    text-align: center;
+}
+
+.artwork-viewer-modal .viewer-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.artwork-viewer-modal .viewer-info {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.artwork-viewer-modal .viewer-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.artwork-viewer-modal .viewer-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .artwork-modal .modal-body {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: 90vh;
+    }
+
+    .modal-image-section {
+        max-height: 50vh;
+    }
+
+    .modal-info-section {
+        padding: 2rem;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+    }
+
+    .artwork-modal .modal-nav {
+        display: none;
+    }
+
+    .image-viewer-modal .viewer-close,
+    .certificate-viewer-modal .viewer-close,
+    .artwork-viewer-modal .viewer-close {
+        min-height: 44px;
+        min-width: 44px;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+    }
+} 

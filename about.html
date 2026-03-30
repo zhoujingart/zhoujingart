@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-zh="周婧 - 关于艺术家" data-en="Zhou Jing - About">Zhou Jing - About</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- 所有页面都需要的基础样式 -->
+    <link rel="stylesheet" href="css/base.css">
+
+    <!-- 关于页面特定样式 -->
+    <link rel="stylesheet" href="css/pages/about.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo" data-i18n="home.title"></div>
+            <button class="mobile-menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link" data-i18n="nav.home" title="Home">Home</a></li>
+                    <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery" title="Gallery">Gallery</a></li>
+                    <li><a href="exhibitions.html" class="nav-link" data-i18n="nav.exhibitions"
+                            title="Exhibitions">Exhibitions</a></li>
+                    <li><a href="about.html" class="nav-link active" data-i18n="nav.about" title="About">About</a></li>
+                    <li><a href="press.html" class="nav-link" data-i18n="nav.press" title="Press">Press</a></li>
+                    <li><a href="studio.html" class="nav-link" data-i18n="nav.studio" title="Studio">Studio</a></li>
+                    <li><a href="contact.html" class="nav-link" data-i18n="nav.contact" title="Contact">Contact</a></li>
+                </ul>
+                <button class="lang-toggle" aria-label="切换语言">
+                    <span class="lang-text" data-i18n="lang.current"></span>
+                    <i class="fas fa-globe"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="about-full-bg">
+        <!-- 艺术家陈述部分 -->
+        <section class="about-statement">
+            <div class="about-container">
+                <h2 data-i18n="about.statementTitle">艺术家陈述</h2>
+                <div class="statement-portrait">
+                    <img src="images/Jing-Zhou-portrait.jpg" alt="Zhou Jing Portrait" loading="eager" decoding="async">
+                </div>
+                <div class="statement-content">
+                    <div class="statement-text" data-i18n="about.statementContent"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 展览经历（时间线）-- 提出为独立模块 -->
+        <section class="about-exhibitions">
+            <div class="about-container">
+                <h2 data-i18n="exhibitions.timeline">展览时间线</h2>
+                <div id="cv-exhibitions-timeline" class="cv-timeline"></div>
+            </div>
+        </section>
+
+        <!-- 简历部分 -->
+        <section class="about-cv">
+            <div class="about-container">
+                <h2 data-i18n="about.cvTitle">简历</h2>
+                <div class="cv-content">
+                    <div class="cv-sections">
+                        <div class="cv-section">
+                            <h3 data-i18n="about.education.title"></h3>
+                            <ul class="cv-items" data-i18n="about.education.items"></ul>
+                        </div>
+                        <div class="cv-section">
+                            <h3 data-i18n="about.awards.title"></h3>
+                            <ul class="cv-items" data-i18n="about.awards.items"></ul>
+                        </div>
+                        <div class="cv-section">
+                            <h3 data-i18n="about.residencies.title"></h3>
+                            <ul class="cv-items" data-i18n="about.residencies.items"></ul>
+                        </div>
+                        <div class="cv-section is-hidden">
+                            <h3 data-i18n="about.publications.title"></h3>
+                            <ul class="cv-items" data-i18n="about.publications.items"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 下载部分 -->
+        <section class="about-downloads">
+            <div class="about-container">
+                <h2 data-i18n="about.downloadsTitle">资料下载</h2>
+                <div class="downloads-grid">
+                    <div class="download-item">
+                        <div class="download-header">
+                            <div class="download-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="download-info">
+                                <h3 data-i18n="about.cvDownload">简历</h3>
+                                <p data-i18n="about.cvDescription">完整的教育背景和职业经历</p>
+                            </div>
+                        </div>
+                        <a href="assets/Jing_Zhou_CV.docx" class="download-button">
+                            <i class="fas fa-download"></i>
+                            <span data-i18n="about.downloadText">下载</span>
+                        </a>
+                    </div>
+                    <div class="download-item">
+                        <div class="download-header">
+                            <div class="download-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="download-info">
+                                <h3 data-i18n="about.statementDownload">艺术家陈述</h3>
+                                <p data-i18n="about.statementDescription">详细的创作理念和艺术哲学</p>
+                            </div>
+                        </div>
+                        <a href="assets/Jing_Zhou_portfolio.pdf" class="download-button">
+                            <i class="fas fa-download"></i>
+                            <span data-i18n="about.downloadText">下载</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p data-i18n="footer.copyright"></p>
+    </footer>
+
+    <script src="js/language.js"></script>
+    <script src="js/exhibitions.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script>
+        // 在关于页渲染展览经历时间线
+        (function () {
+            function getTextByLang(obj, lang) {
+                if (!obj) return '';
+                if (typeof obj === 'string') return obj;
+                return obj[lang] || obj.zh || obj.en || '';
+            }
+
+            function renderCvExhibitionsTimeline() {
+                const container = document.getElementById('cv-exhibitions-timeline');
+                if (!container || typeof exhibitionsData !== 'object') return;
+
+                // 使用 requestAnimationFrame 优化渲染性能
+                requestAnimationFrame(() => {
+                    const lang = (window.languageManager && window.languageManager.currentLang) || 'zh';
+
+                    // 按年份倒序
+                    const years = Object.keys(exhibitionsData).sort((a, b) => b - a);
+
+                    const html = years.map(year => {
+                        const items = (exhibitionsData[year] || []).map(ex => {
+                            const title = getTextByLang(ex.title, lang);
+                            const location = getTextByLang(ex.location, lang);
+                            const country = getTextByLang(ex.country, lang);
+                            const date = ex.date || '';
+                            const link = `exhibition-detail.html?id=${ex.id}`;
+                            return `
+                            <div class="cv-timeline-item">
+                                <div class="cv-timeline-dot"></div>
+                                <div class="cv-timeline-content">
+                                    <div class="cv-timeline-date">${date}</div>
+                                    <div class="cv-timeline-title"><a href="${link}">${title}</a></div>
+                                    <div class="cv-timeline-meta">${location}${country ? ` · ${country}` : ''}</div>
+                                </div>
+                            </div>
+                        `;
+                        }).join('');
+
+                        return `
+                        <div class="cv-timeline-year">
+                            <div class="cv-year-label">${year}</div>
+                            <div class="cv-timeline-items">${items}</div>
+                        </div>
+                    `;
+                    }).join('');
+
+                    container.innerHTML = html || '<div class="no-content">—</div>';
+                });
+            }
+
+            function init() {
+                if (window.languageManager && typeof exhibitionsData === 'object') {
+                    renderCvExhibitionsTimeline();
+                } else {
+                    setTimeout(init, 50);
+                }
+            }
+
+            if (document.readyState === 'complete') {
+                init();
+            } else {
+                window.addEventListener('load', init);
+            }
+
+            document.addEventListener('languageChanged', renderCvExhibitionsTimeline);
+        })();
+    </script>
+</body>
+
+</html>

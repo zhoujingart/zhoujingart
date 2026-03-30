@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-zh="周婧 - 艺术家" data-en="Zhou Jing - Artist">Zhou Jing - Artist</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- 所有页面都需要的基础样式 -->
+    <link rel="stylesheet" href="css/base.css">
+
+    <!-- 首页特定样式 -->
+    <link rel="stylesheet" href="css/pages/home.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo" data-i18n="home.title">周婧 | 艺术家</div>
+            <button class="mobile-menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link active" data-i18n="nav.home">首页</a></li>
+                    <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery">作品集</a></li>
+                    <li><a href="exhibitions.html" class="nav-link" data-i18n="nav.exhibitions">展览</a></li>
+                    <li><a href="about.html" class="nav-link" data-i18n="nav.about">关于艺术家</a></li>
+                    <li><a href="press.html" class="nav-link" data-i18n="nav.press">媒体报道</a></li>
+                    <li><a href="studio.html" class="nav-link" data-i18n="nav.studio">工作室</a></li>
+                    <li><a href="contact.html" class="nav-link" data-i18n="nav.contact">联系</a></li>
+                </ul>
+                <button class="lang-toggle" aria-label="切换语言">
+                    <span class="lang-text" data-i18n="lang.current">EN</span>
+                    <i class="fas fa-globe"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-background">
+                <img id="heroRandomImage" src="images/paintings/painting_18.jpg" alt="Zhou Jing Artwork" loading="eager"
+                    decoding="async">
+            </div>
+            <div class="hero-content">
+                <h1 data-i18n="home.artist">周婧</h1>
+                <p class="subtitle" data-i18n="home.subtitle">一位通过多维创造力连接文化的当代艺术家。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p data-i18n="footer.copyright">© 2025 周婧. 保留所有权利.</p>
+    </footer>
+
+    <script src="js/language.js"></script>
+    <script src="js/hero-random.js"></script>
+    <script src="js/mobile-menu.js"></script>
+</body>
+
+</html>

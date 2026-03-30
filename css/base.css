@@ -1,0 +1,8 @@
+/* 基础样式 - 所有页面都需要的核心样式 */
+@import url('base/variables.css');
+/* 优雅艺术字体（可替换为自托管） */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap');
+@import url('base/reset.css');
+@import url('components/header.css');
+@import url('components/footer.css');
+@import url('components/modal.css'); 

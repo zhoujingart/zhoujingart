@@ -1,0 +1,558 @@
+/* 联系页面样式 */
+
+/* 现代联系页面 */
+.contact-modern {
+    position: relative;
+    padding: 8rem 2rem 6rem;
+    min-height: 100vh;
+}
+
+.contact-modern::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
+
+    /* 高级感、低干扰背景：轻微网格 + 角落暖色晕染 */
+    background-color: var(--background-color);
+    background-image:
+        radial-gradient(1000px 600px at 10% 0%, rgba(201, 169, 110, 0.08) 0%, rgba(201, 169, 110, 0) 60%),
+        radial-gradient(800px 500px at 90% 20%, rgba(139, 115, 85, 0.06) 0%, rgba(139, 115, 85, 0) 60%),
+        repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.018) 0 2px, rgba(0, 0, 0, 0) 2px 10px);
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-position: center, center, center;
+    background-size: cover, cover, auto;
+}
+
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.contact-header h1 {
+    font-size: 3.6rem;
+    font-weight: 400;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+    font-family: var(--font-serif);
+    line-height: 1.1;
+    position: relative;
+}
+
+.contact-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+}
+
+.contact-subtitle {
+    font-size: 1.3rem;
+    color: var(--light-text);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 5rem;
+}
+
+.contact-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 40px var(--shadow-light);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(201, 169, 110, 0.1);
+}
+
+.contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+}
+
+.contact-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 60px var(--shadow-medium);
+}
+
+.card-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    color: var(--white);
+    font-size: 2rem;
+}
+
+.card-content h3 {
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+}
+
+.artist-name {
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+}
+
+.artist-title {
+    color: var(--light-text);
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.email-link {
+    display: inline-block;
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+    letter-spacing: 0.03em;
+}
+
+.email-link:hover {
+    color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.contact-note {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.social-links-modern {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.social-link-modern {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    background: var(--background-secondary);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--light-text);
+    transition: var(--transition);
+    font-weight: 300;
+}
+
+.social-link-modern:hover {
+    background: var(--secondary-color);
+    color: var(--white);
+    transform: translateX(5px);
+}
+
+.social-link-modern i {
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center;
+}
+
+.portfolio-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    color: var(--white);
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 400;
+    transition: var(--transition);
+    margin-bottom: 1rem;
+}
+
+.portfolio-download-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(201, 169, 110, 0.4);
+}
+
+.contact-form-section {
+    background: var(--white);
+    border-radius: 25px;
+    padding: 3rem;
+    box-shadow: 0 20px 50px var(--shadow-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-form-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.form-header h2 {
+    font-size: 2.6rem;
+    font-weight: 400;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+    font-family: var(--font-serif);
+    line-height: 1.15;
+}
+
+.form-header p {
+    color: var(--light-text);
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+.contact-form-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.form-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.info-item i {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-top: 0.3rem;
+    width: 24px;
+    text-align: center;
+}
+
+.info-item h4 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+}
+
+.info-item p {
+    color: var(--light-text);
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.form-cta {
+    text-align: center;
+}
+
+.form-cta p {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    color: var(--white);
+    padding: 1.2rem 2.5rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 400;
+    transition: var(--transition);
+    letter-spacing: 0.05em;
+}
+
+.cta-button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 15px 40px rgba(201, 169, 110, 0.5);
+}
+
+.cta-button i {
+    font-size: 1rem;
+}
+
+/* Form Styles */
+.form-wrapper {
+    width: 100%;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.1);
+}
+
+.btn-submit {
+    align-self: flex-start;
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    color: var(--white);
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    letter-spacing: 0.05em;
+    margin-top: 1rem;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(201, 169, 110, 0.4);
+}
+
+.btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-status {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    min-height: 1.5rem;
+}
+
+.form-status.success {
+    color: #2ecc71;
+}
+
+.form-status.error {
+    color: #e74c3c;
+}
+
+/* 微信二维码模态框样式 */
+#wechatModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+    opacity: 1 !important;
+    transition: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+#wechatModal .wechat-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+#wechatModal .modal-content {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    background: white;
+    padding: 10px;
+}
+
+#wechatModal .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+#wechatModal .modal-close:hover {
+    background: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+#wechatModal .modal-caption {
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin-top: 15px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .contact-modern {
+        padding: calc(60px + 2rem) 1.5rem 4rem;
+    }
+
+    .contact-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .contact-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .contact-card {
+        padding: 2rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.4rem;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+    
+    .card-content {
+        flex: 1;
+    }
+
+    .card-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+        margin-top: 0.2rem;
+    }
+
+    .artist-name {
+        font-size: 1.5rem;
+    }
+
+    .contact-form-section {
+        padding: 2rem;
+    }
+
+    .form-header h2 {
+        font-size: 2rem;
+    }
+
+    .form-header p {
+        font-size: 1rem;
+    }
+
+    .contact-form-container {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .form-cta p {
+        font-size: 1.1rem;
+    }
+
+    .cta-button {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+} 

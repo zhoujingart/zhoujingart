@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zhou Jing | Artist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/press.css">
+</head>
+
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Loading Screen -->
+    <div class="loader">
+        <div class="loader-text">ZHOU JING</div>
+        <div class="loader-line"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">ZHOU JING</div>
+        <div class="nav-controls">
+            <div class="lang-toggle">
+                <span class="lang-text">中</span>
+            </div>
+            <div class="menu-toggle">
+                <span data-i18n="nav.menu">MENU</span>
+                <div class="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Full Screen Menu Overlay -->
+    <div class="menu-overlay">
+        <div class="menu-close" data-i18n="nav.close">CLOSE</div>
+        <ul class="menu-items">
+            <li><a href="index.html" class="menu-link"><span data-i18n="nav.home">Home</span> <span
+                        class="menu-number">01</span></a></li>
+            <li><a href="gallery.html" class="menu-link"><span data-i18n="nav.works">Works</span> <span
+                        class="menu-number">02</span></a></li>
+            <li><a href="exhibitions.html" class="menu-link"><span data-i18n="nav.exhibitions">Exhibitions</span> <span
+                        class="menu-number">03</span></a></li>
+            <li><a href="about.html" class="menu-link"><span data-i18n="nav.about">About</span> <span
+                        class="menu-number">04</span></a></li>
+            <li><a href="press.html" class="menu-link"><span data-i18n="nav.press">Press</span> <span
+                        class="menu-number">05</span></a></li>
+            <li><a href="studio.html" class="menu-link"><span data-i18n="nav.studio">Studio</span> <span
+                        class="menu-number">06</span></a></li>
+            <li><a href="contact.html" class="menu-link"><span data-i18n="nav.contact">Contact</span> <span
+                        class="menu-number">07</span></a></li>
+        </ul>
+        <div class="menu-footer">
+            <div class="social-links">
+                <a href="https://www.instagram.com/jingzhou88888?igsh=azh5Y3R3cno5MHUy&utm_source=qr" target="_blank"
+                    rel="noopener" class="social-item">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <!-- Hero Section -->
+            <section id="home" class="hero-section">
+                <div class="hero-image-container">
+                    <div class="hero-image" style="background-image: url('../images/paintings/painting_18.jpg');"></div>
+                    <div class="hero-overlay"></div>
+                </div>
+                <div class="hero-content">
+                    <h1 class="hero-title" data-i18n="home.heroTitle">
+                        <span class="line">Contemporary</span>
+                        <span class="line">Artist &</span>
+                        <span class="line">Designer</span>
+                    </h1>
+                    <div class="scroll-indicator">
+                        <span data-i18n="home.scroll">SCROLL</span>
+                        <div class="line"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Intro Section -->
+            <section class="intro-section">
+                <div class="container">
+                    <div class="intro-text">
+                        <p data-i18n="home.introQuote">"Art is not just about seeing, it's about entering a world where
+                            emotions take shape and
+                            silence speaks."</p>
+                    </div>
+                    <div class="intro-bio">
+                        <p data-i18n="home.introBio">Zhou Jing is a contemporary artist whose work explores the delicate
+                            balance between
+                            traditional techniques and modern expression. Her pieces are a dialogue between the inner
+                            self and the external world.</p>
+                        <a href="about.html" class="btn-link" data-i18n="home.readBio">Read Biography</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Selected Works (Horizontal Scroll) -->
+            <section id="works" class="works-section">
+                <div class="section-header">
+                    <h2 data-i18n="home.selectedWorks">Selected Works</h2>
+                </div>
+                <div class="works-gallery">
+                    <!-- Work Item 1 -->
+                    <div class="work-item">
+                        <div class="work-image">
+                            <img src="../images/paintings/painting_01.jpg" alt="Artwork 1">
+                        </div>
+                        <div class="work-info">
+                            <h3>Ethereal Dreams</h3>
+                            <p>Acrylic, 2024</p>
+                        </div>
+                    </div>
+                    <!-- Work Item 2 -->
+                    <div class="work-item">
+                        <div class="work-image">
+                            <img src="../images/paintings/painting_02.jpg" alt="Artwork 2">
+                        </div>
+                        <div class="work-info">
+                            <h3>Silent Echo</h3>
+                            <p>Mixed Media, 2024</p>
+                        </div>
+                    </div>
+                    <!-- Work Item 3 -->
+                    <div class="work-item">
+                        <div class="work-image">
+                            <img src="../images/paintings/painting_03.jpg" alt="Artwork 3">
+                        </div>
+                        <div class="work-info">
+                            <h3>Morning Light</h3>
+                            <p>Acrylic, 2023</p>
+                        </div>
+                    </div>
+                    <!-- Work Item 4 -->
+                    <div class="work-item">
+                        <div class="work-image">
+                            <img src="../images/paintings/painting_04.png" alt="Artwork 4">
+                        </div>
+                        <div class="work-info">
+                            <h3>Inner Peace</h3>
+                            <p>Acrylic, 2023</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="view-all-container">
+                    <a href="gallery.html" class="btn-outline" data-i18n="home.viewAllWorks">View All Works</a>
+                </div>
+            </section>
+
+            <!-- Exhibitions Preview -->
+            <section class="exhibitions-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="home.recentExhibitions">Recent Exhibitions</h2>
+                        <a href="exhibitions.html" class="view-all-link"><span data-i18n="home.viewAll">View All</span>
+                            <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="exhibition-list">
+                        <!-- Content rendered by js/render-exhibitions.js -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Press -->
+            <section class="recent-press-section" style="padding: 6rem 0;">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="home.recentPress">Recent Press</h2>
+                        <a href="press.html" class="view-all-link"><span data-i18n="home.viewAllNews">View All</span> <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="recent-press-list">
+                        <!-- Content rendered by js/render-press.js -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer-section">
+                <div class="container">
+                    <div class="footer-content">
+                        <a href="contact.html" class="footer-cta-link">
+                            <h2 data-i18n="footer.title">Let's Create Something Beautiful</h2>
+                        </a>
+                        <a href="mailto:zhoujingart@outlook.com" class="email-link">zhoujingart@outlook.com</a>
+                        <div class="footer-bottom">
+                            <div class="copyright" data-i18n="footer.rights">&copy; 2025 Zhou Jing. All Rights Reserved.
+                            </div>
+                            <div class="socials">
+                                <a href="https://www.instagram.com/jingzhou88888?igsh=azh5Y3R3cno5MHUy&utm_source=qr"
+                                    target="_blank" rel="noopener" class="social-item">
+                                    <i class="fab fa-instagram"></i> Instagram
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+    </main>
+
+    <script src="../js/exhibitions.js"></script>
+    <script src="js/render-exhibitions.js"></script>
+    <script src="../js/press.js"></script>
+    <script src="js/render-press.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/language.js"></script>
+</body>
+
+</html>

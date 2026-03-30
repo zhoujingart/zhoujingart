@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-zh="周婧 - 作品集" data-en="Zhou Jing - Gallery">Zhou Jing - Gallery</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- 所有页面都需要的基础样式 -->
+    <link rel="stylesheet" href="css/base.css">
+
+    <!-- 作品集特定样式 -->
+    <link rel="stylesheet" href="css/pages/gallery.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo" data-i18n="home.title"></div>
+            <button class="mobile-menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link" data-i18n="nav.home" title="Home">Home</a></li>
+                    <li><a href="gallery.html" class="nav-link active" data-i18n="nav.gallery"
+                            title="Gallery">Gallery</a></li>
+                    <li><a href="exhibitions.html" class="nav-link" data-i18n="nav.exhibitions"
+                            title="Exhibitions">Exhibitions</a></li>
+                    <li><a href="about.html" class="nav-link" data-i18n="nav.about" title="About">About</a></li>
+                    <li><a href="press.html" class="nav-link" data-i18n="nav.press" title="Press">Press</a></li>
+                    <li><a href="studio.html" class="nav-link" data-i18n="nav.studio" title="Studio">Studio</a></li>
+                    <li><a href="contact.html" class="nav-link" data-i18n="nav.contact" title="Contact">Contact</a></li>
+                </ul>
+                <button class="lang-toggle" aria-label="切换语言">
+                    <span class="lang-text" data-i18n="lang.current"></span>
+                    <i class="fas fa-globe"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="gallery-professional">
+            <div class="gallery-container">
+                <div class="gallery-header">
+                    <div class="gallery-header-top">
+                        <h2 data-i18n="gallery.title">作品集</h2>
+                        <!-- 排序控制器（与标题同排、靠右） -->
+                        <div class="gallery-controls gallery-controls-inline">
+                            <div class="sort-controls-premium">
+                                <div class="sort-label-premium">
+                                    <i class="fas fa-filter sort-filter-icon"></i>
+                                    <span data-i18n="gallery.sortBy">排序方式</span>
+                                </div>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select" id="customSelect">
+                                        <div class="select-trigger">
+                                            <span class="select-text" data-i18n="gallery.sortDefault">默认排序</span>
+                                            <div class="select-arrow">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </div>
+                                        </div>
+                                        <div class="select-options">
+                                            <div class="select-option active" data-value="default">
+                                                <i class="fas fa-th-list option-icon"></i>
+                                                <span data-i18n="gallery.sortDefault">默认排序</span>
+                                            </div>
+                                            <div class="select-option" data-value="year-desc">
+                                                <i class="fas fa-sort-amount-down option-icon"></i>
+                                                <span data-i18n="gallery.sortByYearDesc">按年份 ↓ (新→旧)</span>
+                                            </div>
+                                            <div class="select-option" data-value="year-asc">
+                                                <i class="fas fa-sort-amount-up option-icon"></i>
+                                                <span data-i18n="gallery.sortByYearAsc">按年份 ↑ (旧→新)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 隐藏的原生select用于表单提交和可访问性 -->
+                                    <select class="hidden-select" id="sortSelect" aria-label="选择排序方式">
+                                        <option value="default">默认排序</option>
+                                        <option value="year-desc">按年份 (新→旧)</option>
+                                        <option value="year-asc">按年份 (旧→新)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="gallery-subtitle" data-i18n="gallery.subtitle">探索色彩与情感的对话</p>
+                </div>
+
+                <!-- 作品网格 - 通过JavaScript动态生成 -->
+                <div class="gallery-grid">
+                    <!-- 作品将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p data-i18n="footer.copyright"></p>
+    </footer>
+
+    <!-- 现代艺术气质图片查看模态框 -->
+    <div class="modal" id="imageModal">
+        <div class="modal-container">
+            <span class="modal-close">&times;</span>
+            <div class="modal-nav modal-nav-prev" id="modalPrev">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="modal-nav modal-nav-next" id="modalNext">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+
+            <div class="modal-image-container">
+                <img class="modal-content" id="modalImage" title="查看大图">
+            </div>
+
+            <div class="modal-info">
+                <h3 class="modal-title" id="modalTitle"></h3>
+                <p class="modal-meta" id="modalMeta"></p>
+                <p class="modal-description" id="modalDescription">
+                    <span data-i18n="gallery.modalDescription">点击图片可以放大查看细节，使用左右箭头或键盘方向键浏览其他作品。</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/mobile-menu.js"></script>
+</body>
+
+</html>

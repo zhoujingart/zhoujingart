@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-zh="周婧 - 展览" data-en="Zhou Jing - Exhibitions">Zhou Jing - Exhibitions</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/base.css">
+    <!-- 展览详情页特定样式 -->
+    <link rel="stylesheet" href="css/pages/exhibitions.css">
+    <link rel="stylesheet" href="css/pages/exhibition-detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo" data-i18n="home.title"></div>
+            <button class="mobile-menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link" data-i18n="nav.home" title="Home">Home</a></li>
+                    <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery" title="Gallery">Gallery</a></li>
+                    <li><a href="exhibitions.html" class="nav-link active" data-i18n="nav.exhibitions"
+                            title="Exhibitions">Exhibitions</a></li>
+                    <li><a href="about.html" class="nav-link" data-i18n="nav.about" title="About">About</a></li>
+                    <li><a href="press.html" class="nav-link" data-i18n="nav.press" title="Press">Press</a></li>
+                    <li><a href="studio.html" class="nav-link" data-i18n="nav.studio" title="Studio">Studio</a></li>
+                    <li><a href="contact.html" class="nav-link" data-i18n="nav.contact" title="Contact">Contact</a></li>
+                </ul>
+                <button class="lang-toggle" aria-label="切换语言">
+                    <span class="lang-text" data-i18n="lang.current"></span>
+                    <i class="fas fa-globe"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="exhibition-detail-page site-full-bg">
+        <!-- 返回按钮 -->
+        <div class="back-navigation">
+            <a href="exhibitions.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span data-i18n="exhibitions.backToList">返回展览列表</span>
+            </a>
+        </div>
+
+        <!-- 展览详情内容 -->
+        <div class="exhibition-detail-container">
+            <div id="exhibitionDetailContent">
+                <!-- 动态加载的展览内容 -->
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>加载中...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p data-i18n="footer.copyright">© 2025 周婧. 保留所有权利.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/language.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/exhibitions.js"></script>
+    <script>
+        // 页面加载时解析URL参数并显示展览详情
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const exhibitionId = urlParams.get('id');
+
+            if (exhibitionId) {
+                loadExhibitionDetail(exhibitionId);
+            } else {
+                // 如果没有ID参数，显示错误信息
+                document.getElementById('exhibitionDetailContent').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2 data-i18n="exhibitions.notFound">展览未找到</h2>
+                        <p data-i18n="exhibitions.selectFromList">请从展览列表中选择一个展览查看详情。</p>
+                        <a href="exhibitions.html" class="btn-primary" data-i18n="exhibitions.backToList">返回展览列表</a>
+                    </div>
+                `;
+                // 应用翻译
+                if (window.languageManager) {
+                    window.languageManager.applyTranslations();
+                }
+            }
+        });
+
+        // 加载展览详情的函数
+        function loadExhibitionDetail(exhibitionId) {
+            const exhibition = findExhibitionById(exhibitionId);
+
+            if (!exhibition) {
+                document.getElementById('exhibitionDetailContent').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2 data-i18n="exhibitions.notFound">展览未找到</h2>
+                        <p data-i18n="exhibitions.idNotFound">无法找到ID为 "${exhibitionId}" 的展览。</p>
+                        <a href="exhibitions.html" class="btn-primary" data-i18n="exhibitions.backToList">返回展览列表</a>
+                    </div>
+                `;
+                // 应用翻译
+                if (window.languageManager) {
+                    window.languageManager.applyTranslations();
+                }
+                return;
+            }
+
+            // 更新页面标题
+            const currentLang = window.languageManager?.currentLang || 'zh';
+            const title = exhibition.title[currentLang] || exhibition.title.zh;
+            document.title = `${title} - 周婧`;
+
+            // 渲染展览详情内容
+            renderExhibitionDetailPage(exhibition);
+        }
+
+        // 渲染展览详情页面内容
+        function renderExhibitionDetailPage(exhibition) {
+            // 使用 requestAnimationFrame 优化渲染性能
+            requestAnimationFrame(() => {
+                const currentLang = window.languageManager?.currentLang || 'zh';
+                const title = exhibition.title[currentLang] || exhibition.title.zh;
+                const organizer = exhibition.organizer[currentLang] || exhibition.organizer.zh;
+                const location = exhibition.location[currentLang] || exhibition.location.zh;
+                const type = exhibition.country[currentLang] || exhibition.country.zh;
+                const description = exhibition.description[currentLang] || exhibition.description.zh;
+                const organizerDescription = exhibition.organizerDescription[currentLang] || exhibition.organizerDescription.zh;
+                const organizerLink = exhibition.organizerLink ? (exhibition.organizerLink[currentLang] || exhibition.organizerLink.zh) : '';
+
+                const hasOrganizerSection = Boolean((organizerDescription && organizerDescription.trim()) || (organizerLink && organizerLink.trim()));
+                const hasDescriptionSection = Boolean(description && description.trim());
+                const hasOrganizerName = Boolean(organizer && organizer.trim());
+                const hasPeriod = Boolean(exhibition.date && String(exhibition.date).trim());
+                const hasLocation = Boolean(location && location.trim());
+                const hasCountry = Boolean(type && type.trim());
+
+                // 获取多语言图片描述的函数
+                function getImageText(img, field) {
+                    if (typeof img[field] === 'object' && img[field] !== null) {
+                        return img[field][currentLang] || img[field].zh || img[field];
+                    }
+                    return img[field] || '';
+                }
+
+                // 获取作品字段的多语言文本
+                function getArtworkText(artwork, field) {
+                    if (typeof artwork[field] === 'object' && artwork[field] !== null) {
+                        return artwork[field][currentLang] || artwork[field].zh || artwork[field];
+                    }
+                    return artwork[field] || '';
+                }
+
+                // 获取媒体报道字段的多语言文本
+                function getPressText(press, field) {
+                    if (typeof press[field] === 'object' && press[field] !== null) {
+                        return press[field][currentLang] || press[field].zh || press[field];
+                    }
+                    return press[field] || '';
+                }
+
+                // 文档字段多语言文本
+                function getDocText(doc, field) {
+                    if (typeof doc[field] === 'object' && doc[field] !== null) {
+                        return doc[field][currentLang] || doc[field].zh || doc[field];
+                    }
+                    return doc[field] || '';
+                }
+
+                // 找到海报图片
+                const posterImage = exhibition.images.find(img => {
+                    const title = getImageText(img, 'title');
+                    return title.includes('海报') || title.includes('poster') || title.includes('Poster');
+                }) || exhibition.images[0];
+
+                // 展览现场照片（排除海报）
+                const siteImages = exhibition.images.filter(img => img !== posterImage);
+
+                const content = `
+                <!-- 展览标题 -->
+                <div class="exhibition-header">
+                    <h1 class="exhibition-title">${title}</h1>
+                    <div class="exhibition-info-card">
+                        ${hasOrganizerName ? `
+                        <div class="info-row">
+                            <span class="info-label">${window.getTranslation ? window.getTranslation('exhibitions.organizer') : '主办方'}</span>
+                            <span class="info-value">${organizer}</span>
+                        </div>
+                        ` : ''}
+                        ${hasPeriod ? `
+                        <div class="info-row">
+                            <span class="info-label">${window.getTranslation ? window.getTranslation('exhibitions.period') : '展期'}</span>
+                            <span class="info-value">${exhibition.date}</span>
+                        </div>
+                        ` : ''}
+                        ${hasLocation ? `
+                        <div class="info-row">
+                            <span class="info-label">${window.getTranslation ? window.getTranslation('exhibitions.location') : '地点'}</span>
+                            <span class="info-value">${location}</span>
+                        </div>
+                        ` : ''}
+                        ${hasCountry ? `
+                        <div class="info-row">
+                            <span class="info-label">${window.getTranslation ? window.getTranslation('exhibitions.country') : '国家'}</span>
+                            <span class="info-value">${type}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <!-- 展览海报 -->
+                <div class="exhibition-poster-section">
+                    <div class="poster-container">
+                        <img src="${posterImage.src}" 
+                             alt="${getImageText(posterImage, 'title')}" 
+                             loading="eager"
+                             decoding="async"
+                             onclick="openImageViewer(${exhibition.images.indexOf(posterImage)}, '${exhibition.id}')">
+                        <div class="poster-caption">${getImageText(posterImage, 'title')}</div>
+                    </div>
+                </div>
+
+                <!-- 主办方介绍 -->
+                ${hasOrganizerSection ? `
+                <div class="exhibition-info-section">
+                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.aboutOrganizer') : '主办方介绍'}</h2>
+                    <div class="organizer-content">
+                        <div class="organizer-name">${organizer}</div>
+                        ${organizerDescription && organizerDescription.trim() ? `<p class="exhibition-aboutOrganizer">${organizerDescription}</p>` : ''}
+                        ${organizerLink && organizerLink.trim() ? `
+                        <div class="organizer-link">
+                            <a href="${organizerLink}" target="_blank" rel="noopener noreferrer" class="organizer-link-btn">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>${window.getTranslation ? window.getTranslation('exhibitions.learnMore') : '了解更多'}</span>
+                            </a>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- 展览基本信息 -->
+                ${hasDescriptionSection ? `
+                <div class="exhibition-info-section">
+                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.description') : '展览介绍'}</h2>
+                    <p class="exhibition-description">${description}</p>
+                </div>
+                ` : ''}
+                
+                <!-- 参展作品 -->
+                ${exhibition.artworks && exhibition.artworks.length > 0 ? `
+                <div class="exhibition-artworks">
+                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.artworks') : '参展作品'}</h2>
+                    <div class="artworks-grid ${exhibition.artworks.length === 1 ? 'single-artwork' : ''}">
+                        ${exhibition.artworks.map((artwork, index) => `
+                            <div class="artwork-card">
+                                ${artwork.image ? `
+                                <div class="artwork-image">
+                                    <img src="${artwork.image}" 
+                                         alt="${getArtworkText(artwork, 'title')}" 
+                                         loading="lazy"
+                                         decoding="async"
+                                         onclick="openArtworkViewer('${artwork.image}', '${getArtworkText(artwork, 'title')}')">
+                                </div>
+                                ` : ''}
+                                <div class="artwork-header">
+                                    <h4>${getArtworkText(artwork, 'title')}</h4>
+                                </div>
+                                <div class="artwork-details">
+                                    <div class="detail-row">
+                                        <span class="detail-label">${window.getTranslation ? window.getTranslation('exhibitions.medium') : '媒材'}：</span>
+                                        <span class="detail-value">${getArtworkText(artwork, 'medium')}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">${window.getTranslation ? window.getTranslation('exhibitions.size') : '尺寸'}：</span>
+                                        <span class="detail-value">${artwork.size}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">${window.getTranslation ? window.getTranslation('exhibitions.year') : '年份'}：</span>
+                                        <span class="detail-value">${artwork.year}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- 展会现场照片 -->
+                ${siteImages.length > 0 ? `
+                <div class="exhibition-site">
+                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.exhibitionSite') : '展览现场'}</h2>
+                    <div class="site-images-grid">
+                        ${siteImages.map((img, index) => `
+                            <div class="site-image-item" onclick="openImageViewer(${exhibition.images.indexOf(img)}, '${exhibition.id}')">
+                                <img src="${img.src}" 
+                                     alt="${getImageText(img, 'title')}"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="image-caption">
+                                    <div class="image-title">${getImageText(img, 'title')}</div>
+                                    <div class="image-description">${getImageText(img, 'description')}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- 展览文档 -->
+                ${exhibition.documents && exhibition.documents.length > 0 ? `
+                <div class="exhibition-certificates">
+                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.documents') : '展览文档'}</h2>
+                    <div class="certificates-grid ${exhibition.documents.length === 1 ? 'single-document' : ''}">
+                        ${exhibition.documents.map(doc => `
+                            <div class="certificate-item" onclick="openCertificateViewer('${doc.image}', '${getDocText(doc, 'title')}')">
+                                <img src="${doc.image}" 
+                                     alt="${getDocText(doc, 'title')}"
+                                     loading="lazy"
+                                     decoding="async">
+                                <div class="certificate-title">${getDocText(doc, 'title')}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- 媒体报道 -->
+                ${exhibition.press && exhibition.press.length > 0 ? `
+                <div class="exhibition-press">
+                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.press') : '媒体报道'}</h2>
+                    <div class="press-grid">
+                        ${exhibition.press.map(press => `
+                            <div class="press-card">
+                                <h4 class="press-title">
+                                    ${press.url ? `<a href="${press.url}" target="_blank" rel="noopener noreferrer">${getPressText(press, 'title')} <i class="fas fa-external-link-alt"></i></a>` : getPressText(press, 'title')}
+                                </h4>
+                                <div class="press-meta">
+                                    <span class="press-source">${getPressText(press, 'source')}</span>
+                                    <span class="press-date">${press.date}</span>
+                                </div>
+                                ${getPressText(press, 'description') ? `<p class="press-description">${getPressText(press, 'description')}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+                document.getElementById('exhibitionDetailContent').innerHTML = content;
+            });
+        }
+
+        // 打开证书查看器
+        function openCertificateViewer(imageSrc, title) {
+            // 使用 requestAnimationFrame 优化模态框动画
+            requestAnimationFrame(() => {
+                const viewer = document.createElement('div');
+                viewer.className = 'certificate-viewer-modal';
+                viewer.innerHTML = `
+                    <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
+                    <div class="viewer-content">
+                        <img src="${imageSrc}" 
+                             alt="${title}"
+                             loading="lazy"
+                             decoding="async">
+                        <div class="viewer-info">
+                            <h3>${title}</h3>
+                        </div>
+                        <button class="viewer-close" onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+
+                document.body.appendChild(viewer);
+                setTimeout(() => viewer.classList.add('show'), 10);
+            });
+        }
+
+        // 监听语言切换事件
+        document.addEventListener('languageChanged', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const exhibitionId = urlParams.get('id');
+            if (exhibitionId) {
+                loadExhibitionDetail(exhibitionId);
+            }
+        });
+    </script>
+</body>
+
+</html>

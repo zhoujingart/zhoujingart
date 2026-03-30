@@ -1,0 +1,696 @@
+/* 媒体报道页面样式 */
+
+/* 滚动时全局性能优化：禁用所有 hover 和 transition */
+body.is-scrolling .press * {
+    pointer-events: none !important;
+}
+
+body.is-scrolling .press a,
+body.is-scrolling .press button {
+    pointer-events: auto !important;
+}
+
+/* 艺术气质媒体报道页面 */
+.press {
+    position: relative;
+    padding: 8rem 2rem 6rem;
+    min-height: 100vh;
+}
+
+/* 使用伪元素实现固定背景，性能优于 background-attachment: fixed */
+.press::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    
+    /* 高级背景：与 exhibitions 一致 */
+    background-color: var(--background-color);
+    background-image:
+        radial-gradient(1000px 600px at 10% 0%, rgba(201, 169, 110, 0.08) 0%, rgba(201, 169, 110, 0) 60%),
+        radial-gradient(800px 500px at 90% 20%, rgba(139, 115, 85, 0.06) 0%, rgba(139, 115, 85, 0) 60%),
+        repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.018) 0 2px, rgba(0, 0, 0, 0) 2px 10px);
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-position: center, center, center;
+    background-size: cover, cover, auto;
+    
+    /* 开启硬件加速 */
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.press h2 {
+    text-align: center;
+    margin-bottom: 4rem;
+    color: var(--primary-color);
+    font-size: 3.6rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    font-family: var(--font-serif);
+    position: relative;
+    line-height: 1.1;
+}
+
+.press h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+}
+
+.press-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.press-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.press-section {
+    margin-bottom: 3rem;
+    /* 移除 content-visibility 避免内容延迟显示 */
+}
+
+.section-title {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--secondary-color);
+    border-radius: 2px;
+}
+
+.press-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    /* 移除过度优化的属性，它们在某些情况下反而导致性能问题 */
+}
+
+.press-item {
+    background: var(--white);
+    padding: 2.5rem;
+    /* 性能优化：减少 border-radius 12px → 8px（减少 GPU 负担） */
+    border-radius: 8px;
+    border: 1px solid rgba(201, 169, 110, 0.15);
+    /* 简化顶部装饰条为 border-top，减少绘制层 */
+    border-top: 4px solid var(--secondary-color);
+    /* 性能优化：减少 blur radius 从 12px → 8px */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    position: relative;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    /* 轻量级 GPU 加速，避免过度分层 */
+    will-change: auto;
+}
+
+/* 只在支持 hover 的设备上启用过渡 */
+@media (hover: hover) and (pointer: fine) {
+    .press-item {
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    
+    /* 滚动时完全禁用所有 transition - 性能优化 */
+    body.is-scrolling .press-item {
+        transition: none !important;
+    }
+}
+
+/* 移除 ::before 伪元素，改用 border-top 减少绘制层 */
+
+/* 只在支持 hover 且非滚动状态时启用 hover 效果 */
+@media (hover: hover) and (pointer: fine) {
+    .press-item:hover {
+        transform: translateY(-1px);
+        /* 性能优化：减少 blur radius 从 16px → 10px */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+        border-color: rgba(201, 169, 110, 0.25);
+    }
+    
+    /* 滚动时禁用 hover */
+    body.is-scrolling .press-item:hover {
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border-color: rgba(201, 169, 110, 0.15);
+    }
+}
+
+.press-thumbnail {
+    flex-shrink: 0;
+    width: 140px;
+    height: 100px;
+    /* 性能优化：减少 border-radius 12px → 6px */
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(201, 169, 110, 0.1);
+}
+
+/* 只在支持 hover 的设备上启用缩略图动画 */
+@media (hover: hover) and (pointer: fine) {
+    .press-thumbnail {
+        transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    
+    .press-thumbnail:hover {
+        transform: scale(1.02);
+        border-color: var(--secondary-color);
+    }
+    
+    /* 滚动时禁用缩略图 hover */
+    body.is-scrolling .press-thumbnail:hover {
+        transform: none;
+        border-color: rgba(201, 169, 110, 0.2);
+    }
+}
+
+.press-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    /* 性能优化：禁用平滑缩放，提升渲染速度 */
+    image-rendering: auto;
+    /* 禁用图片拖拽和选择，减少事件处理 */
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* 懒加载图片优化：添加占位符背景，避免布局跳动 */
+.press-lazy-img {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    /* 加载前显示占位符 */
+    min-height: 100px;
+    /* 移除 content-visibility - 它在快速滚动时会导致元素闪烁 */
+    /* 未加载时不显示破损图标 */
+    opacity: 0;
+    /* 性能优化：减少过渡时间 0.3s → 0.15s */
+    transition: opacity 0.15s ease;
+}
+
+.press-lazy-img.is-loaded {
+    /* 图片加载后显示 */
+    opacity: 1;
+    background: none;
+}
+
+/* 加载占位符 - 在图片加载前显示图标 */
+.press-thumbnail::before {
+    content: '\f1c5';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #c9a96e;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.press-thumbnail.loaded::before {
+    display: none;
+}
+
+.press-thumbnail-fallback {
+    color: #6c757d;
+    font-size: 2rem;
+    /* 简化为纯色背景 */
+    background: #e9ecef;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.press-thumbnail-fallback img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.is-hidden {
+    display: none !important;
+}
+
+.press-link {
+    color: #c9a96e;
+    text-decoration: none;
+}
+
+.press-link i {
+    font-size: 12px;
+}
+
+.press-hints {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.press-thumbnail-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #6c757d;
+    font-size: 1.2rem;
+    display: none;
+}
+
+.press-thumbnail[data-loading="true"] .press-thumbnail-loading {
+    display: block;
+}
+
+/* 预览图悬停效果 */
+.press-thumbnail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* 简化为半透明纯色 */
+    background: rgba(201, 169, 110, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    border-radius: 12px;
+    pointer-events: none;
+}
+
+.press-thumbnail-overlay i {
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* 只在支持 hover 的设备上启用 overlay */
+@media (hover: hover) and (pointer: fine) {
+    /* 性能优化：减少 transition 时间 0.2s → 0.1s */
+    .press-thumbnail-overlay {
+        transition: opacity 0.1s ease;
+    }
+    
+    .press-thumbnail:hover .press-thumbnail-overlay {
+        opacity: 1;
+    }
+    
+    /* 滚动时完全禁用 overlay */
+    body.is-scrolling .press-thumbnail:hover .press-thumbnail-overlay {
+        opacity: 0;
+        transition: none;
+    }
+}
+
+.press-content-area {
+    flex: 1;
+    min-width: 0;
+    /* 移除 max-height 限制，改用其他方式优化 */
+}
+
+.press-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* 新的头部布局，缓解右侧拥挤：日期与出版信息放到左侧竖排，右侧仅保留“查看完整报道”按钮 */
+.press-header-v2 { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+.press-header-left { display: grid; grid-auto-rows: min-content; gap: 0.35rem; align-items: start; }
+.press-meta-line { display: inline-grid; grid-auto-flow: column; gap: 0.5rem; align-items: center; justify-content: start; margin-bottom: 0.35rem; padding: 0; border-radius: 0; background: transparent; border: 0; }
+.press-meta-line .press-date, .press-meta-line .press-publication { color: var(--secondary-color); font-size: 0.95rem; font-weight: 600; opacity: 0.9; }
+.press-meta-line .press-sep { color: var(--secondary-color); opacity: 0.6; }
+
+.press-title {
+    font-size: 1.5rem;
+    margin: 0;
+    flex: 1;
+    font-weight: 500;
+    color: var(--primary-color);
+    line-height: 1.3;
+}
+
+.press-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+    /* 性能优化：减少 transition 时间 0.3s → 0.2s */
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+/* 只在支持 hover 且非滚动状态时启用标题链接 hover */
+@media (hover: hover) and (pointer: fine) {
+    .press-title a:hover {
+        color: var(--secondary-color);
+    }
+    
+    /* 滚动时完全禁用标题链接 hover */
+    body.is-scrolling .press-title a:hover {
+        color: var(--primary-color);
+    }
+}
+
+.press-title a i {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.press-date,
+.press-publication {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    /* 简化为纯色背景，提升性能 */
+    background: rgba(201, 169, 110, 0.1);
+    padding: 0.5rem 1rem;
+    /* 性能优化：减少 border-radius 12px → 6px */
+    border-radius: 6px;
+    white-space: nowrap;
+    border: 1px solid rgba(201, 169, 110, 0.2);
+}
+
+.press-description {
+    color: var(--text-color);
+    line-height: 1.7;
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 300;
+    /* 性能优化：限制最大行数，减少文本渲染开销 */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* 文本渲染优化 */
+    text-rendering: optimizeSpeed;
+    /* 固定最大高度，避免高度变化 */
+    max-height: calc(1.7em * 3);
+}
+.press-note {
+    color: var(--light-text);
+    font-style: italic;
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(201, 169, 110, 0.1);
+    /* 性能优化：限制 note 的行数 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: calc(1.4em * 2);
+}
+
+/* 媒体标签样式 */
+.press-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.press-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* 简化为纯色背景，提升性能 */
+    background: var(--secondary-color);
+    color: var(--white);
+    padding: 0.4rem 1rem;
+    /* 性能优化：减少 border-radius 12px → 6px */
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+/* 只在支持 hover 的设备上启用按钮动画 */
+@media (hover: hover) and (pointer: fine) {
+    .press-source {
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    
+    .press-source:hover {
+        transform: translateY(-2px);
+        /* 性能优化：减少 blur radius 从 12px → 8px */
+        box-shadow: 0 3px 8px rgba(201, 169, 110, 0.2);
+    }
+    
+    /* 滚动时禁用按钮 hover */
+    body.is-scrolling .press-source:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+.press-source i {
+    font-size: 0.8rem;
+}
+
+/* Press页面大图模态框样式 */
+#pressImageModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+}
+
+#pressImageModal .press-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 95vw;
+    max-height: 95vh;
+    width: auto;
+}
+
+#pressImageModal .modal-content {
+    max-width: 95vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    /* 性能优化：减少 blur radius 从 30px → 20px */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    background: white;
+    object-fit: contain;
+    cursor: zoom-in;
+    -webkit-user-select: none;
+    user-select: none;
+    image-rendering: optimizeQuality;
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+}
+
+#pressImageModal .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    #pressImageModal .modal-close {
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+    
+    #pressImageModal .modal-close:hover {
+        background: var(--secondary-color);
+        transform: scale(1.1);
+    }
+}
+
+#pressImageModal .modal-caption {
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin-top: 15px;
+    max-width: 600px;
+}
+
+/* 桌面端按钮显示控制 */
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .press {
+        padding: calc(60px + 4rem) 1rem 3rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .press-item {
+        padding: 1.5rem;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .press-thumbnail {
+        width: 100%;
+        height: 140px;
+        align-self: stretch;
+        flex-shrink: 0;
+    }
+
+    .press-content-area {
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .press-header-v2 { 
+        margin-bottom: 1rem;
+    }
+    
+    .press-header-left {
+        gap: 0.75rem;
+    }
+    
+    .desktop-only {
+        display: none;
+    }
+    
+    .mobile-only {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: auto;
+        padding-top: 0.5rem;
+    }
+
+    .press-meta-line {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        justify-content: start;
+    }
+
+    .press-meta-line .press-date,
+    .press-meta-line .press-publication {
+        font-size: 0.85rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .press-title {
+        font-size: 1.2rem;
+        line-height: 1.4;
+        margin: 0;
+    }
+
+    .press-title a {
+        display: block;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .press-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0 0 1rem 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        color: var(--text-color);
+        opacity: 0.9;
+    }
+
+
+    .press-source {
+        font-size: 0.9rem;
+        padding: 0.75rem 2rem;
+        width: 100%;
+        text-align: center;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+        color: white;
+        border: none;
+        /* 性能优化：避免 transition: all，指定具体属性 */
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .press-source:hover {
+        transform: translateY(-2px);
+        /* 性能优化：减少 blur radius 从 20px → 12px */
+        box-shadow: 0 6px 12px rgba(201, 169, 110, 0.25);
+        color: white;
+    }
+}

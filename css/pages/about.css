@@ -1,0 +1,779 @@
+/* 关于页面样式 */
+
+/* 关于艺术家页面样式 */
+/* 全屏高级背景容器 */
+.about-full-bg {
+    position: relative;
+}
+
+.about-full-bg::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
+
+    /* 高级背景：角落暖色晕染 + 斜线纹理 */
+    background-color: var(--background-color);
+    background-image:
+        radial-gradient(1000px 600px at 10% 0%, rgba(201, 169, 110, 0.08) 0%, rgba(201, 169, 110, 0) 60%),
+        radial-gradient(800px 500px at 90% 20%, rgba(139, 115, 85, 0.06) 0%, rgba(139, 115, 85, 0) 60%),
+        repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.018) 0 2px, rgba(0, 0, 0, 0) 2px 10px);
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-position: center, center, center;
+    background-size: cover, cover, auto;
+}
+
+.about-statement,
+.about-exhibitions,
+.about-cv,
+.about-downloads {
+    padding: 6rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.about-statement { padding-top: 8rem; }
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-statement h2,
+.about-exhibitions h2,
+.about-cv h2,
+.about-downloads h2 {
+    text-align: center;
+    margin-bottom: 4rem;
+    color: var(--primary-color);
+    font-size: 3.6rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    font-family: var(--font-serif);
+    position: relative;
+    line-height: 1.1;
+}
+
+.about-statement h2::after,
+.about-exhibitions h2::after,
+.about-cv h2::after,
+.about-downloads h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+}
+
+/* 艺术家陈述样式 */
+.statement-portrait {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0 3rem;
+}
+
+.statement-portrait img {
+    width: 420px;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 4px solid var(--white);
+}
+
+.about-statement .statement-text {
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    font-weight: 300;
+}
+
+.about-statement .statement-text p {
+    margin-bottom: 2rem;
+    text-align: justify;
+}
+
+.about-statement .statement-text p:first-of-type {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--primary-color);
+    position: relative;
+    padding-left: 2rem;
+}
+
+.about-statement .statement-text p:first-of-type::before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    top: -0.5rem;
+    font-size: 4rem;
+    color: var(--secondary-color);
+    font-family: var(--font-serif);
+    opacity: 0.6;
+}
+
+/* 关于我样式 */
+.about {
+    padding: 5rem 2rem;
+    background-color: white;
+}
+
+.about h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--primary-color);
+}
+
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-text p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+/* 简历部分样式 */
+.about-cv .cv-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+.about-cv .cv-section {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 30px var(--shadow-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 4px solid var(--secondary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.about-cv .cv-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--secondary-color), var(--accent-color));
+    transition: width 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .about-cv .cv-section:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 50px var(--shadow-medium);
+    }
+
+    .about-cv .cv-section:hover::before {
+        width: 8px;
+    }
+}
+
+.about-cv .cv-section h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+    font-family: var(--font-serif);
+}
+
+.is-hidden {
+    display: none !important;
+}
+
+.cv-timeline {
+    position: relative;
+    margin: 1rem 0 0;
+}
+
+.cv-timeline-year {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 3.5rem;
+}
+
+.cv-year-label {
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    width: 2.5rem;
+    color: var(--secondary-color);
+    font-weight: 700;
+}
+
+.cv-timeline-items {
+    border-left: 2px solid rgba(201, 169, 110, 0.3);
+    padding-left: 1.5rem;
+}
+
+.cv-timeline-item {
+    position: relative;
+    margin: 1.2rem 0;
+}
+
+.cv-timeline-dot {
+    position: absolute;
+    left: -1.66rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(201, 169, 110, 0.12);
+}
+
+.cv-timeline-content {
+    background: var(--background-color);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 6px 18px var(--shadow-light);
+}
+
+.cv-timeline-date {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.35rem;
+}
+
+.cv-timeline-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .cv-timeline-title a:hover {
+        color: var(--secondary-color);
+    }
+}
+
+.cv-timeline-meta {
+    font-size: 0.92rem;
+    color: var(--text-color);
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 768px) {
+    .cv-timeline-year {
+        padding-left: 3.5rem;
+    }
+
+    .cv-year-label {
+        width: 3rem;
+        font-size: 0.9rem;
+        left: -0.5rem;
+    }
+
+    .cv-timeline-items {
+        padding-left: 1rem;
+    }
+}
+
+.about-cv .cv-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.about-cv .cv-item {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.2);
+    font-weight: 300;
+    color: var(--text-color);
+}
+
+.about-cv .cv-item:last-child {
+    border-bottom: none;
+}
+
+/* 艺术气质CV页面 */
+.cv {
+    padding: 8rem 2rem 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background-color) 100%);
+    min-height: 100vh;
+}
+
+.cv h2 {
+    text-align: center;
+    margin-bottom: 4rem;
+    color: var(--primary-color);
+    font-size: 3.5rem;
+    font-weight: 200;
+    letter-spacing: 0.15em;
+    font-family: var(--font-serif);
+    position: relative;
+}
+
+.cv h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+}
+
+.cv-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.cv-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.cv-section {
+    background: var(--white);
+    border-radius: 0;
+    box-shadow: 0 8px 30px var(--shadow-light);
+    padding: 3rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 4px solid var(--secondary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.cv-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--secondary-color), var(--accent-color));
+    transition: width 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .cv-section:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 50px var(--shadow-medium);
+    }
+
+    .cv-section:hover::before {
+        width: 8px;
+    }
+}
+
+.cv-section h3 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--secondary-color);
+    letter-spacing: 0.05em;
+    font-family: var(--font-serif);
+}
+
+.cv-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cv-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.cv-item:last-child {
+    border-bottom: none;
+}
+
+.cv-download {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.download-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .download-button:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+    }
+}
+
+.download-button i {
+    font-size: 1.2rem;
+}
+
+/* 艺术气质陈述页面 */
+.statement {
+    padding: 8rem 2rem 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--white) 0%, var(--background-color) 100%);
+    min-height: 100vh;
+}
+
+.statement h2 {
+    text-align: center;
+    margin-bottom: 4rem;
+    color: var(--primary-color);
+    font-size: 3.5rem;
+    font-weight: 200;
+    letter-spacing: 0.15em;
+    font-family: var(--font-serif);
+    position: relative;
+}
+
+.statement h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+}
+
+.statement-content {
+    background: var(--white);
+    border-radius: 0;
+    box-shadow: 0 8px 30px var(--shadow-light);
+    padding: 4rem;
+    margin-bottom: 3rem;
+    position: relative;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.statement-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    text-align: justify;
+}
+
+.statement-text p {
+    margin-bottom: 1.5rem;
+}
+
+.statement-text p:first-of-type {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.statement-text p:first-of-type::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--primary-color);
+}
+
+.statement-download {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.statement-download .download-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .statement-download .download-button:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+    }
+}
+
+.statement-download .download-button i {
+    font-size: 1.2rem;
+}
+
+/* 下载部分样式 */
+.downloads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.download-item {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 40px var(--shadow-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.download-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .download-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 25px 60px var(--shadow-medium);
+    }
+}
+
+.download-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.download-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.download-info {
+    flex: 1;
+}
+
+.download-info h3 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    line-height: 1.3;
+}
+
+.download-info p {
+    color: var(--light-text);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.download-item .download-button {
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    color: var(--white);
+    border: none;
+    border-radius: 25px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    letter-spacing: 0.03em;
+    align-self: flex-start;
+    white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .download-item .download-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(201, 169, 110, 0.4);
+    }
+}
+
+.download-item .download-button i {
+    font-size: 0.8rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+
+    .about-statement,
+    .about-exhibitions,
+    .about-cv,
+    .about-downloads {
+        padding: 4rem 1.5rem;
+    }
+
+    .about-statement {
+        padding-top: calc(60px + 4rem);
+    }
+
+    .about-statement h2,
+    .about-cv h2,
+    .about-downloads h2 {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .about-statement .statement-text {
+        font-size: 1rem;
+    }
+
+    .about-statement .statement-text p:first-of-type {
+        font-size: 1.1rem;
+        padding-left: 1.5rem;
+    }
+
+    .statement-portrait img {
+        width: 280px;
+        height: 280px;
+        max-width: calc(100vw - 3rem);
+        max-height: calc(100vw - 3rem);
+    }
+
+    .about-cv .cv-sections {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .about-cv .cv-section {
+        padding: 2rem 1.5rem;
+    }
+
+    .downloads-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .download-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+        padding: 2rem 1.5rem;
+        min-height: 0;
+    }
+
+    .download-info {
+        text-align: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .download-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        word-wrap: break-word;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+    }
+
+    .download-info p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        word-wrap: break-word;
+    }
+
+    .download-item .download-button {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+        word-wrap: break-word;
+    }
+
+    .cv {
+        padding: 4rem 1rem;
+    }
+
+    .cv-sections {
+        grid-template-columns: 1fr;
+    }
+
+    .cv-section {
+        padding: 1.5rem;
+    }
+
+    .cv-item {
+        font-size: 1rem;
+    }
+
+    .cv-section h3 {
+        font-size: 1.3rem;
+    }
+
+    .statement {
+        padding: 100px 1rem 3rem;
+    }
+
+    .statement-content {
+        padding: 2rem;
+    }
+
+    .statement-text {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .statement-text p:first-of-type {
+        font-size: 1.2rem;
+    }
+}

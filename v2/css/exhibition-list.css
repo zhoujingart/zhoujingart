@@ -1,0 +1,135 @@
+/* Exhibition List Page Styles */
+.exhibitions-list-section {
+    padding-bottom: 8rem;
+}
+
+.year-group {
+    margin-bottom: 6rem;
+}
+
+.year-label {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.exhibition-item-row {
+    display: grid;
+    grid-template-columns: 100px 150px 1fr 150px 50px;
+    align-items: center;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.ex-list-image {
+    width: 80px;
+    height: 110px;
+    overflow: hidden;
+}
+
+.ex-list-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.exhibition-item-row:hover .ex-list-image img {
+    transform: scale(1.05);
+}
+
+.exhibition-item-row:hover {
+    background: var(--border-color);
+    transform: translateX(10px);
+}
+
+.ex-date-col {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.ex-info-col {
+    padding-right: 2rem;
+}
+
+.ex-item-title {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.ex-item-venue {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.ex-type-col {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-color);
+    text-align: right;
+}
+
+.ex-arrow-col {
+    text-align: right;
+    color: var(--text-muted);
+    transition: color 0.3s, transform 0.3s;
+}
+
+.exhibition-item-row:hover .ex-arrow-col {
+    color: var(--text-color);
+    transform: translateX(5px);
+}
+
+/* Responsive for Exhibition List */
+@media (max-width: 768px) {
+    .exhibition-item-row {
+        grid-template-columns: 80px 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem 0;
+        align-items: start;
+    }
+
+    .ex-list-image {
+        display: block;
+        width: 80px;
+        height: 110px;
+        grid-row: 1 / span 3;
+    }
+
+    .ex-date-col {
+        grid-column: 2;
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .ex-info-col {
+        grid-column: 2;
+        padding-right: 0;
+    }
+
+    .ex-type-col {
+        grid-column: 2;
+        text-align: left;
+        margin-top: 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .ex-arrow-col {
+        display: none;
+    }
+    
+    .ex-item-title {
+        font-size: 1.4rem;
+        line-height: 1.2;
+    }
+}

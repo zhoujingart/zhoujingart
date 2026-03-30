@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Works | Zhou Jing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Loading Screen -->
+    <!-- <div class="loader">
+        <div class="loader-text">ZHOU JING</div>
+        <div class="loader-line"></div>
+    </div> -->
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo"><a href="index.html">ZHOU JING</a></div>
+        <div class="nav-controls">
+            <div class="lang-toggle">
+                <span class="lang-text">中</span>
+            </div>
+            <div class="menu-toggle">
+                <span data-i18n="nav.menu">MENU</span>
+                <div class="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Full Screen Menu Overlay -->
+    <div class="menu-overlay">
+        <div class="menu-close" data-i18n="nav.close">CLOSE</div>
+        <ul class="menu-items">
+            <li><a href="index.html" class="menu-link"><span data-i18n="nav.home">Home</span> <span
+                        class="menu-number">01</span></a></li>
+            <li><a href="gallery.html" class="menu-link"><span data-i18n="nav.works">Works</span> <span
+                        class="menu-number">02</span></a></li>
+            <li><a href="exhibitions.html" class="menu-link"><span data-i18n="nav.exhibitions">Exhibitions</span> <span
+                        class="menu-number">03</span></a></li>
+            <li><a href="about.html" class="menu-link"><span data-i18n="nav.about">About</span> <span
+                        class="menu-number">04</span></a></li>
+            <li><a href="press.html" class="menu-link"><span data-i18n="nav.press">Press</span> <span
+                        class="menu-number">05</span></a></li>
+            <li><a href="studio.html" class="menu-link"><span data-i18n="nav.studio">Studio</span> <span
+                        class="menu-number">06</span></a></li>
+            <li><a href="contact.html" class="menu-link"><span data-i18n="nav.contact">Contact</span> <span
+                        class="menu-number">07</span></a></li>
+        </ul>
+        <div class="menu-footer">
+            <div class="social-links">
+                <a href="https://www.instagram.com/jingzhou88888?igsh=azh5Y3R3cno5MHUy&utm_source=qr" target="_blank"
+                    rel="noopener" class="social-item">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title" data-i18n="gallery.title">Selected Works</h1>
+                <p class="page-subtitle" data-i18n="gallery.subtitle">A collection of paintings exploring emotion,
+                    nature, and the human condition.
+                </p>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section">
+            <div class="container">
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all" data-i18n="gallery.filterAll">All</button>
+                    <button class="filter-btn" data-filter="acrylic" data-i18n="gallery.filterAcrylic">Acrylic</button>
+                    <button class="filter-btn" data-filter="mixed" data-i18n="gallery.filterMixed">Mixed Media</button>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="v2-gallery-grid">
+                    <!-- Content rendered by js/render-gallery.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <!-- Footer -->
+        <footer class="footer-section">
+            <div class="container">
+                <div class="footer-content">
+                    <a href="contact.html" class="footer-cta-link">
+                        <h2 data-i18n="contact.subtitle">Let's Create Something Beautiful</h2>
+                    </a>
+                    <a href="mailto:zhoujingart@outlook.com" class="email-link">zhoujingart@outlook.com</a>
+                    <div class="footer-bottom">
+                        <div class="copyright" data-i18n="footer.rights">&copy; 2025 Zhou Jing. All Rights Reserved.
+                        </div>
+                        <div class="socials">
+                            <a href="https://www.instagram.com/jingzhou88888?igsh=azh5Y3R3cno5MHUy&utm_source=qr"
+                                target="_blank" rel="noopener" class="social-item">
+                                <i class="fab fa-instagram"></i> Instagram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox">
+        <div class="lightbox-close">&times;</div>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-img">
+            <div class="lightbox-caption">
+                <h3 class="lightbox-title"></h3>
+                <p class="lightbox-desc"></p>
+            </div>
+        </div>
+        <div class="lightbox-nav prev"><i class="fas fa-chevron-left"></i></div>
+        <div class="lightbox-nav next"><i class="fas fa-chevron-right"></i></div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="../js/gallery.js"></script>
+    <script src="js/render-gallery.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

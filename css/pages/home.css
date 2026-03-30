@@ -1,0 +1,300 @@
+/* 首页特定样式 */
+
+/* 英雄区域样式 */
+.hero {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    filter: brightness(0.7) contrast(1.1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .hero:hover .hero-background img {
+        transform: scale(1.02);
+    }
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg,
+            rgba(26, 26, 26, 0.7) 0%,
+            rgba(0, 0, 0, 0.6) 100%);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 4rem 3rem;
+    max-width: 900px;
+    animation: fadeInUp 0.8s ease;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    /* 移除 backdrop-filter，避免GPU过载 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-content h1 {
+    font-size: 5rem;
+    font-weight: 100;
+    margin-bottom: 2rem;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6);
+    letter-spacing: 0.15em;
+    font-family: var(--font-serif);
+    color: #ffffff;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 auto;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+}
+
+/* 作品集预览样式 */
+.gallery {
+    padding: 8rem 0 6rem;
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+    z-index: 1;
+}
+
+.gallery::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, rgba(44, 62, 80, 0.03) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.gallery-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.gallery-header {
+    text-align: center;
+    margin-bottom: 6rem;
+    position: relative;
+}
+
+.gallery h2 {
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.gallery h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+}
+
+.gallery-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-top: 2rem;
+    opacity: 0.8;
+}
+
+/* 瀑布流网格布局 */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+/* 艺术作品卡片 */
+.gallery-item {
+    position: relative;
+    background: white;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    /* 移除入场动画，首页实际不使用这些卡片 */
+}
+
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .gallery-item:hover::before {
+        opacity: 1;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+    
+    .gallery-item:hover img {
+        transform: scale(1.03);
+        filter: contrast(1.15) saturate(1.15);
+    }
+    
+    .gallery-item:hover .gallery-item-overlay {
+        transform: translateY(0);
+    }
+}
+
+.gallery-item-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    filter: contrast(1.1) saturate(1.1);
+}
+
+/* 作品信息叠加 */
+.gallery-item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: 2rem;
+    transform: translateY(100%);
+    transition: transform 0.2s ease;
+    z-index: 3;
+}
+
+.gallery-item-title {
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-item-meta {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-weight: 300;
+}
+
+/* 移除不必要的加载动画（首页实际不使用这些卡片） */
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .hero-content {
+        padding: 2.5rem 2rem;
+        border-radius: 15px;
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-content h1 {
+        font-size: 3rem;
+        text-shadow: 0 3px 15px rgba(0, 0, 0, 0.9), 0 1px 6px rgba(0, 0, 0, 0.7);
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    .gallery {
+        padding: 6rem 0 4rem;
+    }
+
+    .gallery-container {
+        padding: 0 1rem;
+    }
+
+    .gallery h2 {
+        font-size: 2.5rem;
+        letter-spacing: 0.1em;
+    }
+
+    .gallery-subtitle {
+        font-size: 1rem;
+    }
+
+    .gallery-header {
+        margin-bottom: 4rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .gallery-item img {
+        height: 300px;
+    }
+
+    .gallery-item-overlay {
+        padding: 1.5rem;
+    }
+
+    .gallery-item-title {
+        font-size: 1.1rem;
+    }
+} 
