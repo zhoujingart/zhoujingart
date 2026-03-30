@@ -843,26 +843,6 @@ a {
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-    .v2-gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-    }
-
-    /* Disable custom cursor on mobile/tablet */
-    .cursor, .cursor-follower {
-        display: none !important;
-    }
-
-    a, button, .menu-toggle, .menu-close, .exhibition-item-row, .gallery-item, .filter-btn {
-        cursor: pointer !important;
-    }
-
-    body {
-        cursor: auto !important;
-    }
-}
-
 @media (max-width: 768px) {
     .hero-title {
         font-size: 3rem;
@@ -909,32 +889,5 @@ a {
 
     .lightbox-nav.next {
         right: 0;
-    }
-
-    .menu-link {
-        font-size: 2.5rem;
-    }
-    
-    .menu-number {
-        font-size: 0.8rem;
-        right: -20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .page-title {
-        font-size: 2rem;
-    }
-    
-    .navbar {
-        padding: 1rem;
-    }
-    
-    .container {
-        padding: 0 1.5rem;
     }
 }

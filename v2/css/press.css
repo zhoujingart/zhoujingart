@@ -141,12 +141,5 @@
     .press-image {
         display: block; /* Show image again on mobile but stacked */
         margin-top: 1.5rem;
-        width: 100%;
-    }
-    
-    .press-image img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
     }
 }
