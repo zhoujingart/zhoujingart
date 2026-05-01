@@ -102,9 +102,9 @@ const translations = {
         awards: {
             title: { zh: "专业资质", en: "Professional Qualifications" },
             items: [
-                { zh: "中外文化交流协会会员", en: "Member of Shanghai International Cultural Exchange Association" },
-                { zh: "青年艺术家协会会员", en: "Member of Youth Artists Association" },
-                { zh: "海外青年联合会会员", en: "Member of Overseas Youth Federation" }
+                { zh: "中外文化交流协会会员", en: "Shanghai International Cultural Exchange Association" },
+                { zh: "青年艺术家协会会员", en: "Youth Artists Association" },
+                { zh: "海外青年联合会会员", en: "Overseas Youth Federation" }
             ]
         },
         residencies: {
@@ -216,9 +216,9 @@ const translations = {
         awards: {
             title: { zh: "专业资质", en: "Professional Qualifications" },
             items: [
-                { zh: "中外文化交流协会会员", en: "Member of Shanghai International Cultural Exchange Association" },
-                { zh: "青年艺术家协会会员", en: "Member of Youth Artists Association" },
-                { zh: "海外青年联合会会员", en: "Member of Overseas Youth Federation" }
+                { zh: "中外文化交流协会会员", en: "Shanghai International Cultural Exchange Association" },
+                { zh: "青年艺术家协会会员", en: "Youth Artists Association" },
+                { zh: "海外青年联合会会员", en: "Overseas Youth Federation" }
             ]
         },
         residencies: {
