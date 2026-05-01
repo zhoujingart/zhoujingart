@@ -149,7 +149,7 @@ const translations = {
         formTitle: { zh: "发送消息", en: "Send Message" },
         formSubtitle: { zh: "有任何问题或合作意向，请随时联系", en: "Feel free to reach out for any questions or collaboration opportunities" },
         locationTitle: { zh: "工作地点", en: "Work Location" },
-        location: { zh: "上海", en: "Shanghai" },
+        location: { zh: "英国", en: "United Kingdom" },
         hoursTitle: { zh: "工作时间", en: "Work Hours" },
         hours: { zh: "周一至周五 9:00-18:00", en: "Monday - Friday 9:00-18:00" },
         languageTitle: { zh: "语言", en: "Languages" },
