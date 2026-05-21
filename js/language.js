@@ -246,7 +246,7 @@ const translations = {
 
     // 页脚
     footer: {
-        copyright: { zh: "© 2025 周婧. 保留所有权利.", en: "© 2025 Zhou Jing. All rights reserved." }
+        copyright: { zh: "© 2026 周婧. 保留所有权利.", en: "© 2026 Zhou Jing. All rights reserved." }
     }
 };
 

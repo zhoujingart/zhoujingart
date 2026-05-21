@@ -66,4 +66,4 @@ Compatible with all modern browsers (Chrome, Firefox, Safari, Edge).
 
 ## License
 
-&copy; 2025 Zhou Jing. All Rights Reserved.
+&copy; 2026 Zhou Jing. All Rights Reserved.
