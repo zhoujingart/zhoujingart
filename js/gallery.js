@@ -931,6 +931,32 @@ const artworksData = [
         category: "installation",
         featured: false,
         sortWeight: 100
+    },
+    {
+        id: "gallery-painting-38",
+        title: {
+            zh: "镜像",
+            en: "Mirror"
+        },
+        medium: {
+            zh: "综合材料",
+            en: "Mixed Media"
+        },
+        size: "76.2cm × 101.6cm",
+        year: "2026",
+        price: {
+            zh: "¥42,000",
+            en: "$6,000"
+        },
+        status: "available",
+        image: "images/paintings/painting_38.png",
+        description: {
+            zh: "这是一个有关于镜像的故事，镜中之影，如梦如幻，虚实之间，引人深思",
+            en: "This is a story about mirrors, mirror shadows, as dreamy and illusory as a dream, between reality and illusion,引人深思"
+        },
+        category: "installation",
+        featured: false,
+        sortWeight: 300
     }
 
 ];
