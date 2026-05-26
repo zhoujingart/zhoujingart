@@ -939,8 +939,8 @@ const artworksData = [
             en: "Mirror"
         },
         medium: {
-            zh: "综合材料",
-            en: "Mixed Media"
+            zh: "丙烯和混合材料",
+            en: "Acrylic & Mixed Media"
         },
         size: "76.2cm × 101.6cm",
         year: "2026",
@@ -955,7 +955,7 @@ const artworksData = [
             en: "This is a story about mirrors, mirror shadows, as dreamy and illusory as a dream, between reality and illusion,引人深思"
         },
         category: "installation",
-        featured: false,
+        featured: true,
         sortWeight: 300
     }
 
