@@ -14,6 +14,10 @@ This is a static artist portfolio site. There is no build step or package manage
 - Do not point list/card/thumbnail UI at original large images when an optimized copy exists.
 - Use `window.getOptimizedImagePath(src, profile)` from `js/image-optimization.js`. The `hero` and `preview` profiles intentionally reuse the `card` image set to keep repository size reasonable.
 - Keep original image files as the source of truth and as fallbacks.
+- Treat memory use as a first-class compatibility concern. Older Chrome versions and older computers can crash when a page decodes many high-resolution paintings, exhibition photos, or very tall press screenshots at once.
+- Avoid always-running animation loops, scroll handlers that do layout reads on every event, custom cursor effects, large fixed GPU layers, and unnecessary `will-change`. Use passive listeners, bounded `requestAnimationFrame`, and stop work when nothing is changing.
+- Use lightweight thumbnails for lists and grids, and only load larger preview images after an explicit user action such as opening a modal. Press screenshots must use cropped thumbnails in lists and downscaled previews in viewers.
+- Prefer CSS/JS changes that reduce decoded pixel count, layer count, and idle CPU usage over visual effects. A page should remain stable on older browsers even if that means skipping nonessential motion.
 - After adding or replacing images, run:
 
 ```bash
