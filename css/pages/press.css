@@ -38,9 +38,7 @@ body.is-scrolling .press button {
     background-position: center, center, center;
     background-size: cover, cover, auto;
     
-    /* 开启硬件加速 */
-    will-change: transform;
-    transform: translateZ(0);
+    /* 避免固定背景额外创建 GPU 图层 */
 }
 
 .press h2 {

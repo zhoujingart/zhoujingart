@@ -122,6 +122,10 @@ function getStudioTranslation(key) {
     return key;
 }
 
+function getOptimizedStudioImage(src, profile = 'card') {
+    return window.getOptimizedImagePath ? window.getOptimizedImagePath(src, profile) : src;
+}
+
 // 工作室数据
 const studioData = {
     images: [
@@ -179,7 +183,7 @@ function renderStudioContent() {
             <div class="hero2-collage">
                 ${heroImages.map((img, i) => `
                     <div class="collage-layer layer-${i + 1}" onclick="openStudioViewer('${img.src}', '${img.titleKey}', '${img.descriptionKey}')">
-                        <img src="${img.src}" alt="${getStudioTranslation(img.titleKey)}" />
+                        <img src="${getOptimizedStudioImage(img.src, 'card')}" alt="${getStudioTranslation(img.titleKey)}" onerror="this.onerror=null;this.src='${img.src}'" />
                     </div>
                 `).join('')}
             </div>
@@ -194,7 +198,7 @@ function renderStudioContent() {
                         <div class="steps2-node">${index + 1}</div>
                         <div class="steps2-card">
                             <div class="steps2-thumb" onclick="openStudioViewer('${image.src}', '${image.processKey}', '${image.descriptionKey}')">
-                                <img src="${image.src}" alt="${getStudioTranslation(image.titleKey)}" loading="lazy" decoding="async" />
+                                <img src="${getOptimizedStudioImage(image.src, 'card')}" alt="${getStudioTranslation(image.titleKey)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${image.src}'" />
                             </div>
                             <div class="steps2-content">
                                 <h4>${getStudioTranslation(image.processKey)}</h4>
@@ -259,13 +263,14 @@ function renderStudioContent() {
 function openStudioViewer(imageSrc, titleKey, descriptionKey) {
     const title = getStudioTranslation(titleKey);
     const description = getStudioTranslation(descriptionKey);
+    const displaySrc = getOptimizedStudioImage(imageSrc, 'preview');
 
     const viewer = document.createElement('div');
     viewer.className = 'studio-viewer-modal';
     viewer.innerHTML = `
         <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
         <div class="viewer-content">
-            <img src="${imageSrc}" alt="${title}">
+            <img src="${displaySrc}" alt="${title}" onerror="this.onerror=null;this.src='${imageSrc}'">
             <div class="viewer-info">
                 <h3>${title}</h3>
                 <p>${description}</p>
@@ -283,4 +288,4 @@ function openStudioViewer(imageSrc, titleKey, descriptionKey) {
 // 监听语言切换
 document.addEventListener('languageChanged', function () {
     renderStudioContent();
-}); 
+});

@@ -15,14 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pick = candidates[Math.floor(Math.random() * candidates.length)];
     const path = `images/paintings/${pick}`;
+    const displayPath = window.getOptimizedImagePath
+        ? window.getOptimizedImagePath(path, 'hero')
+        : path;
 
     // Preload then swap for smoother UX with requestAnimationFrame
     const img = new Image();
     img.onload = () => {
         requestAnimationFrame(() => {
-            heroImg.src = path;
+            heroImg.src = displayPath;
         });
     };
-    img.onerror = () => { /* keep default */ };
-    img.src = path;
+    img.onerror = () => {
+        if (displayPath !== path) {
+            heroImg.src = path;
+        }
+    };
+    img.src = displayPath;
 });

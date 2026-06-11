@@ -1,0 +1,36 @@
+# Agent Notes
+
+This is a static artist portfolio site. There is no build step or package manager requirement for normal edits; pages can be served directly from the repository root.
+
+## Project Shape
+
+- Top-level HTML files are the live pages.
+- Shared CSS is loaded through `css/base.css`, with page-specific files in `css/pages/`.
+- Dynamic content is plain browser JavaScript in `js/`.
+- Artwork, exhibition, studio, and press images live under `images/`.
+
+## Performance Rules
+
+- Do not point list/card/thumbnail UI at original large images when an optimized copy exists.
+- Use `window.getOptimizedImagePath(src, profile)` from `js/image-optimization.js`. The `hero` and `preview` profiles intentionally reuse the `card` image set to keep repository size reasonable.
+- Keep original image files as the source of truth and as fallbacks.
+- After adding or replacing images, run:
+
+```bash
+/Users/michael/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 tools/generate-optimized-images.py
+```
+
+## Visual Change Policy
+
+- Preserve the existing visual style and interactions unless explicitly asked to redesign.
+- Prefer performance fixes that reduce image decode size, unnecessary animation work, and idle CPU usage without changing layout or styling.
+
+## Local Verification
+
+- A simple static server is enough:
+
+```bash
+python3 -m http.server 8000
+```
+
+- Check at least `index.html`, `gallery.html`, `exhibitions.html`, `exhibition-detail.html`, `press.html`, and `studio.html` after performance-sensitive changes.

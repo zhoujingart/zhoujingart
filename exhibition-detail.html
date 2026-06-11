@@ -70,6 +70,7 @@
 
     <!-- JavaScript -->
     <script src="js/language.js"></script>
+    <script src="js/image-optimization.js"></script>
     <script src="js/mobile-menu.js"></script>
     <script src="js/exhibitions.js"></script>
     <script>
@@ -178,6 +179,10 @@
                     return doc[field] || '';
                 }
 
+                function getDisplayImageSrc(src, profile = 'card') {
+                    return window.getOptimizedImagePath ? window.getOptimizedImagePath(src, profile) : src;
+                }
+
                 // 找到海报图片
                 const posterImage = exhibition.images.find(img => {
                     const title = getImageText(img, 'title');
@@ -222,10 +227,11 @@
                 <!-- 展览海报 -->
                 <div class="exhibition-poster-section">
                     <div class="poster-container">
-                        <img src="${posterImage.src}" 
-                             alt="${getImageText(posterImage, 'title')}" 
+                        <img src="${getDisplayImageSrc(posterImage.src, 'preview')}"
+                             alt="${getImageText(posterImage, 'title')}"
                              loading="eager"
                              decoding="async"
+                             onerror="this.onerror=null;this.src='${posterImage.src}'"
                              onclick="openImageViewer(${exhibition.images.indexOf(posterImage)}, '${exhibition.id}')">
                         <div class="poster-caption">${getImageText(posterImage, 'title')}</div>
                     </div>
@@ -257,7 +263,7 @@
                     <p class="exhibition-description">${description}</p>
                 </div>
                 ` : ''}
-                
+
                 <!-- 参展作品 -->
                 ${exhibition.artworks && exhibition.artworks.length > 0 ? `
                 <div class="exhibition-artworks">
@@ -267,10 +273,11 @@
                             <div class="artwork-card">
                                 ${artwork.image ? `
                                 <div class="artwork-image">
-                                    <img src="${artwork.image}" 
-                                         alt="${getArtworkText(artwork, 'title')}" 
+                                    <img src="${getDisplayImageSrc(artwork.image, 'card')}"
+                                         alt="${getArtworkText(artwork, 'title')}"
                                          loading="lazy"
                                          decoding="async"
+                                         onerror="this.onerror=null;this.src='${artwork.image}'"
                                          onclick="openArtworkViewer('${artwork.image}', '${getArtworkText(artwork, 'title')}')">
                                 </div>
                                 ` : ''}
@@ -296,7 +303,7 @@
                     </div>
                 </div>
                 ` : ''}
-                
+
                 <!-- 展会现场照片 -->
                 ${siteImages.length > 0 ? `
                 <div class="exhibition-site">
@@ -304,10 +311,11 @@
                     <div class="site-images-grid">
                         ${siteImages.map((img, index) => `
                             <div class="site-image-item" onclick="openImageViewer(${exhibition.images.indexOf(img)}, '${exhibition.id}')">
-                                <img src="${img.src}" 
+                                <img src="${getDisplayImageSrc(img.src, 'card')}"
                                      alt="${getImageText(img, 'title')}"
                                      loading="lazy"
-                                     decoding="async">
+                                     decoding="async"
+                                     onerror="this.onerror=null;this.src='${img.src}'">
                                 <div class="image-caption">
                                     <div class="image-title">${getImageText(img, 'title')}</div>
                                     <div class="image-description">${getImageText(img, 'description')}</div>
@@ -317,7 +325,7 @@
                     </div>
                 </div>
                 ` : ''}
-                
+
                 <!-- 展览文档 -->
                 ${exhibition.documents && exhibition.documents.length > 0 ? `
                 <div class="exhibition-certificates">
@@ -325,17 +333,18 @@
                     <div class="certificates-grid ${exhibition.documents.length === 1 ? 'single-document' : ''}">
                         ${exhibition.documents.map(doc => `
                             <div class="certificate-item" onclick="openCertificateViewer('${doc.image}', '${getDocText(doc, 'title')}')">
-                                <img src="${doc.image}" 
+                                <img src="${getDisplayImageSrc(doc.image, 'card')}"
                                      alt="${getDocText(doc, 'title')}"
                                      loading="lazy"
-                                     decoding="async">
+                                     decoding="async"
+                                     onerror="this.onerror=null;this.src='${doc.image}'">
                                 <div class="certificate-title">${getDocText(doc, 'title')}</div>
                             </div>
                         `).join('')}
                     </div>
                 </div>
                 ` : ''}
-                
+
                 <!-- 媒体报道 -->
                 ${exhibition.press && exhibition.press.length > 0 ? `
                 <div class="exhibition-press">
@@ -366,15 +375,17 @@
         function openCertificateViewer(imageSrc, title) {
             // 使用 requestAnimationFrame 优化模态框动画
             requestAnimationFrame(() => {
+                const displaySrc = window.getOptimizedImagePath ? window.getOptimizedImagePath(imageSrc, 'preview') : imageSrc;
                 const viewer = document.createElement('div');
                 viewer.className = 'certificate-viewer-modal';
                 viewer.innerHTML = `
                     <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
                     <div class="viewer-content">
-                        <img src="${imageSrc}" 
+                        <img src="${displaySrc}"
                              alt="${title}"
                              loading="lazy"
-                             decoding="async">
+                             decoding="async"
+                             onerror="this.onerror=null;this.src='${imageSrc}'">
                         <div class="viewer-info">
                             <h3>${title}</h3>
                         </div>

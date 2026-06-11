@@ -28,10 +28,8 @@
     background-repeat: no-repeat, no-repeat, repeat;
     background-position: center, center, center;
     background-size: cover, cover, auto;
-    
-    /* 开启硬件加速 */
-    will-change: transform;
-    transform: translateZ(0);
+
+    /* 避免固定背景额外创建 GPU 图层 */
 }
 
 .gallery-professional .gallery-container {
@@ -204,7 +202,7 @@
     background: linear-gradient(135deg, var(--white) 0%, #fafbfc 100%);
     padding: 1.5rem 2rem;
     border-radius: 16px;
-    box-shadow: 
+    box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.1),
         0 2px 8px rgba(0, 0, 0, 0.05),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -231,7 +229,7 @@
 @media (hover: hover) and (pointer: fine) {
     .sort-controls-premium:hover {
         transform: translateY(-2px);
-        box-shadow: 
+        box-shadow:
             0 12px 48px rgba(0, 0, 0, 0.15),
             0 4px 16px rgba(0, 0, 0, 0.08),
             inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -285,7 +283,7 @@
     padding: 0.8rem 1.2rem;
     cursor: pointer;
     transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 
+    box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.06),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
     position: relative;
@@ -308,11 +306,11 @@
     .select-trigger:hover {
         border-color: rgba(201, 169, 110, 0.3);
         transform: translateY(-1px);
-        box-shadow: 
+        box-shadow:
             0 4px 16px rgba(0, 0, 0, 0.1),
             inset 0 1px 0 rgba(255, 255, 255, 1);
     }
-    
+
     .select-trigger:hover::before {
         opacity: 1;
     }
@@ -322,14 +320,14 @@
 .select-trigger:active {
     outline: none;
     border-color: var(--secondary-color);
-    box-shadow: 
+    box-shadow:
         0 0 0 3px rgba(201, 169, 110, 0.1),
         0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .custom-select.open .select-trigger {
     border-color: var(--secondary-color);
-    box-shadow: 
+    box-shadow:
         0 0 0 3px rgba(201, 169, 110, 0.1),
         0 4px 16px rgba(0, 0, 0, 0.1);
 }
@@ -375,7 +373,7 @@
     right: 0 !important;
     background: var(--white) !important;
     border-radius: 12px;
-    box-shadow: 
+    box-shadow:
         0 12px 48px rgba(0, 0, 0, 0.15),
         0 4px 16px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(201, 169, 110, 0.2) !important;
@@ -486,7 +484,7 @@
         transform: translateY(-4px);
         box-shadow: 0 20px 60px var(--shadow-medium);
     }
-    
+
     /* 滚动时禁用 hover */
     body.is-scrolling .gallery-artwork-card:hover {
         transform: none;
@@ -527,7 +525,7 @@
     .gallery-artwork-card:hover .gallery-artwork-overlay {
         opacity: 1;
     }
-    
+
     /* 滚动时禁用 overlay */
     body.is-scrolling .gallery-artwork-card:hover .gallery-artwork-overlay {
         opacity: 0;
@@ -914,8 +912,8 @@
         display: block;
     }
 
-    .gallery-controls-inline { 
-        width: 100%; 
+    .gallery-controls-inline {
+        width: 100%;
         margin-top: 0;
     }
     .sort-controls-premium { width: 100%; }
@@ -993,23 +991,23 @@
     .gallery-artwork-overlay {
         display: none;
     }
-    
+
     .gallery-artwork-card {
         cursor: pointer;
     }
-    
+
     .gallery-artwork-image {
         transition: transform 0.2s ease;
     }
-    
+
     .gallery-artwork-card:active .gallery-artwork-image {
         transform: scale(0.98);
     }
-    
+
     .gallery-artwork-card.mobile-direct-click {
         -webkit-tap-highlight-color: rgba(201, 169, 110, 0.2);
     }
-    
+
     .gallery-artwork-card.mobile-direct-click:active {
         transform: scale(0.98);
     }
@@ -1116,4 +1114,4 @@
     #imageModal .modal-title {
         font-size: 1rem;
     }
-} 
+}

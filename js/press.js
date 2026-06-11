@@ -65,9 +65,15 @@ function getScreenshotUrl(item) {
     return item.thumbnail || null;
 }
 
+function getOptimizedPressImage(src, profile) {
+    return window.getOptimizedImagePath ? window.getOptimizedImagePath(src, profile) : src;
+}
+
 // 创建媒体项目HTML
 function createPressItemHTML(item) {
     const screenshotUrl = getScreenshotUrl(item);
+    const thumbnailUrl = screenshotUrl ? getOptimizedPressImage(screenshotUrl, 'pressThumb') : '';
+    const previewUrl = screenshotUrl ? getOptimizedPressImage(screenshotUrl, 'pressPreview') : '';
 
     const title = getPressText(item, 'title');
     const description = getPressText(item, 'description');
@@ -76,9 +82,10 @@ function createPressItemHTML(item) {
 
     return `
         <div class="press-item">
-            <div class="press-thumbnail" onclick="openPressImageModal('${screenshotUrl}', '${title}', '${item.url}')">
-                <img data-src="${screenshotUrl}" 
-                     alt="${title}" 
+            <div class="press-thumbnail" onclick="openPressImageModal('${previewUrl}', '${title}', '${item.url}', '${screenshotUrl}')">
+                <img data-src="${thumbnailUrl}"
+                     data-fallback-src="${screenshotUrl}"
+                     alt="${title}"
                      class="press-lazy-img"
                      decoding="async"
                      onerror="this.classList.add('is-hidden'); this.parentElement.querySelector('.press-thumbnail-fallback').classList.remove('is-hidden');">
@@ -134,9 +141,9 @@ function updateModalHints() {
         // 只更新提示部分，保留标题和链接
         const hintPattern = /<div class=\"press-hints\">[\s\S]*?<\/div>/;
         const newHints = `<div class="press-hints">
-            <i class="fas fa-mouse"></i> ${hints.clickZoom} • 
-            <i class="fas fa-mouse-pointer"></i> ${hints.wheelZoom} • 
-            <i class="fas fa-hand-paper"></i> ${hints.dragMove} • 
+            <i class="fas fa-mouse"></i> ${hints.clickZoom} •
+            <i class="fas fa-mouse-pointer"></i> ${hints.wheelZoom} •
+            <i class="fas fa-hand-paper"></i> ${hints.dragMove} •
             <i class="fas fa-keyboard"></i> ${hints.resetKey}
         </div>`;
 
@@ -186,7 +193,7 @@ function getImageViewerHints() {
 }
 
 // 打开大图模态框
-function openPressImageModal(imageSrc, title, url) {
+function openPressImageModal(imageSrc, title, url, fallbackSrc) {
     const modal = document.getElementById('pressImageModal');
     const modalImage = document.getElementById('pressModalImage');
     const modalCaption = document.getElementById('pressModalCaption');
@@ -201,6 +208,12 @@ function openPressImageModal(imageSrc, title, url) {
     const img = new Image();
     img.onload = function () {
         // 设置图片源和属性
+        modalImage.onerror = function () {
+            if (fallbackSrc) {
+                modalImage.onerror = null;
+                modalImage.src = fallbackSrc;
+            }
+        };
         modalImage.src = imageSrc;
         modalImage.alt = title;
 
@@ -224,7 +237,7 @@ function openPressImageModal(imageSrc, title, url) {
 
     img.onerror = function () {
         // 即使预加载失败，也显示图片
-        modalImage.src = imageSrc;
+        modalImage.src = fallbackSrc || imageSrc;
         modalImage.alt = title;
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -240,9 +253,9 @@ function openPressImageModal(imageSrc, title, url) {
             ${url} <i class="fas fa-external-link-alt" style="font-size: 12px;"></i>
         </a>
         <div class="press-hints">
-            <i class="fas fa-mouse"></i> ${hints.clickZoom} • 
-            <i class="fas fa-mouse-pointer"></i> ${hints.wheelZoom} • 
-            <i class="fas fa-hand-paper"></i> ${hints.dragMove} • 
+            <i class="fas fa-mouse"></i> ${hints.clickZoom} •
+            <i class="fas fa-mouse-pointer"></i> ${hints.wheelZoom} •
+            <i class="fas fa-hand-paper"></i> ${hints.dragMove} •
             <i class="fas fa-keyboard"></i> ${hints.resetKey}
         </div>
     `;
@@ -560,79 +573,139 @@ function parsePressDate(dateStr) {
     return parseInt(dateStr.replace(/[^\d]/g, '')) || 0;
 }
 
-// 智能懒加载系统：只在滚动停止时加载图片，彻底解决滚动卡顿
+let pressLazyLoadingState = null;
+
+function cleanupPressLazyLoading() {
+    if (!pressLazyLoadingState) return;
+
+    const state = pressLazyLoadingState;
+    if (state.observer) state.observer.disconnect();
+    if (state.scrollHandler) window.removeEventListener('scroll', state.scrollHandler);
+    if (state.scrollTimer) clearTimeout(state.scrollTimer);
+    if (state.queueTimer) clearTimeout(state.queueTimer);
+    if (state.rafId) cancelAnimationFrame(state.rafId);
+    document.body.classList.remove('is-scrolling');
+    pressLazyLoadingState = null;
+}
+
+// 智能懒加载系统：只在需要时处理队列，避免空闲时持续占用主线程
 function initSmartLazyLoading() {
+    cleanupPressLazyLoading();
+
     const lazyImages = document.querySelectorAll('.press-lazy-img');
     if (!lazyImages.length) return;
 
-    // 滚动状态追踪
-    let isScrolling = false;
-    let scrollTimer = null;
+    const state = {
+        observer: null,
+        scrollHandler: null,
+        scrollTimer: null,
+        queueTimer: null,
+        rafId: null,
+        isScrolling: false,
+        loadQueue: new Set()
+    };
+    pressLazyLoadingState = state;
+
+    function markLoaded(img) {
+        img.classList.add('is-loaded');
+        if (img.parentElement) {
+            img.parentElement.classList.add('loaded');
+        }
+    }
+
+    function showFallback(img) {
+        const fallback = img.parentElement?.querySelector('.press-thumbnail-fallback');
+        img.classList.add('is-hidden');
+        if (fallback) {
+            fallback.classList.remove('is-hidden');
+            fallback.style.display = 'flex';
+        }
+        markLoaded(img);
+    }
+
+    function loadImage(img) {
+        const src = img.getAttribute('data-src');
+        if (!src) return;
+
+        img.removeAttribute('data-src');
+        img.onload = function () {
+            markLoaded(img);
+        };
+        img.onerror = function () {
+            const fallbackSrc = img.getAttribute('data-fallback-src');
+            if (fallbackSrc && img.src !== fallbackSrc) {
+                img.onerror = function () {
+                    showFallback(img);
+                };
+                img.src = fallbackSrc;
+                return;
+            }
+            showFallback(img);
+        };
+        img.src = src;
+    }
+
+    function scheduleQueue(delay = 0) {
+        if (state.rafId || state.queueTimer) return;
+
+        state.queueTimer = setTimeout(() => {
+            state.queueTimer = null;
+            state.rafId = requestAnimationFrame(processQueue);
+        }, delay);
+    }
+
+    function processQueue() {
+        state.rafId = null;
+
+        if (state.isScrolling || state.loadQueue.size === 0) return;
+
+        const batch = Array.from(state.loadQueue).slice(0, 3);
+        batch.forEach(img => {
+            state.loadQueue.delete(img);
+            loadImage(img);
+            if (state.observer) state.observer.unobserve(img);
+        });
+
+        if (state.loadQueue.size > 0) {
+            scheduleQueue(80);
+        }
+    }
 
     // 监听滚动状态
-    window.addEventListener('scroll', () => {
-        isScrolling = true;
-        clearTimeout(scrollTimer);
+    state.scrollHandler = () => {
+        state.isScrolling = true;
+        document.body.classList.add('is-scrolling');
+        clearTimeout(state.scrollTimer);
         // 150ms 无滚动事件则认为滚动停止
-        scrollTimer = setTimeout(() => {
-            isScrolling = false;
+        state.scrollTimer = setTimeout(() => {
+            state.isScrolling = false;
+            document.body.classList.remove('is-scrolling');
+            scheduleQueue();
         }, 150);
-    }, { passive: true });
-
-    // 待加载图片队列
-    const loadQueue = new Set();
+    };
+    window.addEventListener('scroll', state.scrollHandler, { passive: true });
 
     // 观察者：只负责将图片加入/移出队列
-    const observer = new IntersectionObserver((entries) => {
+    state.observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                loadQueue.add(entry.target);
+                state.loadQueue.add(entry.target);
             } else {
                 // 如果图片还没加载就移出了视口，从队列中移除
-                loadQueue.delete(entry.target);
+                state.loadQueue.delete(entry.target);
             }
         });
+
+        if (!state.isScrolling) {
+            scheduleQueue();
+        }
     }, {
         rootMargin: "100px 0px", // 提前一点点检测
         threshold: 0.01
     });
 
-    lazyImages.forEach(img => observer.observe(img));
-
-    // 队列处理循环
-    function processQueue() {
-        // 只有在非滚动状态且队列不为空时才加载
-        if (!isScrolling && loadQueue.size > 0) {
-            // 每次处理最多 3 张图片，避免阻塞主线程
-            const batch = Array.from(loadQueue).slice(0, 3);
-
-            batch.forEach(img => {
-                const src = img.getAttribute('data-src');
-                if (src) {
-                    img.src = src;
-                    img.removeAttribute('data-src'); // 避免重复处理
-
-                    // 图片加载完成后的处理
-                    img.onload = function () {
-                        this.classList.add('is-loaded');
-                        if (this.parentElement) {
-                            this.parentElement.classList.add('loaded');
-                        }
-                    };
-
-                    // 停止观察已处理的图片
-                    observer.unobserve(img);
-                    loadQueue.delete(img);
-                }
-            });
-        }
-
-        // 继续下一帧检查
-        requestAnimationFrame(processQueue);
-    }
-
-    // 启动处理循环
-    requestAnimationFrame(processQueue);
+    lazyImages.forEach(img => state.observer.observe(img));
+    scheduleQueue();
 }
 
 // 全局滚动状态管理 - 避免多个滚动监听器

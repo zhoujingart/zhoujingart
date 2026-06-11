@@ -1201,6 +1201,10 @@ function getStatusClass(status) {
     return `gallery-artwork-status-${status}`;
 }
 
+function getOptimizedGalleryImage(src, profile = 'card') {
+    return window.getOptimizedImagePath ? window.getOptimizedImagePath(src, profile) : src;
+}
+
 // 渲染作品集
 function renderGallery() {
     const container = document.querySelector('.gallery-grid');
@@ -1275,18 +1279,21 @@ function createArtworkElement(artwork) {
     const price = getArtworkText(artwork, 'price');
     const statusText = getStatusText(artwork.status);
     const statusClass = getStatusClass(artwork.status);
+    const cardImage = getOptimizedGalleryImage(artwork.image, 'card');
+    const previewImage = getOptimizedGalleryImage(artwork.image, 'preview');
 
     element.innerHTML = `
         <div class="gallery-artwork-image-container">
-            <img src="${artwork.image}" 
-                 alt="${title}" 
+            <img src="${cardImage}"
+                 alt="${title}"
                  class="gallery-artwork-image"
                  loading="lazy"
                  decoding="async"
+                 onerror="this.onerror=null;this.src='${artwork.image}'"
                  onload="this.classList.add('is-loaded')">
             <div class="gallery-artwork-overlay">
                 <div class="gallery-artwork-actions">
-                    <button class="action-btn view-btn" onclick="openImageModal('${artwork.image}', '${title}')">
+                    <button class="action-btn view-btn" onclick="openImageModal('${previewImage}', '${title}', '${artwork.image}')">
                         <i class="fas fa-search-plus"></i>
                         <span>${currentLang === 'zh' ? '放大查看' : 'Zoom View'}</span>
                     </button>
@@ -1339,7 +1346,7 @@ function createArtworkElement(artwork) {
             // 防止事件冒泡
             e.preventDefault();
             e.stopPropagation();
-            openImageModal(artwork.image, title);
+            openImageModal(previewImage, title, artwork.image);
         });
 
         // 添加移动端特有的样式类
@@ -1373,9 +1380,15 @@ function initImageModal() {
 }
 
 // 打开图片模态框
-function openImageModal(imageSrc, imageTitle) {
+function openImageModal(imageSrc, imageTitle, fallbackSrc) {
     if (!imageModal) return;
 
+    imageModalImg.onerror = function () {
+        if (fallbackSrc && imageModalImg.src !== fallbackSrc) {
+            imageModalImg.onerror = null;
+            imageModalImg.src = fallbackSrc;
+        }
+    };
     imageModalImg.src = imageSrc;
     imageModalImg.alt = imageTitle;
     if (imageModalTitle) {
@@ -1401,4 +1414,4 @@ function closeImageModal() {
 }
 
 // 全局函数供HTML调用
-window.openImageModal = openImageModal; 
+window.openImageModal = openImageModal;

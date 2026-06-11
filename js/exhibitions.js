@@ -2020,6 +2020,10 @@ function getImageText(img, field) {
     return img[field] || '';
 }
 
+function getOptimizedExhibitionImage(src, profile = 'card') {
+    return window.getOptimizedImagePath ? window.getOptimizedImagePath(src, profile) : src;
+}
+
 // 获取媒体报道字段的多语言文本
 function getPressText(press, field) {
     if (typeof press[field] === 'object' && press[field] !== null) {
@@ -2137,11 +2141,12 @@ function createExhibitionItem(exhibition) {
 
     // 优化：只显示前2张预览图（减少图片数量），使用懒加载和异步解码
     const previewImages = exhibition.images.slice(0, 2).map((img, index) =>
-        `<img src="${img.src}" 
-              alt="${img.title}" 
-              class="preview-image" 
-              loading="lazy" 
+        `<img src="${getOptimizedExhibitionImage(img.src, 'card')}"
+              alt="${getImageText(img, 'title')}"
+              class="preview-image"
+              loading="lazy"
               decoding="async"
+              onerror="this.onerror=null;this.src='${img.src}'"
               ${index > 0 ? 'fetchpriority="low"' : ''}>`
     ).join('');
 
@@ -2190,12 +2195,13 @@ function openImageViewer(imageIndex, exhibitionId) {
     // 这里可以复用现有的图片查看器或创建新的
     // 暂时使用简单的实现
     const image = exhibition.images[imageIndex];
+    const displaySrc = getOptimizedExhibitionImage(image.src, 'preview');
     const viewer = document.createElement('div');
     viewer.className = 'image-viewer-modal';
     viewer.innerHTML = `
         <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
         <div class="viewer-content">
-            <img src="${image.src}" alt="${getImageText(image, 'title')}">
+            <img src="${displaySrc}" alt="${getImageText(image, 'title')}" onerror="this.onerror=null;this.src='${image.src}'">
             <div class="viewer-info">
                 <h3>${getImageText(image, 'title')}</h3>
                 <p>${getImageText(image, 'description')}</p>
@@ -2214,12 +2220,13 @@ function openImageViewer(imageIndex, exhibitionId) {
 
 // 打开证书查看器
 function openCertificateViewer(imageSrc, title) {
+    const displaySrc = getOptimizedExhibitionImage(imageSrc, 'preview');
     const viewer = document.createElement('div');
     viewer.className = 'certificate-viewer-modal';
     viewer.innerHTML = `
         <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
         <div class="viewer-content">
-            <img src="${imageSrc}" alt="${title}">
+            <img src="${displaySrc}" alt="${title}" onerror="this.onerror=null;this.src='${imageSrc}'">
             <div class="viewer-info">
                 <h3>${title}</h3>
             </div>
@@ -2235,12 +2242,13 @@ function openCertificateViewer(imageSrc, title) {
 
 // 打开作品查看器
 function openArtworkViewer(imageSrc, title) {
+    const displaySrc = getOptimizedExhibitionImage(imageSrc, 'preview');
     const viewer = document.createElement('div');
     viewer.className = 'artwork-viewer-modal';
     viewer.innerHTML = `
         <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
         <div class="viewer-content">
-            <img src="${imageSrc}" alt="${title}">
+            <img src="${displaySrc}" alt="${title}" onerror="this.onerror=null;this.src='${imageSrc}'">
             <div class="viewer-info">
                 <h3>${title}</h3>
             </div>
@@ -2262,4 +2270,4 @@ document.addEventListener('keydown', function (e) {
             imageViewer.remove();
         }
     }
-}); 
+});

@@ -15,8 +15,7 @@
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    transform: translateZ(0);
-    will-change: transform;
+    /* 避免固定背景额外创建 GPU 图层 */
 
     /* 高级背景：角落暖色晕染 + 斜线纹理 */
     background-color: var(--background-color);
