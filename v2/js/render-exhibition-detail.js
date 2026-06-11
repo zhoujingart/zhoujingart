@@ -107,9 +107,13 @@ function renderHero(exhibition) {
     if (!heroSection) return;
 
     // Use the first image as the hero/poster if available
-    const posterImage = exhibition.images && exhibition.images.length > 0
-        ? `../${exhibition.images[0].src}`
-        : '../images/placeholder.jpg';
+    const posterSource = exhibition.images && exhibition.images.length > 0
+        ? exhibition.images[0].src
+        : 'images/placeholder.jpg';
+    const posterImage = window.getV2ImagePath
+        ? window.getV2ImagePath(posterSource, 'card')
+        : `../${posterSource}`;
+    const posterFallback = window.getV2FallbackAttr ? window.getV2FallbackAttr(posterSource) : '';
 
     const title = getLangText(exhibition.title);
     const location = getLangText(exhibition.country);
@@ -117,7 +121,7 @@ function renderHero(exhibition) {
 
     heroSection.innerHTML = `
         <div class="ex-hero-img">
-            <img src="${posterImage}" alt="${title}">
+            <img src="${posterImage}" alt="${title}" loading="eager" decoding="async"${posterFallback}>
         </div>
         <div class="ex-hero-content">
             <div class="ex-meta">
@@ -188,10 +192,14 @@ function renderGallery(exhibition) {
     // For now, we'll include all images but maybe skip the very first one if it's strictly a poster
     const images = exhibition.images;
 
-    const imagesHtml = images.map(img => `
+    const imagesHtml = images.map(img => {
+        const imagePath = window.getV2ImagePath ? window.getV2ImagePath(img.src, 'card') : `../${img.src}`;
+        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(img.src) : '';
+
+        return `
         <div class="gallery-item">
             <div class="gallery-img-container" style="aspect-ratio: 4/3;">
-                <img src="../${img.src}" alt="${getLangText(img.title)}" loading="lazy">
+                <img src="${imagePath}" alt="${getLangText(img.title)}" loading="lazy" decoding="async"${fallbackAttr}>
                 <div class="gallery-overlay">
                     <div class="view-btn">View</div>
                 </div>
@@ -200,7 +208,8 @@ function renderGallery(exhibition) {
                 <p>${getLangText(img.description)}</p>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 
     gallerySection.innerHTML = `
         <div class="container">
@@ -223,10 +232,14 @@ function renderArtworks(exhibition) {
         document.querySelector('main').appendChild(artworksSection);
     }
 
-    const artworksHtml = exhibition.artworks.map(artwork => `
+    const artworksHtml = exhibition.artworks.map(artwork => {
+        const imagePath = window.getV2ImagePath ? window.getV2ImagePath(artwork.image, 'card') : `../${artwork.image}`;
+        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(artwork.image) : '';
+
+        return `
         <div class="gallery-item">
             <div class="gallery-img-container" style="aspect-ratio: 1/1;">
-                <img src="../${artwork.image}" alt="${getLangText(artwork.title)}" loading="lazy" style="object-fit: contain;">
+                <img src="${imagePath}" alt="${getLangText(artwork.title)}" loading="lazy" decoding="async" style="object-fit: contain;"${fallbackAttr}>
                 <div class="gallery-overlay">
                     <div class="view-btn">View</div>
                 </div>
@@ -237,7 +250,8 @@ function renderArtworks(exhibition) {
                 <p>${artwork.size}</p>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 
     artworksSection.innerHTML = `
         <div class="container">
@@ -262,7 +276,8 @@ function renderPress(exhibition) {
 
     const pressHtml = exhibition.press.map(item => {
         const thumbnail = item.thumbnail || '';
-        const imagePath = thumbnail.startsWith('http') ? thumbnail : `../${thumbnail}`;
+        const imagePath = window.getV2ImagePath ? window.getV2ImagePath(thumbnail, 'pressThumb') : `../${thumbnail}`;
+        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(thumbnail) : '';
 
         return `
         <div class="press-item" style="border-top: 1px solid var(--border-color);">
@@ -274,7 +289,7 @@ function renderPress(exhibition) {
                 <a href="${item.url}" target="_blank" rel="noopener" class="press-link">Read Article <i class="fas fa-external-link-alt"></i></a>
             </div>
             <div class="press-image">
-                <img src="${imagePath}" alt="${getLangText(item.title)}">
+                <img src="${imagePath}" alt="${getLangText(item.title)}" loading="lazy" decoding="async"${fallbackAttr}>
             </div>
         </div>
     `}).join('');

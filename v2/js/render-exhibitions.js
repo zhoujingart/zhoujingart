@@ -82,11 +82,11 @@ function renderExhibitionsList(container) {
             imgDiv.className = 'ex-list-image';
             if (ex.images && ex.images.length > 0) {
                 const img = document.createElement('img');
-                let imgSrc = ex.images[0].src;
-                if (!imgSrc.startsWith('../')) {
-                    imgSrc = '../' + imgSrc;
+                if (window.setV2ImageSource) {
+                    window.setV2ImageSource(img, ex.images[0].src, 'card');
+                } else {
+                    img.src = '../' + ex.images[0].src;
                 }
-                img.src = imgSrc;
                 img.alt = getLangText(ex.title, 'en');
                 imgDiv.appendChild(img);
             }
@@ -186,11 +186,11 @@ function renderExhibitionsPreview(container) {
             // The data in js/exhibitions.js has "images/exhibitions/..."
             // So for v2/index.html, the path should be "../images/exhibitions/..."
 
-            let imgSrc = ex.images[0].src;
-            if (!imgSrc.startsWith('../')) {
-                imgSrc = '../' + imgSrc;
+            if (window.setV2ImageSource) {
+                window.setV2ImageSource(img, ex.images[0].src, 'card');
+            } else {
+                img.src = '../' + ex.images[0].src;
             }
-            img.src = imgSrc;
             img.alt = getLangText(ex.title, 'en');
             imgDiv.appendChild(img);
         }

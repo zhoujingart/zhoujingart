@@ -89,12 +89,10 @@ function renderGalleryGrid(container) {
         item.className = 'gallery-item';
         item.setAttribute('data-category', category);
 
-        // Image path adjustment (assuming data has relative paths like "images/...")
-        // V2 is in a subdirectory, so we might need "../"
-        let imagePath = artwork.image;
-        if (!imagePath.startsWith('http') && !imagePath.startsWith('../')) {
-            imagePath = `../${imagePath}`;
-        }
+        const imagePath = window.getV2ImagePath
+            ? window.getV2ImagePath(artwork.image, 'card')
+            : `../${artwork.image}`;
+        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(artwork.image) : '';
 
         const viewText = getLangText({ en: 'View', zh: '查看' });
         const soldText = getLangText({ en: 'Sold Out', zh: '已售出' });
@@ -102,7 +100,7 @@ function renderGalleryGrid(container) {
 
         item.innerHTML = `
             <div class="gallery-img-container">
-                <img src="${imagePath}" alt="${getLangText(artwork.title)}">
+                <img src="${imagePath}" alt="${getLangText(artwork.title)}" loading="lazy" decoding="async"${fallbackAttr}>
                 <div class="gallery-overlay">
                     <div class="view-btn">${viewText}</div>
                 </div>

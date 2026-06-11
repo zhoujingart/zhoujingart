@@ -122,9 +122,11 @@ function renderPressList(container, limit) {
         const pressItem = document.createElement('div');
         pressItem.className = 'press-item';
 
-        // Image path adjustment
         const thumbnail = item.thumbnail || '';
-        const imagePath = thumbnail.startsWith('http') ? thumbnail : `../${thumbnail}`;
+        const imagePath = window.getV2ImagePath
+            ? window.getV2ImagePath(thumbnail, 'pressThumb')
+            : `../${thumbnail}`;
+        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(thumbnail) : '';
 
         // Handle date which might be an object or string
         const dateStr = getLangText(item.date);
@@ -138,7 +140,7 @@ function renderPressList(container, limit) {
                 <a href="${item.url}" target="_blank" rel="noopener" class="press-link">Read Article <i class="fas fa-external-link-alt"></i></a>
             </div>
             <div class="press-image">
-                <img src="${imagePath}" alt="${getLangText(item.title)}">
+                <img src="${imagePath}" alt="${getLangText(item.title)}" loading="lazy" decoding="async"${fallbackAttr}>
             </div>
         `;
 
