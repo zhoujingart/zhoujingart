@@ -22,8 +22,8 @@ const translations = {
     // Home Page
     home: {
         heroTitle: {
-            zh: ["当代", "艺术家 &", "设计师"],
-            en: ["Contemporary", "Artist &", "Designer"]
+            zh: ["周婧", "静默中的", "抵抗仪式"],
+            en: ["Zhou Jing", "Rituals of", "Quiet Resistance"]
         },
         scroll: { zh: "滚动", en: "SCROLL" },
         introQuote: {
@@ -184,7 +184,11 @@ const translations = {
         subtitle: { zh: "探索情感、自然与人类境况的绘画合集。", en: "A collection of paintings exploring emotion, nature, and the human condition." },
         filterAll: { zh: "全部", en: "All" },
         filterAcrylic: { zh: "丙烯", en: "Acrylic" },
-        filterMixed: { zh: "综合材料", en: "Mixed Media" }
+        filterMixed: { zh: "综合材料", en: "Mixed Media" },
+        sortBy: { zh: "排序方式", en: "Sort By" },
+        sortDefault: { zh: "默认排序", en: "Default Order" },
+        sortByYearDesc: { zh: "按年份：新到旧", en: "By Year: New to Old" },
+        sortByYearAsc: { zh: "按年份：旧到新", en: "By Year: Old to New" }
     },
 
     // Exhibitions Page

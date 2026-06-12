@@ -51,6 +51,14 @@ function getLangText(textObj) {
     return textObj[lang] || textObj['en'] || '';
 }
 
+function escapeAttr(value) {
+    return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
 /**
  * Render the exhibition detail page
  * @param {string} id - The exhibition ID
@@ -277,20 +285,23 @@ function renderPress(exhibition) {
     const pressHtml = exhibition.press.map(item => {
         const thumbnail = item.thumbnail || '';
         const imagePath = window.getV2ImagePath ? window.getV2ImagePath(thumbnail, 'pressThumb') : `../${thumbnail}`;
+        const previewPath = window.getV2ImagePath ? window.getV2ImagePath(thumbnail, 'pressPreview') : `../${thumbnail}`;
+        const originalPath = window.getV2OriginalPath ? window.getV2OriginalPath(thumbnail) : `../${thumbnail}`;
         const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(thumbnail) : '';
+        const title = getLangText(item.title);
 
         return `
         <div class="press-item" style="border-top: 1px solid var(--border-color);">
             <div class="press-date">${item.date}</div>
             <div class="press-content">
-                <h2 class="press-title" style="font-size: 1.5rem;">${getLangText(item.title)}</h2>
+                <h2 class="press-title" style="font-size: 1.5rem;">${title}</h2>
                 <div class="press-publication">${getLangText(item.source)}</div>
                 <p class="press-excerpt">${getLangText(item.description)}</p>
                 <a href="${item.url}" target="_blank" rel="noopener" class="press-link">Read Article <i class="fas fa-external-link-alt"></i></a>
             </div>
-            <div class="press-image">
-                <img src="${imagePath}" alt="${getLangText(item.title)}" loading="lazy" decoding="async"${fallbackAttr}>
-            </div>
+            <button type="button" class="press-image press-preview-trigger" data-preview-src="${escapeAttr(previewPath)}" data-fallback-src="${escapeAttr(originalPath)}" data-title="${escapeAttr(title)}" data-url="${escapeAttr(item.url)}">
+                <img src="${imagePath}" alt="${escapeAttr(title)}" loading="lazy" decoding="async"${fallbackAttr}>
+            </button>
         </div>
     `}).join('');
 

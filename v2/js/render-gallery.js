@@ -11,31 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const galleryGrid = document.querySelector('.v2-gallery-grid');
     if (galleryGrid) {
+        setupGalleryControls();
         renderGalleryGrid(galleryGrid);
-        setupFiltering();
 
         // Listen for language changes
         document.addEventListener('languageChanged', () => {
             renderGalleryGrid(galleryGrid);
-            // Re-apply current filter if needed, but for now just re-rendering is fine.
-            // If we want to keep the filter state, we might need to read the active button.
-            const activeBtn = document.querySelector('.filter-btn.active');
-            if (activeBtn) {
-                const filterValue = activeBtn.getAttribute('data-filter');
-                // Trigger click to re-filter
-                // Or manually filter:
-                const galleryItems = document.querySelectorAll('.gallery-item');
-                galleryItems.forEach(item => {
-                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            }
         });
     }
 });
+
+let v2CurrentFilter = 'all';
+let v2CurrentSort = 'default';
 
 /**
  * Get text based on current language
@@ -65,6 +52,35 @@ function getCategoryFromMedium(medium) {
     return 'mixed'; // Default
 }
 
+function getArtworkYear(artwork) {
+    const year = parseInt(artwork.year, 10);
+    return Number.isNaN(year) ? 0 : year;
+}
+
+function getArtworkWeight(artwork) {
+    return typeof artwork.sortWeight === 'number' ? artwork.sortWeight : 0;
+}
+
+function getSortedArtworks() {
+    const filteredArtworks = artworksData.filter((artwork) => {
+        const mediumEn = artwork.medium.en || artwork.medium;
+        const category = getCategoryFromMedium(mediumEn);
+        return v2CurrentFilter === 'all' || category === v2CurrentFilter;
+    });
+
+    return filteredArtworks.sort((a, b) => {
+        if (v2CurrentSort === 'year-desc') {
+            return getArtworkYear(b) - getArtworkYear(a) || getArtworkWeight(b) - getArtworkWeight(a);
+        }
+
+        if (v2CurrentSort === 'year-asc') {
+            return getArtworkYear(a) - getArtworkYear(b) || getArtworkWeight(b) - getArtworkWeight(a);
+        }
+
+        return getArtworkWeight(b) - getArtworkWeight(a);
+    });
+}
+
 /**
  * Render the gallery grid
  * @param {HTMLElement} container - The container element
@@ -72,12 +88,7 @@ function getCategoryFromMedium(medium) {
 function renderGalleryGrid(container) {
     container.innerHTML = '';
 
-    // Sort by sortWeight descending (higher weight first)
-    const sortedArtworks = [...artworksData].sort((a, b) => {
-        const weightA = typeof a.sortWeight === 'number' ? a.sortWeight : 0;
-        const weightB = typeof b.sortWeight === 'number' ? b.sortWeight : 0;
-        return weightB - weightA;
-    });
+    const sortedArtworks = getSortedArtworks();
 
     sortedArtworks.forEach(artwork => {
         const medium = getLangText(artwork.medium);
@@ -126,38 +137,29 @@ function renderGalleryGrid(container) {
     });
 }
 
-/**
- * Setup filtering logic
- */
-function setupFiltering() {
+function setupGalleryControls() {
     const filterBtns = document.querySelectorAll('.filter-btn');
+    const sortSelect = document.getElementById('v2-sort-select');
 
     if (filterBtns.length > 0) {
         filterBtns.forEach(btn => {
-            // Remove existing listeners (cloning replaces the element)
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-
-            newBtn.addEventListener('click', () => {
-                // Remove active class from all buttons
+            btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                // Add active class to clicked button
-                newBtn.classList.add('active');
+                btn.classList.add('active');
+                v2CurrentFilter = btn.getAttribute('data-filter') || 'all';
 
-                const filterValue = newBtn.getAttribute('data-filter');
-                const galleryItems = document.querySelectorAll('.gallery-item');
-
-                galleryItems.forEach(item => {
-                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                        item.style.display = 'block';
-                        // Add animation class if needed
-                        item.classList.remove('hidden');
-                    } else {
-                        item.style.display = 'none';
-                        item.classList.add('hidden');
-                    }
-                });
+                const galleryGrid = document.querySelector('.v2-gallery-grid');
+                if (galleryGrid) renderGalleryGrid(galleryGrid);
             });
+        });
+    }
+
+    if (sortSelect) {
+        sortSelect.addEventListener('change', () => {
+            v2CurrentSort = sortSelect.value || 'default';
+
+            const galleryGrid = document.querySelector('.v2-gallery-grid');
+            if (galleryGrid) renderGalleryGrid(galleryGrid);
         });
     }
 }

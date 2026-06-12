@@ -86,11 +86,20 @@
         <!-- Gallery Section -->
         <section class="gallery-section">
             <div class="container">
-                <!-- Filter Bar -->
-                <div class="filter-bar">
-                    <button class="filter-btn active" data-filter="all" data-i18n="gallery.filterAll">All</button>
-                    <button class="filter-btn" data-filter="acrylic" data-i18n="gallery.filterAcrylic">Acrylic</button>
-                    <button class="filter-btn" data-filter="mixed" data-i18n="gallery.filterMixed">Mixed Media</button>
+                <div class="gallery-toolbar">
+                    <div class="filter-bar" aria-label="Filter works">
+                        <button class="filter-btn active" data-filter="all" data-i18n="gallery.filterAll">All</button>
+                        <button class="filter-btn" data-filter="acrylic" data-i18n="gallery.filterAcrylic">Acrylic</button>
+                        <button class="filter-btn" data-filter="mixed" data-i18n="gallery.filterMixed">Mixed Media</button>
+                    </div>
+                    <label class="sort-control" for="v2-sort-select">
+                        <span data-i18n="gallery.sortBy">Sort By</span>
+                        <select id="v2-sort-select" aria-label="Sort works">
+                            <option value="default" data-i18n="gallery.sortDefault">Default Order</option>
+                            <option value="year-desc" data-i18n="gallery.sortByYearDesc">By Year, New to Old</option>
+                            <option value="year-asc" data-i18n="gallery.sortByYearAsc">By Year, Old to New</option>
+                        </select>
+                    </label>
                 </div>
 
                 <!-- Gallery Grid -->
