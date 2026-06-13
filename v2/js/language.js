@@ -53,6 +53,10 @@ const translations = {
     // Footer
     footer: {
         title: { zh: "让我们共同创造美好", en: "Let's Create Something Beautiful" },
+        explore: { zh: "探索", en: "Explore" },
+        artist: { zh: "艺术家", en: "Artist" },
+        connect: { zh: "联系", en: "Connect" },
+        email: { zh: "邮箱", en: "Email" },
         rights: { zh: "© 2026 周婧. 保留所有权利.", en: "© 2026 Zhou Jing. All Rights Reserved." }
     },
 
