@@ -1409,6 +1409,11 @@ function closeImageModal() {
     imageModal.classList.remove('show');
     setTimeout(() => {
         imageModal.style.display = 'none';
+        if (imageModalImg) {
+            imageModalImg.removeAttribute('src');
+            imageModalImg.removeAttribute('alt');
+            imageModalImg.onerror = null;
+        }
         document.body.style.overflow = '';
     }, 300);
 }
