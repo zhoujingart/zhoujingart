@@ -306,7 +306,7 @@ img {
 
 .page-header {
     padding: 10rem 0 4rem;
-    text-align: left;
+    text-align: center;
     background-color: var(--paper);
     background-image: url('../../images/ui/v2-page-header-wash.png');
     background-repeat: no-repeat;
@@ -321,7 +321,7 @@ img {
 
 .page-subtitle {
     color: var(--text-muted);
-    margin: 1rem 0 0;
+    margin: 1rem auto 0;
 }
 
 .works-gallery {
