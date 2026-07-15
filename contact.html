@@ -191,11 +191,11 @@
     </footer>
 
     <!-- 微信二维码模态框 -->
-    <div class="modal" id="wechatModal">
-        <span class="modal-close">&times;</span>
+    <div class="modal" id="wechatModal" role="dialog" aria-modal="true" aria-labelledby="wechatModalTitle">
+        <button type="button" class="modal-close" aria-label="Close image viewer">&times;</button>
         <div class="wechat-modal-content">
             <img class="modal-content" src="images/wechat.png" alt="微信二维码" title="微信二维码">
-            <div class="modal-caption" data-i18n="contact.wechat">微信二维码</div>
+            <div class="modal-caption" id="wechatModalTitle" data-i18n="contact.wechat">微信二维码</div>
         </div>
     </div>
 

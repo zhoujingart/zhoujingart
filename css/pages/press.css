@@ -159,12 +159,25 @@ body.is-scrolling .press button {
     flex-shrink: 0;
     width: 140px;
     height: 100px;
+    padding: 0;
+    background: transparent;
     /* 性能优化：减少 border-radius 12px → 6px */
     border-radius: 6px;
     overflow: hidden;
     position: relative;
     cursor: pointer;
     border: 1px solid rgba(201, 169, 110, 0.1);
+}
+
+.press-thumbnail:focus-visible, #pressImageModal .modal-close:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 3px;
+}
+
+#pressImageModal .modal-close {
+    appearance: none;
+    border: 0;
+    font-family: inherit;
 }
 
 /* 只在支持 hover 的设备上启用缩略图动画 */

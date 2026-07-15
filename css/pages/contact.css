@@ -444,6 +444,9 @@
 }
 
 #wechatModal .modal-close {
+    appearance: none;
+    border: 0;
+    font-family: inherit;
     position: absolute;
     top: 20px;
     right: 30px;

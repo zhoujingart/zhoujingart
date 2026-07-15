@@ -82,7 +82,7 @@ function createPressItemHTML(item) {
 
     return `
         <div class="press-item">
-            <div class="press-thumbnail" onclick="openPressImageModal('${previewUrl}', '${title}', '${item.url}', '${screenshotUrl}')">
+            <button type="button" class="press-thumbnail" aria-label="${title}" onclick="openPressImageModal('${previewUrl}', '${title}', '${item.url}', '${screenshotUrl}')">
                 <img data-src="${thumbnailUrl}"
                      data-fallback-src="${screenshotUrl}"
                      alt="${title}"
@@ -95,7 +95,7 @@ function createPressItemHTML(item) {
                 <div class="press-thumbnail-overlay">
                     <i class="fas fa-search-plus"></i>
                 </div>
-            </div>
+            </button>
             <div class="press-content-area">
                 <div class="press-header-v2">
                     <div class="press-header-left">
