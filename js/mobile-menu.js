@@ -40,14 +40,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function toggleMenu() {
-        navRight.classList.toggle('active');
+        const isOpen = navRight.classList.toggle('active');
         mobileToggle.classList.toggle('active');
         document.body.classList.toggle('menu-open');
+        mobileToggle.setAttribute('aria-expanded', String(isOpen));
     }
 
     function closeMenu() {
         navRight.classList.remove('active');
         mobileToggle.classList.remove('active');
         document.body.classList.remove('menu-open');
+        mobileToggle.setAttribute('aria-expanded', 'false');
     }
-}); 
+});

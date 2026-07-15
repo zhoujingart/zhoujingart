@@ -268,32 +268,23 @@ class LanguageManager {
         // 立即设置页面语言
         document.documentElement.lang = this.currentLang === 'zh' ? 'zh-CN' : 'en';
 
-        // 使用更频繁的检查来确保翻译及时应用
-        this.applyTranslationsRepeatedly();
-
         // 等待DOM加载完成后绑定事件
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                this.bindEvents();
-                this.applyTranslations();
-                this.isInitialized = true;
+                this.finishInitialization();
             });
         } else {
-            // DOM已经加载完成
-            this.bindEvents();
-            this.isInitialized = true;
+            this.finishInitialization();
         }
     }
 
-    applyTranslationsRepeatedly() {
-        // 立即应用一次
+    finishInitialization() {
+        this.bindEvents();
         this.applyTranslations();
-
-        // 然后在短时间内多次应用，确保所有元素都被翻译
-        const intervals = [10, 50, 100, 200];
-        intervals.forEach(delay => {
-            setTimeout(() => this.applyTranslations(), delay);
-        });
+        this.isInitialized = true;
+        document.dispatchEvent(new CustomEvent('languageReady', {
+            detail: { language: this.currentLang }
+        }));
     }
 
     bindEvents() {
@@ -475,4 +466,4 @@ window.languageManager = new LanguageManager();
 // 导出供其他模块使用
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { translations, LanguageManager, getTranslation, getCurrentLanguage, getTranslationText };
-} 
+}

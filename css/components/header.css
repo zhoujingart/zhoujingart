@@ -54,6 +54,7 @@
 .nav-link { text-decoration: none; color: var(--light-text); font-weight: 400; font-size: 0.95rem; padding: 0.55rem 0.9rem; transition: var(--transition); position: relative; white-space: nowrap; display: inline-block; flex-shrink: 0; width: auto; text-align: center; letter-spacing: 0.02em; border-radius: 14px; }
 
 .nav-link:hover { color: var(--primary-color); background: rgba(201, 169, 110, 0.1); }
+.nav-link:focus-visible, .lang-toggle:focus-visible, .mobile-menu-toggle:focus-visible { outline: 2px solid var(--secondary-color); outline-offset: 3px; }
 
 .nav-link.active { color: var(--secondary-color); background: transparent; font-weight: 600; }
 .nav-link.active::after { content: ''; position: absolute; left: 50%; bottom: 0; width: 22px; height: 2px; transform: translateX(-50%); background: linear-gradient(90deg, var(--secondary-color), var(--accent-color)); border-radius: 1px; }

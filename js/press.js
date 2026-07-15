@@ -153,18 +153,10 @@ function updateModalHints() {
 
 // 初始化页面
 function initPress() {
-    // 等待语言管理器初始化完成
-    function initPressContent() {
-        if (window.languageManager) {
-            pressCurrentLang = window.languageManager.currentLang;
-            loadPressContent();
-        } else {
-            // 如果语言管理器还没准备好，再等一下
-            setTimeout(initPressContent, 10);
-        }
-    }
+    if (!window.languageManager?.isInitialized) return;
 
-    initPressContent();
+    pressCurrentLang = window.languageManager.currentLang;
+    loadPressContent();
 
     // 监听语言切换
     document.addEventListener('languageChanged', function (e) {
@@ -830,10 +822,8 @@ function initImageLoading() {
     });
 }
 
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', function () {
-    // 稍微延迟以确保LanguageManager已经加载
-    setTimeout(initPress, 100);
-    // 初始化模态框
-    initPressModal();
-});
+// 页面初始化：语言模块会在完成首轮翻译后发出 languageReady 事件。
+document.addEventListener('languageReady', initPress, { once: true });
+if (window.languageManager?.isInitialized) initPress();
+
+document.addEventListener('DOMContentLoaded', initPressModal, { once: true });

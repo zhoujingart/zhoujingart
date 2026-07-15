@@ -977,27 +977,21 @@ let currentSort = 'default';
 // 图片模态框相关变量
 let imageModal, imageModalImg, imageModalTitle;
 
-// DOM加载完成后初始化
-document.addEventListener('DOMContentLoaded', function () {
-    // 等待语言管理器初始化完成
-    function initGallery() {
-        if (window.languageManager && window.languageManager.isInitialized) {
-            currentLang = window.languageManager.currentLang;
-            initSortControls();
-            initScrollOptimization();
-            renderGallery();
-            initImageModal();
-        } else {
-            setTimeout(initGallery, 50);
-        }
-    }
+let galleryInitialized = false;
 
-    if (document.readyState === 'complete') {
-        initGallery();
-    } else {
-        window.addEventListener('load', initGallery);
-    }
-});
+function initGallery() {
+    if (galleryInitialized || !window.languageManager?.isInitialized) return;
+
+    galleryInitialized = true;
+    currentLang = window.languageManager.currentLang;
+    initSortControls();
+    initScrollOptimization();
+    renderGallery();
+    initImageModal();
+}
+
+document.addEventListener('languageReady', initGallery);
+if (window.languageManager?.isInitialized) initGallery();
 
 // 滚动优化：滚动时禁用 hover 效果
 function initScrollOptimization() {

@@ -19,12 +19,12 @@
     <header class="header">
         <nav class="nav-container">
             <div class="logo" data-i18n="home.title"></div>
-            <button class="mobile-menu-toggle" aria-label="菜单">
+            <button class="mobile-menu-toggle" aria-label="菜单" aria-controls="primary-navigation" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <div class="nav-right">
+            <div class="nav-right" id="primary-navigation">
                 <ul class="nav-links">
                     <li><a href="index.html" class="nav-link" data-i18n="nav.home" title="Home">Home</a></li>
                     <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery" title="Gallery">Gallery</a></li>
@@ -177,7 +177,7 @@
                                 <button type="submit" class="btn-submit">
                                     <span data-i18n="contact.formSubmit">Send Message</span>
                                 </button>
-                                <div id="form-status" class="form-status"></div>
+                                <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
                             </form>
                         </div>
                     </div>

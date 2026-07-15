@@ -1,20 +1,12 @@
 // 工作室页面功能
-document.addEventListener('DOMContentLoaded', function () {
-    // 等待语言管理器初始化完成
-    function initStudio() {
-        if (window.languageManager && window.languageManager.isInitialized) {
-            renderStudioContent();
-        } else {
-            setTimeout(initStudio, 50);
-        }
+function initStudio() {
+    if (window.languageManager?.isInitialized) {
+        renderStudioContent();
     }
+}
 
-    if (document.readyState === 'complete') {
-        initStudio();
-    } else {
-        window.addEventListener('load', initStudio);
-    }
-});
+document.addEventListener('languageReady', initStudio);
+if (window.languageManager?.isInitialized) initStudio();
 
 // 工作室本地翻译
 const studioTranslations = {
