@@ -952,11 +952,89 @@ const artworksData = [
         image: "images/paintings/painting_38.png",
         description: {
             zh: "这是一个有关于镜像的故事，镜中之影，如梦如幻，虚实之间，引人深思",
-            en: "This is a story about mirrors, mirror shadows, as dreamy and illusory as a dream, between reality and illusion,引人深思"
+            en: "This is a story about mirrors, mirror shadows, as dreamy and illusory as a dream, between reality and illusion"
         },
         category: "installation",
         featured: true,
         sortWeight: 300
+    },
+    {
+        id: "gallery-painting-39",
+        title: {
+            zh: "猫的月光披风",
+            en: "Cat's Moonlight Cloak"
+        },
+        medium: {
+            zh: "丙烯和混合材料",
+            en: "Acrylic & Mixed Media"
+        },
+        size: "50cm × 40cm",
+        year: "2026",
+        price: {
+            zh: "¥42,000",
+            en: "$6,000"
+        },
+        status: "available",
+        image: "images/paintings/painting_39.png",
+        description: {
+            zh: "一只猫安静地蜷伏在画面中，修长的尾巴绕过身体，像一道柔软的弧线。它的身体覆盖着淡黄、粉紫与深靛色的细密纹样，仿佛披着由月光、织物与梦境编成的披风；既神秘，又带着温柔而沉静的守护感。",
+            en: "A cat sits quietly in the scene, its long tail wrapping around its body like a soft arc. Its form is covered with delicate patterns of light yellow, pinkish purple, and deep indigo, as if draped in a cloak woven from moonlight, fabric, and dreams; both mysterious and filled with a gentle, serene sense of protection."
+        },
+        category: "installation",
+        featured: true,
+        sortWeight: 299
+    },
+    {
+        id: "gallery-painting-40",
+        title: {
+            zh: "粉色地毯上的舞步",
+            en: "Dance on the Pink Carpet"
+        },
+        medium: {
+            zh: "丙烯和混合材料",
+            en: "Acrylic & Mixed Media"
+        },
+        size: "101.6cm × 76.2cm",
+        year: "2026",
+        price: {
+            zh: "¥42,000",
+            en: "$6,000"
+        },
+        status: "available",
+        image: "images/paintings/painting_40.png",
+        description: {
+            zh: "鲜艳的粉色底纹如同一张庆典地毯，黄色、蓝色与浅紫色的几何图形在其中自由排列，像正在旋转、跳跃的舞者。深紫色的毛边框住这场热闹的视觉舞会，使整幅作品带着织物、拼贴与节日装饰般的温度。",
+            en: "Bright pink background resembles a celebration carpet, with yellow, blue, and light purple geometric shapes arranged freely within it, like dancers spinning and jumping. The deep purple fringe frames this lively visual dance, giving the entire piece a warm, textile, collage, and festival decoration feel."
+        },
+        category: "installation",
+        featured: true,
+        sortWeight: 298
+    },
+    {
+        id: "gallery-painting-41",
+        title: {
+            zh: "草莓的节日",
+            en: "Strawberry Festival"
+        },
+        medium: {
+            zh: "丙烯和混合材料",
+            en: "Acrylic & Mixed Media"
+        },
+        size: "80cm × 80cm",
+        year: "2026",
+        price: {
+            zh: "¥42,000",
+            en: "$6,000"
+        },
+        status: "available",
+        image: "images/paintings/painting_41.png",
+        description: {
+            zh: "一颗硕大的草莓以明快的红、蓝、黄和银白色纹样铺展开来，既像一枚甜美的果实，也像一片充满节奏的织物。背景中放射状的花纹与果实内部的密集图案相互呼应，让画面洋溢着热烈、轻快而童真的生命力。",
+            en: "A large strawberry unfolds in bright red, blue, yellow, and silver-white patterns, resembling both a sweet fruit and a piece of rhythmic fabric. The radiating patterns in the background echo the dense patterns inside the fruit, filling the composition with a lively, cheerful, and childlike vitality."
+        },
+        category: "installation",
+        featured: true,
+        sortWeight: 297
     }
 
 ];
