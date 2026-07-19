@@ -117,7 +117,7 @@ function renderHero(exhibition) {
     // Use the first image as the hero/poster if available
     const posterSource = exhibition.images && exhibition.images.length > 0
         ? exhibition.images[0].src
-        : 'images/placeholder.jpg';
+        : 'images/Jing-Zhou-portrait.jpg';
     const posterImage = window.getV2ImagePath
         ? window.getV2ImagePath(posterSource, 'card')
         : `../${posterSource}`;
