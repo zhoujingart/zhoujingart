@@ -3,6 +3,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { relative, resolve, sep } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import vm from 'node:vm';
 
 const root = resolve(import.meta.dirname, '..');
 const ignoredDirectories = new Set(['.git', 'node_modules', '.codegraph']);
@@ -97,6 +98,117 @@ function checkTextReferences(file, source) {
     }
 }
 
+function isNonEmptyString(value) {
+    return typeof value === 'string' && value.trim().length > 0;
+}
+
+function checkBilingualField(file, value, fieldName, recordName) {
+    if (!value || typeof value !== 'object' || !isNonEmptyString(value.zh) || !isNonEmptyString(value.en)) {
+        report(file, `${recordName}: ${fieldName} must contain non-empty zh and en values`);
+    }
+}
+
+function checkDataImage(file, imagePath, recordName) {
+    if (!isNonEmptyString(imagePath)) {
+        report(file, `${recordName}: missing image path`);
+        return;
+    }
+
+    if (!isExternalReference(imagePath)) {
+        const target = imagePath.startsWith('/')
+            ? resolve(root, imagePath.slice(1))
+            : resolve(root, imagePath);
+        if (!existsSync(target)) report(file, `${recordName}: missing image: ${imagePath}`);
+    }
+}
+
+function loadPageData(file, variableName) {
+    const source = readFileSync(file, 'utf8');
+    const context = {
+        console,
+        document: { addEventListener() {} },
+        window: {},
+        localStorage: { getItem() { return null; }, setItem() {} }
+    };
+
+    try {
+        vm.runInNewContext(`${source}\n;globalThis.__siteData = ${variableName};`, context, { filename: file });
+        return context.__siteData;
+    } catch (error) {
+        report(file, `could not load ${variableName} for validation: ${error.message}`);
+        return null;
+    }
+}
+
+function checkGalleryData() {
+    const file = resolve(root, 'js/gallery.js');
+    const artworks = loadPageData(file, 'artworksData');
+    if (!Array.isArray(artworks)) {
+        report(file, 'artworksData must be an array');
+        return;
+    }
+
+    const ids = new Set();
+    for (const artwork of artworks) {
+        const recordName = `artwork ${artwork?.id || '(missing id)'}`;
+        if (!isNonEmptyString(artwork?.id)) {
+            report(file, `${recordName}: id must be a non-empty string`);
+        } else if (ids.has(artwork.id)) {
+            report(file, `${recordName}: duplicate id`);
+        } else {
+            ids.add(artwork.id);
+        }
+        for (const field of ['title', 'medium', 'description']) {
+            checkBilingualField(file, artwork?.[field], field, recordName);
+        }
+        for (const field of ['size', 'year', 'category', 'status']) {
+            if (!isNonEmptyString(artwork?.[field])) report(file, `${recordName}: missing ${field}`);
+        }
+        checkDataImage(file, artwork?.image, recordName);
+    }
+}
+
+function checkExhibitionData() {
+    const file = resolve(root, 'js/exhibitions.js');
+    const exhibitionsByYear = loadPageData(file, 'exhibitionsData');
+    if (!exhibitionsByYear || typeof exhibitionsByYear !== 'object' || Array.isArray(exhibitionsByYear)) {
+        report(file, 'exhibitionsData must be an object grouped by year');
+        return;
+    }
+
+    const ids = new Set();
+    for (const [year, exhibitions] of Object.entries(exhibitionsByYear)) {
+        if (!/^\d{4}$/.test(year) || !Array.isArray(exhibitions)) {
+            report(file, `invalid exhibition year group: ${year}`);
+            continue;
+        }
+        for (const exhibition of exhibitions) {
+            const recordName = `exhibition ${exhibition?.id || '(missing id)'}`;
+            if (!isNonEmptyString(exhibition?.id)) {
+                report(file, `${recordName}: id must be a non-empty string`);
+            } else if (ids.has(exhibition.id)) {
+                report(file, `${recordName}: duplicate id`);
+            } else {
+                ids.add(exhibition.id);
+            }
+            for (const field of ['title', 'location', 'country', 'description']) {
+                checkBilingualField(file, exhibition?.[field], field, recordName);
+            }
+            if (!isNonEmptyString(exhibition?.date)) report(file, `${recordName}: missing date`);
+            if (!Array.isArray(exhibition?.images) || exhibition.images.length === 0) {
+                report(file, `${recordName}: requires at least one image`);
+            }
+            for (const image of exhibition?.images || []) {
+                checkDataImage(file, image?.src, recordName);
+                checkBilingualField(file, image?.title, 'image title', recordName);
+                checkBilingualField(file, image?.description, 'image description', recordName);
+            }
+            for (const artwork of exhibition?.artworks || []) checkDataImage(file, artwork?.image, recordName);
+            for (const document of exhibition?.documents || []) checkDataImage(file, document?.image, recordName);
+        }
+    }
+}
+
 walk(root);
 
 for (const file of jsFiles) {
@@ -121,6 +233,9 @@ for (const file of htmlFiles) {
 for (const file of textFiles) {
     checkTextReferences(file, readFileSync(file, 'utf8'));
 }
+
+checkGalleryData();
+checkExhibitionData();
 
 if (errors.length) {
     console.error(`Site checks failed with ${errors.length} issue(s):`);

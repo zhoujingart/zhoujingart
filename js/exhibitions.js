@@ -549,8 +549,8 @@ const exhibitionsData = {
                 en: "London, United Kingdom"
             },
             description: {
-                zh: "",
-                en: ""
+                zh: "“概念消除”艺术展于伦敦举办，通过展览现场呈现艺术家对观念、记忆与视觉表达的探索。",
+                en: "Conceptual Erasure was presented in London, bringing together artistic explorations of ideas, memory, and visual expression."
             },
             images: [
                 {
@@ -682,8 +682,8 @@ const exhibitionsData = {
                 en: "New York, USA"
             },
             description: {
-                zh: "",
-                en: ""
+                zh: "“破碎的地平线”国际评审展于纽约举行，汇集以当代视角回应边界、变化与想象的艺术作品。",
+                en: "The International Juried Exhibition: Fractured Horizons was held in New York, bringing together contemporary responses to boundaries, change, and imagination."
             },
             images: [
                 {
@@ -824,8 +824,8 @@ const exhibitionsData = {
                 en: "Düsseldorf Germany"
             },
             description: {
-                zh: "",
-                en: ""
+                zh: "“碎片化的整体”群展在德国杜塞尔多夫举行，探讨个体片段、关系与整体经验之间的联系。",
+                en: "Fragmented Wholeness was presented in Düsseldorf, Germany, exploring the relationship between individual fragments, connections, and the experience of a whole."
             },
             images: [
                 {
@@ -940,8 +940,8 @@ const exhibitionsData = {
                 en: "Naples, Italy"
             },
             description: {
-                zh: "",
-                en: ""
+                zh: "中欧文化艺术展在意大利那不勒斯举办，以跨文化交流为线索，呈现中国与欧洲艺术语境中的多元表达。",
+                en: "The China-European Cultural Art Exhibition was held in Naples, Italy, presenting diverse artistic expressions through cross-cultural exchange."
             },
             images: [
                 {
@@ -1210,16 +1210,16 @@ const exhibitionsData = {
             },
             date: "2025.04.04-2025.04.06",
             location: {
-                zh: "",
-                en: ""
+                zh: "法国巴黎",
+                en: "Paris, France"
             },
             country: {
                 zh: "法国巴黎",
                 en: "France Paris"
             },
             description: {
-                zh: "",
-                en: ""
+                zh: "Art Shopping 艺术展在法国巴黎举办，面向国际观众呈现当代艺术作品与艺术交流。",
+                en: "Art Shopping was held in Paris, France, presenting contemporary artworks and artistic exchange to an international audience."
             },
             images: [
                 {
@@ -1398,8 +1398,8 @@ const exhibitionsData = {
                 en: "Japan Osaka"
             },
             description: {
-                zh: "",
-                en: ""
+                zh: "Art Now 当代艺术展在日本大阪举办，集中呈现当代艺术的多样实践与跨地域交流。",
+                en: "Art Now was held in Osaka, Japan, presenting diverse contemporary art practices and cross-regional exchange."
             },
             images: [
                 {
@@ -1493,8 +1493,8 @@ const exhibitionsData = {
                 en: "London, United Kingdom"
             },
             description: {
-                zh: "",
-                en: ""
+                zh: "“重生”艺术展在英国伦敦举办，以更新、转化与重新开始为主题，呈现艺术家的当代创作。",
+                en: "Rebirth was held in London, UK, presenting contemporary artistic practices around renewal, transformation, and new beginnings."
             },
             images: [
                 {
