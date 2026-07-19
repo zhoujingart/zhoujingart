@@ -2187,87 +2187,82 @@ function findExhibitionById(id) {
 
 
 
-// 打开图片查看器
-function openImageViewer(imageIndex, exhibitionId) {
-    const exhibition = findExhibitionById(exhibitionId);
-    if (!exhibition) return;
-
-    // 这里可以复用现有的图片查看器或创建新的
-    // 暂时使用简单的实现
-    const image = exhibition.images[imageIndex];
-    const displaySrc = getOptimizedExhibitionImage(image.src, 'preview');
+function createExhibitionViewer({ className, displaySrc, fallbackSrc, title, description = '' }) {
     const viewer = document.createElement('div');
-    viewer.className = 'image-viewer-modal';
+    const previouslyFocused = document.activeElement;
+    viewer.className = className;
+    viewer.setAttribute('role', 'dialog');
+    viewer.setAttribute('aria-modal', 'true');
+    viewer.setAttribute('aria-label', title);
     viewer.innerHTML = `
-        <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
+        <div class="viewer-overlay"></div>
         <div class="viewer-content">
-            <img src="${displaySrc}" alt="${getImageText(image, 'title')}" onerror="this.onerror=null;this.src='${image.src}'">
+            <img src="${displaySrc}" alt="${title}">
             <div class="viewer-info">
-                <h3>${getImageText(image, 'title')}</h3>
-                <p>${getImageText(image, 'description')}</p>
+                <h3>${title}</h3>
+                ${description ? `<p>${description}</p>` : ''}
             </div>
-            <button class="viewer-close" onclick="this.parentElement.parentElement.remove()">
+            <button type="button" class="viewer-close" aria-label="Close image viewer">
                 <i class="fas fa-times"></i>
             </button>
         </div>
     `;
 
+    const closeButton = viewer.querySelector('.viewer-close');
+    const image = viewer.querySelector('img');
+    const close = () => {
+        viewer.remove();
+        if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+    };
+    image.addEventListener('error', () => {
+        if (image.src !== fallbackSrc) image.src = fallbackSrc;
+    }, { once: true });
+    viewer.querySelector('.viewer-overlay').addEventListener('click', close);
+    closeButton.addEventListener('click', close);
+    viewer.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') close();
+    });
+
     document.body.appendChild(viewer);
-    setTimeout(() => viewer.classList.add('show'), 10);
+    requestAnimationFrame(() => {
+        viewer.classList.add('show');
+        closeButton.focus();
+    });
+}
+
+// 打开图片查看器
+function openImageViewer(imageIndex, exhibitionId) {
+    const exhibition = findExhibitionById(exhibitionId);
+    if (!exhibition) return;
+
+    const image = exhibition.images[imageIndex];
+    createExhibitionViewer({
+        className: 'image-viewer-modal',
+        displaySrc: getOptimizedExhibitionImage(image.src, 'preview'),
+        fallbackSrc: image.src,
+        title: getImageText(image, 'title'),
+        description: getImageText(image, 'description')
+    });
 }
 
 
 
 // 打开证书查看器
 function openCertificateViewer(imageSrc, title) {
-    const displaySrc = getOptimizedExhibitionImage(imageSrc, 'preview');
-    const viewer = document.createElement('div');
-    viewer.className = 'certificate-viewer-modal';
-    viewer.innerHTML = `
-        <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
-        <div class="viewer-content">
-            <img src="${displaySrc}" alt="${title}" onerror="this.onerror=null;this.src='${imageSrc}'">
-            <div class="viewer-info">
-                <h3>${title}</h3>
-            </div>
-            <button class="viewer-close" onclick="this.parentElement.parentElement.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
-
-    document.body.appendChild(viewer);
-    setTimeout(() => viewer.classList.add('show'), 10);
+    createExhibitionViewer({
+        className: 'certificate-viewer-modal',
+        displaySrc: getOptimizedExhibitionImage(imageSrc, 'preview'),
+        fallbackSrc: imageSrc,
+        title
+    });
 }
 
 // 打开作品查看器
 function openArtworkViewer(imageSrc, title) {
-    const displaySrc = getOptimizedExhibitionImage(imageSrc, 'preview');
-    const viewer = document.createElement('div');
-    viewer.className = 'artwork-viewer-modal';
-    viewer.innerHTML = `
-        <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
-        <div class="viewer-content">
-            <img src="${displaySrc}" alt="${title}" onerror="this.onerror=null;this.src='${imageSrc}'">
-            <div class="viewer-info">
-                <h3>${title}</h3>
-            </div>
-            <button class="viewer-close" onclick="this.parentElement.parentElement.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
-
-    document.body.appendChild(viewer);
-    setTimeout(() => viewer.classList.add('show'), 10);
+    createExhibitionViewer({
+        className: 'artwork-viewer-modal',
+        displaySrc: getOptimizedExhibitionImage(imageSrc, 'preview'),
+        fallbackSrc: imageSrc,
+        title
+    });
 }
-
-// ESC键关闭模态框
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-        const imageViewer = document.querySelector('.image-viewer-modal');
-        if (imageViewer) {
-            imageViewer.remove();
-        }
-    }
-});
