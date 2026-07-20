@@ -54,3 +54,12 @@ test('V2 navigation is keyboard accessible', async ({ page }) => {
     await expect(menuOverlay).toHaveAttribute('aria-hidden', 'true');
     await expect(menuToggle).toBeFocused();
 });
+
+test('V2 exhibition detail keeps the shared menu translated', async ({ page }) => {
+    await page.goto('/v2/exhibition-detail.html?id=2025-05-fractured-horizons-new-york');
+
+    await page.locator('.lang-toggle').click();
+
+    await expect(page.locator('#primary-navigation [data-i18n="nav.home"]')).toHaveText('首页');
+    await expect(page.locator('#primary-navigation [data-i18n="nav.exhibitions"]')).toHaveText('展览');
+});

@@ -1,18 +1,14 @@
 # Zhou Jing Art Website V2
 
-This is the second version of the personal artist website for Zhou Jing, featuring a modern, minimalist design with enhanced interactivity and bilingual support.
+This is the future-facing theme for Zhou Jing's bilingual portfolio. It is a modern, light, gallery-like presentation layer over the same canonical content used by the root V1 theme.
 
 ## Features
 
-- **Bilingual Support**: Seamless switching between English and Chinese (stored in LocalStorage).
-- **Responsive Design**: Fully responsive layout optimized for desktop, tablet, and mobile devices.
-- **Dark/Light Theme**: Automatic theme detection with a manual toggle switch.
-- **Dynamic Content**: Content is rendered dynamically from data files, making updates easier.
-- **Interactive Elements**:
-  - Custom cursor with hover effects.
-  - Parallax scrolling effects.
-  - Image lightboxes and gallery grids.
-  - Smooth page transitions.
+- **Shared bilingual content**: artwork, exhibition and press records come from the root `content/` layer; language preference is stored in LocalStorage.
+- **Responsive presentation**: layouts are designed for desktop, tablet and mobile without introducing a separate mobile data path.
+- **Lightweight media**: list and grid views use optimized images, while original files remain fallbacks.
+- **Focused interaction**: gallery lightboxes, press previews and a keyboard-accessible full-screen menu.
+- **Independent theme**: V2 owns its visual styling and interface copy, but not a second copy of editorial content.
 
 ## Project Structure
 
@@ -32,7 +28,7 @@ v2/
 │   ├── press.css           # Press specific styles
 │   └── ...
 └── js/                     # V2 specific logic
-    ├── main.js             # Global scripts (cursor, menu, theme)
+    ├── main.js             # Global menu, preview and lightbox interactions
     ├── language.js         # Translation logic and dictionary
     ├── render-*.js         # Rendering logic for specific pages
     └── ...
@@ -40,29 +36,38 @@ v2/
 
 ## Data Management
 
-The website content is separated from the HTML structure. To update the content, edit the following data files in the root `js/` directory:
+V2 renders the same content as V1. Do not add records to `v2/` or the legacy root renderers. Update canonical records in the root `content/` directory instead:
 
-- **Exhibitions**: `../js/exhibitions.js`
-  - Add new exhibitions, artworks, and press coverage here.
-- **Press**: `../js/press.js`
-  - Update interviews and articles.
-- **Gallery**: `../js/gallery.js`
-  - Manage artwork images and details.
+- **Artworks**: `../content/artworks.js`
+- **Exhibitions**: `../content/exhibitions.js`
+- **Press**: `../content/press.js`
 
-## Development
+V2 renderers must access records through `window.siteContent`; use `window.siteI18n` for bilingual fields and `window.siteMedia` for optimized image paths. See the root [content guide](../content/README.md) and [contribution guide](../CONTRIBUTING.md) before editing records.
 
-This is a static site built with HTML5, CSS3, and Vanilla JavaScript. No build process is required.
+## Development and verification
 
-1. **Run Locally**: You can use any static file server.
-   - VS Code: Use "Live Server" extension.
-   - Python: `python3 -m http.server`
-   - Node: `npx serve`
+This is a static site built with HTML5, CSS3 and vanilla JavaScript. No production build step is required.
 
-2. **Deployment**: Simply upload the entire project folder to any static hosting service (GitHub Pages, Vercel, Netlify, etc.).
+From the repository root:
+
+```bash
+npm ci
+npm run check
+npm run serve
+```
+
+Open `http://localhost:8000/v2/`. Before submitting a V2 change, run `npm run test:browser` as well. It verifies V1/V2 shared-content parity and key interactions.
+
+## Maintenance boundaries
+
+- Keep V2 light and gallery-like. Do not reintroduce custom cursors, theme switching, blocking loaders or continuously running visual effects.
+- Preserve semantic controls: menu and language controls must remain native buttons, with keyboard support and current ARIA state.
+- Keep root content scripts before `../js/site-content.js` in each V2 page. Renderers should never read content-file globals directly.
+- Static deployment consists of the whole repository; no V2-only publishing artifact is generated.
 
 ## Browser Support
 
-Compatible with all modern browsers (Chrome, Firefox, Safari, Edge).
+Compatible with current Chrome, Firefox, Safari and Edge. The automated browser suite runs on Chromium.
 
 ## License
 

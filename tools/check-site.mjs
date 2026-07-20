@@ -321,6 +321,29 @@ function checkContentLayer() {
     }
 }
 
+function checkV2Navigation() {
+    const requiredNavKeys = ['home', 'works', 'exhibitions', 'about', 'press', 'studio', 'contact'];
+    const v2HtmlFiles = htmlFiles.filter((file) => displayPath(file).startsWith('v2/'));
+
+    for (const file of v2HtmlFiles) {
+        const source = readFileSync(file, 'utf8');
+        if (!/<button\b[^>]*\bclass=["'][^"']*\bmenu-toggle\b[^"']*["'][^>]*\baria-controls=["']primary-navigation["'][^>]*\baria-expanded=["']false["']/i.test(source)) {
+            report(file, 'V2 menu toggle must be a button with navigation ARIA state');
+        }
+        if (!/<div\b[^>]*\bclass=["'][^"']*\bmenu-overlay\b[^"']*["'][^>]*\bid=["']primary-navigation["'][^>]*\baria-hidden=["']true["']/i.test(source)) {
+            report(file, 'V2 menu overlay must expose primary-navigation ARIA state');
+        }
+        if (!/<button\b[^>]*\bclass=["'][^"']*\bmenu-close\b[^"']*["'][^>]*\bdata-i18n=["']nav\.close["']/i.test(source)) {
+            report(file, 'V2 menu close control must be a translated button');
+        }
+        for (const key of requiredNavKeys) {
+            if (!new RegExp(`data-i18n=["']nav\\.${key}["']`, 'i').test(source)) {
+                report(file, `V2 menu is missing translated nav.${key} label`);
+            }
+        }
+    }
+}
+
 walk(root);
 
 for (const file of jsFiles) {
@@ -351,6 +374,7 @@ checkExhibitionData();
 checkPressData();
 checkSharedContentConsumers();
 checkContentLayer();
+checkV2Navigation();
 
 if (errors.length) {
     console.error(`Site checks failed with ${errors.length} issue(s):`);
