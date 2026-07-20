@@ -1,0 +1,1 @@
+initializeExhibitionDetail(renderExhibitionDetail);

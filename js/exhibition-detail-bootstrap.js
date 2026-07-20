@@ -6,6 +6,10 @@ function getExhibitionIdFromUrl() {
 function initializeExhibitionDetail(render) {
     const renderCurrentExhibition = () => render(getExhibitionIdFromUrl());
 
-    document.addEventListener('DOMContentLoaded', renderCurrentExhibition, { once: true });
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderCurrentExhibition, { once: true });
+    } else {
+        renderCurrentExhibition();
+    }
     document.addEventListener('languageChanged', renderCurrentExhibition);
 }
