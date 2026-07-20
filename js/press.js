@@ -43,6 +43,9 @@ const pressData = {
 
 // 当前语言（避免与其它脚本冲突）
 let pressCurrentLang = localStorage.getItem('language') || 'zh';
+let pressItemSequence = 0;
+const pressItemRegistry = new Map();
+let lastPressTrigger = null;
 
 // 获取翻译文本
 function getTranslation(key) {
@@ -79,10 +82,12 @@ function createPressItemHTML(item) {
     const description = getPressText(item, 'description');
     const date = getPressText(item, 'date');
     const publication = getPressText(item, 'publication');
+    const pressId = `press-${++pressItemSequence}`;
+    pressItemRegistry.set(pressId, { previewUrl, title, url: item.url, screenshotUrl });
 
     return `
         <div class="press-item">
-            <button type="button" class="press-thumbnail" aria-label="${title}" onclick="openPressImageModal('${previewUrl}', '${title}', '${item.url}', '${screenshotUrl}')">
+            <button type="button" class="press-thumbnail" aria-label="${title}" data-press-id="${pressId}">
                 <img data-src="${thumbnailUrl}"
                      data-fallback-src="${screenshotUrl}"
                      alt="${title}"
@@ -225,6 +230,7 @@ function openPressImageModal(imageSrc, title, url, fallbackSrc) {
         // 显示模态框
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        modal.querySelector('.modal-close')?.focus();
     };
 
     img.onerror = function () {
@@ -233,6 +239,7 @@ function openPressImageModal(imageSrc, title, url, fallbackSrc) {
         modalImage.alt = title;
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        modal.querySelector('.modal-close')?.focus();
     };
 
     // 开始预加载
@@ -262,6 +269,8 @@ function closePressImageModal() {
 
     modal.style.display = 'none';
     document.body.style.overflow = '';
+    if (lastPressTrigger instanceof HTMLElement) lastPressTrigger.focus();
+    lastPressTrigger = null;
 }
 
 // 图片查看器状态
@@ -487,6 +496,9 @@ function renderPressItems() {
     const container = document.querySelector('.press-items');
     if (!container) return;
 
+    pressItemSequence = 0;
+    pressItemRegistry.clear();
+
     // 使用 DocumentFragment 优化DOM操作
     const fragment = document.createDocumentFragment();
 
@@ -553,6 +565,16 @@ function renderPressItems() {
     // 清空容器并一次性插入所有内容
     container.innerHTML = '';
     container.appendChild(fragment);
+    container.onclick = (event) => {
+        const trigger = event.target.closest('[data-press-id]');
+        if (!trigger) return;
+
+        const pressItem = pressItemRegistry.get(trigger.dataset.pressId);
+        if (!pressItem) return;
+
+        lastPressTrigger = trigger;
+        openPressImageModal(pressItem.previewUrl, pressItem.title, pressItem.url, pressItem.screenshotUrl);
+    };
 
     // 初始化高性能懒加载
     initSmartLazyLoading();
@@ -698,128 +720,6 @@ function initSmartLazyLoading() {
 
     lazyImages.forEach(img => state.observer.observe(img));
     scheduleQueue();
-}
-
-// 全局滚动状态管理 - 避免多个滚动监听器
-let globalScrollState = {
-    isScrolling: false,
-    scrollTimer: null,
-    lastScrollTime: 0,
-    ticking: false
-};
-
-// 初始化图片懒加载优化 - 使用 Intersection Observer，滚动时暂停加载
-function initImageLoading() {
-    const images = document.querySelectorAll('.press-lazy-img');
-    if (images.length === 0) return;
-
-    const loadedImages = new Set(); // 追踪已加载的图片
-    const pendingImages = new Set(); // 滚动时暂存待加载的图片
-    let observerCallbackTimer = null;
-
-    // 创建 Intersection Observer - 使用节流减少回调频率
-    const imageObserver = new IntersectionObserver((entries) => {
-        // 节流：避免回调执行过于频繁
-        if (observerCallbackTimer) return;
-
-        observerCallbackTimer = setTimeout(() => {
-            observerCallbackTimer = null;
-
-            entries.forEach(entry => {
-                const img = entry.target;
-
-                // 只处理进入视口且未加载的图片
-                if (entry.isIntersecting && !loadedImages.has(img)) {
-                    // 如果正在滚动，暂存图片，等滚动停止后加载
-                    if (globalScrollState.isScrolling) {
-                        pendingImages.add(img);
-                    } else {
-                        loadImage(img, imageObserver);
-                    }
-                }
-            });
-        }, 50); // 节流 50ms
-    }, {
-        // 减少预加载距离从 200px → 100px，减少提前触发
-        rootMargin: '100px 0px',
-        threshold: 0.01
-    });
-
-    // 观察所有图片
-    images.forEach(img => imageObserver.observe(img));
-
-    // 加载单个图片的函数
-    function loadImage(img, observer) {
-        const src = img.getAttribute('data-src');
-        if (!src || img.src || loadedImages.has(img)) return;
-
-        // 标记为已加载（避免重复加载）
-        loadedImages.add(img);
-        const thumbnail = img.parentElement;
-
-        // 直接加载，不使用 requestIdleCallback（避免延迟）
-        img.src = src;
-
-        // 图片加载成功后添加 loaded 类
-        img.onload = function () {
-            if (thumbnail) {
-                thumbnail.classList.add('loaded');
-            }
-            // 图片加载完成后才停止观察，减少回调次数
-            if (observer) {
-                observer.unobserve(img);
-            }
-        };
-
-        // 错误处理
-        img.onerror = function () {
-            this.classList.add('is-hidden');
-            const fallback = this.parentElement.querySelector('.press-thumbnail-fallback');
-            if (fallback) {
-                fallback.style.display = 'flex';
-            }
-            // 错误时也移除占位符和停止观察
-            if (thumbnail) {
-                thumbnail.classList.add('loaded');
-            }
-            if (observer) {
-                observer.unobserve(img);
-            }
-        };
-    }
-
-    // 滚动停止后加载待处理图片的函数
-    window.addEventListener('scrollend-press', () => {
-        if (pendingImages.size > 0) {
-            requestAnimationFrame(() => {
-                const imagesToLoad = Array.from(pendingImages);
-                pendingImages.clear();
-
-                // 批量加载，每次最多5张
-                imagesToLoad.slice(0, 5).forEach(img => {
-                    if (!loadedImages.has(img)) {
-                        loadImage(img, imageObserver);
-                    }
-                });
-            });
-        }
-    });
-
-    // 立即加载前 10 张可见图片
-    requestAnimationFrame(() => {
-        let loadedCount = 0;
-        const MAX_INITIAL_LOAD = 10;
-
-        images.forEach(img => {
-            if (loadedCount >= MAX_INITIAL_LOAD) return;
-
-            const rect = img.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-                loadImage(img, imageObserver);
-                loadedCount++;
-            }
-        });
-    });
 }
 
 // 页面初始化：语言模块会在完成首轮翻译后发出 languageReady 事件。
