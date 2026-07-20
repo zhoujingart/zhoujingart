@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof exhibitionsData === 'undefined') {
-        console.error('Exhibitions data not loaded');
+    if (!window.siteContent) {
+        console.error('Shared content API not loaded');
         return;
     }
 
@@ -22,42 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function getLangText(obj) {
-    const lang = localStorage.getItem('language') || 'en';
-    if (!obj) return '';
-    if (typeof obj === 'string') return obj;
-    // Prefer requested lang, fallback to zh (original data often has zh), then first available
-    return obj[lang] || obj['en'] || obj['zh'] || Object.values(obj)[0] || '';
+function getExhibitionText(value) {
+    return window.siteI18n?.text(value, window.siteI18n.getLanguage('en')) || '';
 }
 
-function formatDate(dateStr) {
-    // Format: "2025.08.23-2025.09.23" -> "Aug 23 - Sep 23"
-    if (!dateStr) return '';
-    try {
-        // Handle "2025.08.23" or "2025.08.23-2025.09.23"
-        const parts = dateStr.split('-');
-        const start = parts[0].trim();
-        const end = parts.length > 1 ? parts[1].trim() : '';
-
-        const formatSingle = (d) => {
-            // d is like 2025.08.23
-            const [y, m, day] = d.split('.');
-            const date = new Date(y, m - 1, day);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        };
-
-        if (end) {
-            return `${formatSingle(start)} - ${formatSingle(end)}`;
-        }
-        return formatSingle(start);
-    } catch (e) {
-        return dateStr;
-    }
+function formatExhibitionDate(value) {
+    return window.siteI18n?.formatDate(value, window.siteI18n.getLanguage('en')) || value || '';
 }
 
 function renderExhibitionsList(container) {
     container.innerHTML = '';
-    const years = Object.keys(exhibitionsData).sort((a, b) => b - a);
+    const years = window.siteContent.getExhibitionYears();
 
     years.forEach(year => {
         const yearGroup = document.createElement('div');
@@ -71,11 +46,12 @@ function renderExhibitionsList(container) {
         const yearExhibitions = document.createElement('div');
         yearExhibitions.className = 'year-exhibitions';
 
-        exhibitionsData[year].forEach(ex => {
+        window.siteContent.exhibitionsByYear[year].forEach(ex => {
             const row = document.createElement('div');
             row.className = 'exhibition-item-row';
+            row.dataset.exhibitionId = ex.id;
             // Link to detail page with ID
-            row.onclick = () => window.location.href = `exhibition-detail.html?id=${ex.id}`;
+            addExhibitionNavigation(row, ex.id);
 
             // Add Image
             const imgDiv = document.createElement('div');
@@ -87,27 +63,27 @@ function renderExhibitionsList(container) {
                 } else {
                     img.src = '../' + ex.images[0].src;
                 }
-                img.alt = getLangText(ex.title, 'en');
+                img.alt = getExhibitionText(ex.title);
                 imgDiv.appendChild(img);
             }
             row.appendChild(imgDiv);
 
             const dateCol = document.createElement('div');
             dateCol.className = 'ex-date-col';
-            dateCol.textContent = formatDate(ex.date);
+            dateCol.textContent = formatExhibitionDate(ex.date);
 
             const infoCol = document.createElement('div');
             infoCol.className = 'ex-info-col';
 
             const title = document.createElement('h3');
             title.className = 'ex-item-title';
-            title.textContent = getLangText(ex.title, 'en');
+            title.textContent = getExhibitionText(ex.title);
 
             const venue = document.createElement('p');
             venue.className = 'ex-item-venue';
             // Try to construct a nice location string
-            let locationStr = getLangText(ex.organizer, 'en');
-            const country = getLangText(ex.country, 'en');
+            let locationStr = getExhibitionText(ex.organizer);
+            const country = getExhibitionText(ex.country);
             if (country) {
                 // Extract city/country if possible, or just append
                 // V1 data: "Westmount, Quebed, Canada"
@@ -123,7 +99,7 @@ function renderExhibitionsList(container) {
             const typeCol = document.createElement('div');
             typeCol.className = 'ex-type-col';
             // Infer type from title or description if possible, otherwise generic
-            const titleText = getLangText(ex.title, 'en').toLowerCase();
+            const titleText = getExhibitionText(ex.title).toLowerCase();
             if (titleText.includes('solo')) {
                 typeCol.textContent = 'Solo Exhibition';
             } else if (titleText.includes('group') || titleText.includes('invitational')) {
@@ -152,19 +128,13 @@ function renderExhibitionsList(container) {
 function renderExhibitionsPreview(container) {
     container.innerHTML = '';
     // Get latest 3 exhibitions
-    const allExhibitions = [];
-    Object.keys(exhibitionsData).sort((a, b) => b - a).forEach(year => {
-        exhibitionsData[year].forEach(ex => {
-            allExhibitions.push({ ...ex, year });
-        });
-    });
-
-    const latest = allExhibitions.slice(0, 3);
+    const latest = window.siteContent.getLatestExhibitions(3);
 
     latest.forEach(ex => {
         const row = document.createElement('div');
         row.className = 'exhibition-row';
-        row.onclick = () => window.location.href = `exhibition-detail.html?id=${ex.id}`;
+        row.dataset.exhibitionId = ex.id;
+        addExhibitionNavigation(row, ex.id);
 
         // Add Image
         const imgDiv = document.createElement('div');
@@ -191,7 +161,7 @@ function renderExhibitionsPreview(container) {
             } else {
                 img.src = '../' + ex.images[0].src;
             }
-            img.alt = getLangText(ex.title, 'en');
+            img.alt = getExhibitionText(ex.title);
             imgDiv.appendChild(img);
         }
         row.appendChild(imgDiv);
@@ -204,11 +174,11 @@ function renderExhibitionsPreview(container) {
         infoDiv.className = 'ex-info';
 
         const title = document.createElement('h3');
-        title.textContent = getLangText(ex.title, 'en');
+        title.textContent = getExhibitionText(ex.title);
 
         const loc = document.createElement('p');
-        let locationStr = getLangText(ex.organizer, 'en');
-        const country = getLangText(ex.country, 'en');
+        let locationStr = getExhibitionText(ex.organizer);
+        const country = getExhibitionText(ex.country);
         if (country) {
             const parts = country.split(',');
             const countryName = parts[parts.length - 1].trim();
@@ -228,5 +198,20 @@ function renderExhibitionsPreview(container) {
         row.appendChild(linkDiv);
 
         container.appendChild(row);
+    });
+}
+
+function addExhibitionNavigation(element, exhibitionId) {
+    element.tabIndex = 0;
+    element.setAttribute('role', 'link');
+    const navigate = () => {
+        window.location.href = `exhibition-detail.html?id=${exhibitionId}`;
+    };
+    element.addEventListener('click', navigate);
+    element.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            navigate();
+        }
     });
 }

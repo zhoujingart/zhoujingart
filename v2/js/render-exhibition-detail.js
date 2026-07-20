@@ -4,6 +4,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (!window.siteContent || !window.siteI18n) {
+        console.error('Shared content API not loaded');
+        return;
+    }
     const urlParams = new URLSearchParams(window.location.search);
     const exhibitionId = urlParams.get('id');
 
@@ -26,29 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
  * @param {string} id - The exhibition ID
  * @returns {Object|null} - The exhibition object or null if not found
  */
-function findExhibitionById(id) {
-    // Iterate through all years in the data
-    for (const year in exhibitionsData) {
-        const exhibitions = exhibitionsData[year];
-        const found = exhibitions.find(ex => ex.id === id);
-        if (found) return found;
-    }
-    return null;
-}
-
-/**
- * Get text based on current language
- * @param {Object|string} textObj - The text object with en/zh keys or a string
- * @returns {string} - The localized text
- */
-function getLangText(textObj) {
-    // Get current language from localStorage or default to 'en'
-    const lang = localStorage.getItem('language') || 'en';
-
-    if (typeof textObj === 'string') return textObj;
-    if (!textObj) return '';
-
-    return textObj[lang] || textObj['en'] || '';
+function getDetailText(value) {
+    return window.siteI18n.text(value, window.siteI18n.getLanguage('en'));
 }
 
 function escapeAttr(value) {
@@ -64,7 +47,7 @@ function escapeAttr(value) {
  * @param {string} id - The exhibition ID
  */
 function renderExhibitionDetail(id) {
-    const exhibition = findExhibitionById(id);
+    const exhibition = window.siteContent.findExhibition(id);
 
     if (!exhibition) {
         console.error('Exhibition not found:', id);
@@ -78,7 +61,7 @@ function renderExhibitionDetail(id) {
     }
 
     // Update Page Title
-    document.title = `${getLangText(exhibition.title)} | Zhou Jing`;
+    document.title = `${getDetailText(exhibition.title)} | Zhou Jing`;
 
     // 1. Render Hero Section
     renderHero(exhibition);
@@ -123,9 +106,9 @@ function renderHero(exhibition) {
         : `../${posterSource}`;
     const posterFallback = window.getV2FallbackAttr ? window.getV2FallbackAttr(posterSource) : '';
 
-    const title = getLangText(exhibition.title);
-    const location = getLangText(exhibition.country);
-    const venue = getLangText(exhibition.organizer); // Using organizer as venue name for now
+    const title = getDetailText(exhibition.title);
+    const location = getDetailText(exhibition.country);
+    const venue = getDetailText(exhibition.organizer); // Using organizer as venue name for now
 
     heroSection.innerHTML = `
         <div class="ex-hero-img">
@@ -149,9 +132,9 @@ function renderDetails(exhibition) {
     const detailsSection = document.querySelector('.ex-details');
     if (!detailsSection) return;
 
-    const locationFull = getLangText(exhibition.location);
-    const organizerName = getLangText(exhibition.organizer);
-    const description = getLangText(exhibition.description);
+    const locationFull = getDetailText(exhibition.location);
+    const organizerName = getDetailText(exhibition.organizer);
+    const description = getDetailText(exhibition.description);
 
     // Format description paragraphs
     const descriptionHtml = description.split('\n').map(p => `<p>${p}</p>`).join('');
@@ -207,13 +190,13 @@ function renderGallery(exhibition) {
         return `
         <div class="gallery-item">
             <div class="gallery-img-container" style="aspect-ratio: 4/3;">
-                <img src="${imagePath}" alt="${getLangText(img.title)}" loading="lazy" decoding="async"${fallbackAttr}>
+                <img src="${imagePath}" alt="${getDetailText(img.title)}" loading="lazy" decoding="async"${fallbackAttr}>
                 <div class="gallery-overlay">
                     <div class="view-btn">View</div>
                 </div>
             </div>
             <div class="gallery-info">
-                <p>${getLangText(img.description)}</p>
+                <p>${getDetailText(img.description)}</p>
             </div>
         </div>
     `;
@@ -247,14 +230,14 @@ function renderArtworks(exhibition) {
         return `
         <div class="gallery-item">
             <div class="gallery-img-container" style="aspect-ratio: 1/1;">
-                <img src="${imagePath}" alt="${getLangText(artwork.title)}" loading="lazy" decoding="async" style="object-fit: contain;"${fallbackAttr}>
+                <img src="${imagePath}" alt="${getDetailText(artwork.title)}" loading="lazy" decoding="async" style="object-fit: contain;"${fallbackAttr}>
                 <div class="gallery-overlay">
                     <div class="view-btn">View</div>
                 </div>
             </div>
             <div class="gallery-info">
-                <h3>${getLangText(artwork.title)}</h3>
-                <p>${getLangText(artwork.medium)}, ${artwork.year}</p>
+                <h3>${getDetailText(artwork.title)}</h3>
+                <p>${getDetailText(artwork.medium)}, ${artwork.year}</p>
                 <p>${artwork.size}</p>
             </div>
         </div>
@@ -288,15 +271,15 @@ function renderPress(exhibition) {
         const previewPath = window.getV2ImagePath ? window.getV2ImagePath(thumbnail, 'pressPreview') : `../${thumbnail}`;
         const originalPath = window.getV2OriginalPath ? window.getV2OriginalPath(thumbnail) : `../${thumbnail}`;
         const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(thumbnail) : '';
-        const title = getLangText(item.title);
+        const title = getDetailText(item.title);
 
         return `
         <div class="press-item" style="border-top: 1px solid var(--border-color);">
             <div class="press-date">${item.date}</div>
             <div class="press-content">
                 <h2 class="press-title" style="font-size: 1.5rem;">${title}</h2>
-                <div class="press-publication">${getLangText(item.source)}</div>
-                <p class="press-excerpt">${getLangText(item.description)}</p>
+                <div class="press-publication">${getDetailText(item.source)}</div>
+                <p class="press-excerpt">${getDetailText(item.description)}</p>
                 <a href="${item.url}" target="_blank" rel="noopener" class="press-link">Read Article <i class="fas fa-external-link-alt"></i></a>
             </div>
             <button type="button" class="press-image press-preview-trigger" data-preview-src="${escapeAttr(previewPath)}" data-fallback-src="${escapeAttr(originalPath)}" data-title="${escapeAttr(title)}" data-url="${escapeAttr(item.url)}">

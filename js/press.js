@@ -502,45 +502,42 @@ function renderPressItems() {
     // 使用 DocumentFragment 优化DOM操作
     const fragment = document.createDocumentFragment();
 
+    const sharedPress = window.siteContent?.press || pressData;
+    const personalInterviews = sharedPress.personalInterviews?.items || [];
+
     // 个人专访
-    if (pressData.personalInterviews.items.length > 0) {
+    if (personalInterviews.length > 0) {
         const personalSection = document.createElement('div');
         personalSection.className = 'press-section';
         personalSection.innerHTML = `
             <h3 class="section-title" data-i18n="press.personalInterviews">${getTranslation('press.personalInterviews')}</h3>
             <div class="press-list" data-section="personal">
-                ${pressData.personalInterviews.items.map(item => createPressItemHTML(item)).join('')}
+                ${personalInterviews.map(item => createPressItemHTML(item)).join('')}
             </div>
         `;
         fragment.appendChild(personalSection);
     }
 
-    // 群展报道：从 exhibitionsData 中提取所有 press，按时间排序
-    // 性能优化：使用传统 for 循环替代 3 层嵌套 forEach
+    // 群展报道：从共享展览流中提取所有 press，按时间排序
     const exhibitionPressItems = [];
-    if (typeof exhibitionsData === 'object') {
-        const years = Object.keys(exhibitionsData);
-        for (let i = 0; i < years.length; i++) {
-            const year = years[i];
-            const exhibitions = exhibitionsData[year];
-            if (!Array.isArray(exhibitions)) continue;
+    const sharedExhibitions = window.siteContent?.getExhibitions()
+        || Object.values(exhibitionsData).flat();
+    if (Array.isArray(sharedExhibitions)) {
+        for (let j = 0; j < sharedExhibitions.length; j++) {
+            const ex = sharedExhibitions[j];
+            const pressArray = ex.press;
+            if (!Array.isArray(pressArray)) continue;
 
-            for (let j = 0; j < exhibitions.length; j++) {
-                const ex = exhibitions[j];
-                const pressArray = ex.press;
-                if (!Array.isArray(pressArray)) continue;
-
-                for (let k = 0; k < pressArray.length; k++) {
-                    const p = pressArray[k];
-                    exhibitionPressItems.push({
-                        title: p.title,
-                        description: p.description,
-                        publication: p.source,
-                        url: p.url,
-                        date: p.date ? { zh: p.date, en: p.date } : undefined,
-                        thumbnail: p.thumbnail || null
-                    });
-                }
+            for (let k = 0; k < pressArray.length; k++) {
+                const p = pressArray[k];
+                exhibitionPressItems.push({
+                    title: p.title,
+                    description: p.description,
+                    publication: p.source,
+                    url: p.url,
+                    date: p.date ? { zh: p.date, en: p.date } : undefined,
+                    thumbnail: p.thumbnail || null
+                });
             }
         }
     }

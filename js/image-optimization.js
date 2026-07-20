@@ -9,6 +9,7 @@
     };
 
     function getOptimizedImagePath(src, profile = 'card') {
+        if (window.siteMedia) return window.siteMedia.getOptimizedPath(src, profile);
         if (!src || typeof src !== 'string' || !src.startsWith('images/')) {
             return src;
         }

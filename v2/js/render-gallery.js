@@ -4,8 +4,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof artworksData === 'undefined') {
-        console.error('Artworks data not loaded');
+    if (!window.siteContent || !window.siteI18n) {
+        console.error('Shared content API not loaded');
         return;
     }
 
@@ -29,14 +29,8 @@ let v2CurrentSort = 'default';
  * @param {Object|string} textObj - The text object with en/zh keys or a string
  * @returns {string} - The localized text
  */
-function getLangText(textObj) {
-    // Get current language from localStorage or default to 'en'
-    const lang = localStorage.getItem('language') || 'en';
-
-    if (typeof textObj === 'string') return textObj;
-    if (!textObj) return '';
-
-    return textObj[lang] || textObj['en'] || '';
+function getGalleryText(value) {
+    return window.siteI18n.text(value, window.siteI18n.getLanguage('en'));
 }
 
 /**
@@ -62,8 +56,8 @@ function getArtworkWeight(artwork) {
 }
 
 function getSortedArtworks() {
-    const filteredArtworks = artworksData.filter((artwork) => {
-        const mediumEn = artwork.medium.en || artwork.medium;
+    const filteredArtworks = window.siteContent.artworks.filter((artwork) => {
+        const mediumEn = getGalleryText(artwork.medium);
         const category = getCategoryFromMedium(mediumEn);
         return v2CurrentFilter === 'all' || category === v2CurrentFilter;
     });
@@ -91,7 +85,7 @@ function renderGalleryGrid(container) {
     const sortedArtworks = getSortedArtworks();
 
     sortedArtworks.forEach(artwork => {
-        const medium = getLangText(artwork.medium);
+        const medium = getGalleryText(artwork.medium);
         // We need English medium for categorization logic
         const mediumEn = artwork.medium.en || artwork.medium;
         const category = getCategoryFromMedium(mediumEn);
@@ -105,20 +99,20 @@ function renderGalleryGrid(container) {
             : `../${artwork.image}`;
         const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(artwork.image) : '';
 
-        const viewText = getLangText({ en: 'View', zh: '查看' });
-        const soldText = getLangText({ en: 'Sold Out', zh: '已售出' });
+        const viewText = getGalleryText({ en: 'View', zh: '查看' });
+        const soldText = getGalleryText({ en: 'Sold Out', zh: '已售出' });
         const isSold = artwork.status === 'sold';
 
         item.innerHTML = `
             <div class="gallery-img-container">
-                <img src="${imagePath}" alt="${getLangText(artwork.title)}" loading="lazy" decoding="async"${fallbackAttr}>
+                <img src="${imagePath}" alt="${getGalleryText(artwork.title)}" loading="lazy" decoding="async"${fallbackAttr}>
                 <div class="gallery-overlay">
                     <div class="view-btn">${viewText}</div>
                 </div>
                 ${isSold ? `<div class="sold-badge">${soldText}</div>` : ''}
             </div>
             <div class="gallery-info">
-                <h3>${getLangText(artwork.title)}</h3>
+                <h3>${getGalleryText(artwork.title)}</h3>
                 <p>${medium}, ${artwork.year}</p>
                 <p class="gallery-size">${artwork.size}</p>
             </div>

@@ -2006,6 +2006,7 @@ function getTranslation(key) {
 
 // 获取作品字段的多语言文本
 function getArtworkText(artwork, field) {
+    if (window.siteI18n) return window.siteI18n.text(artwork?.[field], currentLang);
     if (typeof artwork[field] === 'object' && artwork[field] !== null) {
         return artwork[field][currentLang] || artwork[field].zh || artwork[field];
     }
@@ -2014,6 +2015,7 @@ function getArtworkText(artwork, field) {
 
 // 获取图片字段的多语言文本
 function getImageText(img, field) {
+    if (window.siteI18n) return window.siteI18n.text(img?.[field], currentLang);
     if (typeof img[field] === 'object' && img[field] !== null) {
         return img[field][currentLang] || img[field].zh || img[field];
     }
@@ -2026,6 +2028,7 @@ function getOptimizedExhibitionImage(src, profile = 'card') {
 
 // 获取媒体报道字段的多语言文本
 function getPressText(press, field) {
+    if (window.siteI18n) return window.siteI18n.text(press?.[field], currentLang);
     if (typeof press[field] === 'object' && press[field] !== null) {
         return press[field][currentLang] || press[field].zh || press[field];
     }
@@ -2083,7 +2086,8 @@ function renderExhibitions() {
     container.innerHTML = '';
 
     // 按年份倒序排列
-    const years = Object.keys(exhibitionsData).sort((a, b) => b - a);
+    const years = window.siteContent?.getExhibitionYears()
+        || Object.keys(exhibitionsData).sort((a, b) => b - a);
 
     // 分批渲染配置
     const BATCH_SIZE = 2; // 每次渲染2个年份
@@ -2105,7 +2109,8 @@ function renderExhibitions() {
             const exhibitionsList = document.createElement('div');
             exhibitionsList.className = 'exhibitions-list';
 
-            exhibitionsData[year].forEach(exhibition => {
+            const exhibitions = window.siteContent?.exhibitionsByYear[year] || exhibitionsData[year];
+            exhibitions.forEach(exhibition => {
                 const exhibitionItem = createExhibitionItem(exhibition);
                 exhibitionsList.appendChild(exhibitionItem);
             });
@@ -2176,6 +2181,7 @@ function createExhibitionItem(exhibition) {
 
 // 根据ID查找展览
 function findExhibitionById(id) {
+    if (window.siteContent) return window.siteContent.findExhibition(id);
     for (const year in exhibitionsData) {
         const exhibition = exhibitionsData[year].find(ex => ex.id === id);
         if (exhibition) return exhibition;

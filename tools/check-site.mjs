@@ -126,6 +126,22 @@ function checkDataImage(file, imagePath, recordName) {
     }
 }
 
+function checkOptimizedImage(file, imagePath, recordName, profile = 'card') {
+    if (!isNonEmptyString(imagePath) || isExternalReference(imagePath) || !imagePath.startsWith('images/')) return;
+
+    const profileDirectory = {
+        card: 'card',
+        hero: 'card',
+        preview: 'card',
+        pressThumb: 'press-thumb',
+        pressPreview: 'press-preview'
+    }[profile] || 'card';
+    const optimizedPath = resolve(root, 'images', 'optimized', profileDirectory, imagePath.slice('images/'.length));
+    if (!existsSync(optimizedPath)) {
+        report(file, `${recordName}: missing optimized ${profile} image: ${imagePath}`);
+    }
+}
+
 function loadPageData(file, variableName) {
     const source = readFileSync(file, 'utf8');
     const context = {
@@ -169,6 +185,7 @@ function checkGalleryData() {
             if (!isNonEmptyString(artwork?.[field])) report(file, `${recordName}: missing ${field}`);
         }
         checkDataImage(file, artwork?.image, recordName);
+        checkOptimizedImage(file, artwork?.image, recordName);
     }
 }
 
@@ -204,11 +221,40 @@ function checkExhibitionData() {
             }
             for (const image of exhibition?.images || []) {
                 checkDataImage(file, image?.src, recordName);
+                checkOptimizedImage(file, image?.src, recordName);
                 checkBilingualField(file, image?.title, 'image title', recordName);
                 checkBilingualField(file, image?.description, 'image description', recordName);
             }
-            for (const artwork of exhibition?.artworks || []) checkDataImage(file, artwork?.image, recordName);
-            for (const document of exhibition?.documents || []) checkDataImage(file, document?.image, recordName);
+            for (const artwork of exhibition?.artworks || []) {
+                checkDataImage(file, artwork?.image, recordName);
+                checkOptimizedImage(file, artwork?.image, recordName);
+            }
+            for (const document of exhibition?.documents || []) {
+                checkDataImage(file, document?.image, recordName);
+                checkOptimizedImage(file, document?.image, recordName);
+            }
+        }
+    }
+}
+
+function checkSharedContentConsumers() {
+    const consumers = [
+        ['v2/js/render-gallery.js', ['artworksData']],
+        ['v2/js/render-exhibitions.js', ['exhibitionsData']],
+        ['v2/js/render-exhibition-detail.js', ['exhibitionsData']],
+        ['v2/js/render-press.js', ['pressData', 'exhibitionsData']]
+    ];
+
+    for (const [path, legacyGlobals] of consumers) {
+        const file = resolve(root, path);
+        const source = readFileSync(file, 'utf8');
+        if (!source.includes('window.siteContent')) {
+            report(file, 'must read content through window.siteContent');
+        }
+        for (const globalName of legacyGlobals) {
+            if (new RegExp(`\\b${globalName}\\b`).test(source)) {
+                report(file, `must not read legacy global ${globalName} directly`);
+            }
         }
     }
 }
@@ -240,6 +286,7 @@ for (const file of textFiles) {
 
 checkGalleryData();
 checkExhibitionData();
+checkSharedContentConsumers();
 
 if (errors.length) {
     console.error(`Site checks failed with ${errors.length} issue(s):`);

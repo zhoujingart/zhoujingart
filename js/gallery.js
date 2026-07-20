@@ -1058,6 +1058,10 @@ let lastGalleryTrigger = null;
 
 let galleryInitialized = false;
 
+function getSharedArtworks() {
+    return window.siteContent?.artworks || artworksData;
+}
+
 function initGallery() {
     if (galleryInitialized || !window.languageManager?.isInitialized) return;
 
@@ -1290,8 +1294,8 @@ function renderGallery() {
 
         // 根据筛选条件过滤作品
         const filteredArtworks = currentFilter === 'all'
-            ? [...artworksData]
-            : artworksData.filter(artwork => artwork.category === currentFilter);
+            ? [...getSharedArtworks()]
+            : getSharedArtworks().filter(artwork => artwork.category === currentFilter);
 
         // 根据当前排序方式排序
         sortArtworks(filteredArtworks);
@@ -1330,8 +1334,8 @@ function sortArtworks(artworks) {
                 const wa = typeof a.sortWeight === 'number' ? a.sortWeight : 0;
                 const wb = typeof b.sortWeight === 'number' ? b.sortWeight : 0;
                 if (wb !== wa) return wb - wa; // 权重高者在前
-                const ia = typeof a.__initialIndex === 'number' ? a.__initialIndex : artworksData.findIndex(it => it.id === a.id);
-                const ib = typeof b.__initialIndex === 'number' ? b.__initialIndex : artworksData.findIndex(it => it.id === b.id);
+                const ia = typeof a.__initialIndex === 'number' ? a.__initialIndex : getSharedArtworks().findIndex(it => it.id === a.id);
+                const ib = typeof b.__initialIndex === 'number' ? b.__initialIndex : getSharedArtworks().findIndex(it => it.id === b.id);
                 return ia - ib; // 稳定：原始顺序
             });
             break;
@@ -1439,7 +1443,7 @@ function initGalleryViewerTriggers() {
         const trigger = event.target.closest('[data-view-artwork-id]');
         if (!trigger) return;
 
-        const artwork = artworksData.find((item) => item.id === trigger.dataset.viewArtworkId);
+        const artwork = getSharedArtworks().find((item) => item.id === trigger.dataset.viewArtworkId);
         if (!artwork) return;
 
         lastGalleryTrigger = trigger;

@@ -4,8 +4,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof pressData === 'undefined') {
-        console.error('Press data not loaded');
+    if (!window.siteContent || !window.siteI18n) {
+        console.error('Shared content API not loaded');
         return;
     }
 
@@ -33,14 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
  * @param {Object|string} textObj - The text object with en/zh keys or a string
  * @returns {string} - The localized text
  */
-function getLangText(textObj) {
-    // Get current language from localStorage or default to 'en'
-    const lang = localStorage.getItem('language') || 'en';
-
-    if (typeof textObj === 'string') return textObj;
-    if (!textObj) return '';
-
-    return textObj[lang] || textObj['en'] || '';
+function getPressText(value) {
+    return window.siteI18n.text(value, window.siteI18n.getLanguage('en'));
 }
 
 /**
@@ -48,22 +42,8 @@ function getLangText(textObj) {
  * @param {string} dateStr - Date string (e.g. "2025.02.18")
  * @returns {string} - Formatted date (e.g. "Feb 18, 2025")
  */
-function formatDate(dateStr) {
-    if (!dateStr) return '';
-    try {
-        // Handle "2025.02.18"
-        const parts = dateStr.split('.');
-        if (parts.length < 3) return dateStr;
-
-        const date = new Date(parts[0], parts[1] - 1, parts[2]);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-    } catch (e) {
-        return dateStr;
-    }
+function formatPressDate(value) {
+    return window.siteI18n.formatDate(value, window.siteI18n.getLanguage('en'));
 }
 
 function escapeAttr(value) {
@@ -82,44 +62,7 @@ function escapeAttr(value) {
 function renderPressList(container, limit) {
     container.innerHTML = '';
 
-    // Combine all press items
-    let allItems = [];
-    if (pressData.personalInterviews && pressData.personalInterviews.items) {
-        allItems = allItems.concat(pressData.personalInterviews.items);
-    }
-    if (pressData.groupExhibitions && pressData.groupExhibitions.items) {
-        allItems = allItems.concat(pressData.groupExhibitions.items);
-    }
-
-    // Extract press items from exhibitionsData
-    if (typeof exhibitionsData !== 'undefined') {
-        Object.keys(exhibitionsData).forEach(year => {
-            const exhibitions = exhibitionsData[year];
-            if (Array.isArray(exhibitions)) {
-                exhibitions.forEach(ex => {
-                    if (ex.press && Array.isArray(ex.press)) {
-                        ex.press.forEach(p => {
-                            allItems.push({
-                                title: p.title,
-                                description: p.description,
-                                publication: p.source, // Map source to publication
-                                url: p.url,
-                                date: p.date,
-                                thumbnail: p.thumbnail
-                            });
-                        });
-                    }
-                });
-            }
-        });
-    }
-
-    // Sort by date descending
-    allItems.sort((a, b) => {
-        const dateA = getLangText(a.date).split('.').join('-');
-        const dateB = getLangText(b.date).split('.').join('-');
-        return new Date(dateB) - new Date(dateA);
-    });
+    let allItems = window.siteContent.getPressItems();
 
     // Apply limit if provided
     if (limit && limit > 0) {
@@ -143,15 +86,15 @@ function renderPressList(container, limit) {
         const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(thumbnail) : '';
 
         // Handle date which might be an object or string
-        const dateStr = getLangText(item.date);
-        const title = getLangText(item.title);
+        const dateStr = getPressText(item.date);
+        const title = getPressText(item.title);
 
         pressItem.innerHTML = `
-            <div class="press-date">${formatDate(dateStr)}</div>
+            <div class="press-date">${formatPressDate(dateStr)}</div>
             <div class="press-content">
                 <h2 class="press-title">${title}</h2>
-                <div class="press-publication">${getLangText(item.publication)}</div>
-                <p class="press-excerpt">${getLangText(item.description)}</p>
+                <div class="press-publication">${getPressText(item.publication)}</div>
+                <p class="press-excerpt">${getPressText(item.description)}</p>
                 <a href="${item.url}" target="_blank" rel="noopener" class="press-link">Read Article <i class="fas fa-external-link-alt"></i></a>
             </div>
             <button type="button" class="press-image press-preview-trigger" data-preview-src="${escapeAttr(previewPath)}" data-fallback-src="${escapeAttr(originalPath)}" data-title="${escapeAttr(title)}" data-url="${escapeAttr(item.url)}">
