@@ -34,6 +34,7 @@ npm run serve
 | --- | --- |
 | `npm run check` | 校验语法、基础元数据、本地资源、内容数据与禁用的内联点击事件 |
 | `npm run serve` | 启动本地静态服务器 |
+| `npm run smoke` | 在本地服务启动后检查全部线上入口页 |
 
 ## 内容维护
 
