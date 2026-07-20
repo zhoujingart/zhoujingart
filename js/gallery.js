@@ -1054,6 +1054,7 @@ let currentSort = 'default';
 
 // 图片模态框相关变量
 let imageModal, imageModalImg, imageModalTitle;
+let lastGalleryTrigger = null;
 
 let galleryInitialized = false;
 
@@ -1066,6 +1067,7 @@ function initGallery() {
     initScrollOptimization();
     renderGallery();
     initImageModal();
+    initGalleryViewerTriggers();
 }
 
 document.addEventListener('languageReady', initGallery);
@@ -1365,7 +1367,7 @@ function createArtworkElement(artwork) {
                  onload="this.classList.add('is-loaded')">
             <div class="gallery-artwork-overlay">
                 <div class="gallery-artwork-actions">
-                    <button class="action-btn view-btn" onclick="openImageModal('${previewImage}', '${title}', '${artwork.image}')">
+                    <button type="button" class="action-btn view-btn" data-view-artwork-id="${artwork.id}" aria-label="${currentLang === 'zh' ? '查看大图：' : 'Zoom view: '}${title}">
                         <i class="fas fa-search-plus"></i>
                         <span>${currentLang === 'zh' ? '放大查看' : 'Zoom View'}</span>
                     </button>
@@ -1418,6 +1420,7 @@ function createArtworkElement(artwork) {
             // 防止事件冒泡
             e.preventDefault();
             e.stopPropagation();
+            lastGalleryTrigger = element;
             openImageModal(previewImage, title, artwork.image);
         });
 
@@ -1426,6 +1429,26 @@ function createArtworkElement(artwork) {
     }
 
     return element;
+}
+
+function initGalleryViewerTriggers() {
+    const container = document.querySelector('.gallery-grid');
+    if (!container) return;
+
+    container.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-view-artwork-id]');
+        if (!trigger) return;
+
+        const artwork = artworksData.find((item) => item.id === trigger.dataset.viewArtworkId);
+        if (!artwork) return;
+
+        lastGalleryTrigger = trigger;
+        openImageModal(
+            getOptimizedGalleryImage(artwork.image, 'preview'),
+            getArtworkText(artwork, 'title'),
+            artwork.image
+        );
+    });
 }
 
 // 初始化图片模态框
@@ -1472,6 +1495,7 @@ function openImageModal(imageSrc, imageTitle, fallbackSrc) {
         imageModal.classList.add('show');
     }, 10);
     document.body.style.overflow = 'hidden';
+    imageModal.querySelector('.modal-close')?.focus();
 }
 
 // 关闭图片模态框
@@ -1487,6 +1511,8 @@ function closeImageModal() {
             imageModalImg.onerror = null;
         }
         document.body.style.overflow = '';
+        if (lastGalleryTrigger instanceof HTMLElement) lastGalleryTrigger.focus();
+        lastGalleryTrigger = null;
     }, 300);
 }
 
