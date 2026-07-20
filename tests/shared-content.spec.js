@@ -18,12 +18,17 @@ test.describe('shared content layer', () => {
         expect(modernIds).toEqual(expectedIds);
     });
 
-    test('renders V2 gallery from shared artwork data', async ({ page }) => {
-        await page.goto('/v2/gallery.html');
-        await expect(page.locator('.gallery-item').first()).toBeVisible();
+    test('renders shared artwork data in both themes', async ({ browser }) => {
+        const classic = await browser.newPage();
+        await classic.goto('/gallery.html');
+        await expect(classic.locator('.gallery-artwork-card').first()).toBeVisible();
+        const contentCount = await classic.evaluate(() => window.siteContent.artworks.length);
+        await expect(classic.locator('.gallery-artwork-card')).toHaveCount(contentCount);
 
-        const contentCount = await page.evaluate(() => window.siteContent.artworks.length);
-        await expect(page.locator('.gallery-item')).toHaveCount(contentCount);
+        const modern = await browser.newPage();
+        await modern.goto('/v2/gallery.html');
+        await expect(modern.locator('.gallery-item').first()).toBeVisible();
+        await expect(modern.locator('.gallery-item')).toHaveCount(contentCount);
     });
 
     test('uses shared exhibition lookup in V2 detail', async ({ page }) => {

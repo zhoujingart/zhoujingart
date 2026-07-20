@@ -142,7 +142,7 @@ function checkOptimizedImage(file, imagePath, recordName, profile = 'card') {
     }
 }
 
-function loadPageData(file, variableName) {
+function loadContentData(file, dataKey) {
     const source = readFileSync(file, 'utf8');
     const context = {
         console,
@@ -152,17 +152,17 @@ function loadPageData(file, variableName) {
     };
 
     try {
-        vm.runInNewContext(`${source}\n;globalThis.__siteData = ${variableName};`, context, { filename: file });
-        return context.__siteData;
+        vm.runInNewContext(source, context, { filename: file });
+        return context.window.siteContentData?.[dataKey] || null;
     } catch (error) {
-        report(file, `could not load ${variableName} for validation: ${error.message}`);
+        report(file, `could not load ${dataKey} for validation: ${error.message}`);
         return null;
     }
 }
 
 function checkGalleryData() {
-    const file = resolve(root, 'js/gallery.js');
-    const artworks = loadPageData(file, 'artworksData');
+    const file = resolve(root, 'content/artworks.js');
+    const artworks = loadContentData(file, 'artworks');
     if (!Array.isArray(artworks)) {
         report(file, 'artworksData must be an array');
         return;
@@ -190,8 +190,8 @@ function checkGalleryData() {
 }
 
 function checkExhibitionData() {
-    const file = resolve(root, 'js/exhibitions.js');
-    const exhibitionsByYear = loadPageData(file, 'exhibitionsData');
+    const file = resolve(root, 'content/exhibitions.js');
+    const exhibitionsByYear = loadContentData(file, 'exhibitionsByYear');
     if (!exhibitionsByYear || typeof exhibitionsByYear !== 'object' || Array.isArray(exhibitionsByYear)) {
         report(file, 'exhibitionsData must be an object grouped by year');
         return;
@@ -259,6 +259,31 @@ function checkSharedContentConsumers() {
     }
 }
 
+function checkContentLayer() {
+    const contentFiles = [
+        ['content/artworks.js', 'window.siteContentData.artworks'],
+        ['content/exhibitions.js', 'window.siteContentData.exhibitionsByYear'],
+        ['content/press.js', 'window.siteContentData.press']
+    ];
+    const forbiddenRenderingPatterns = [/\bdocument\s*\./, /\baddEventListener\s*\(/, /\binnerHTML\b/];
+
+    for (const [path, assignment] of contentFiles) {
+        const file = resolve(root, path);
+        const source = readFileSync(file, 'utf8');
+        if (!source.includes(assignment)) report(file, `missing canonical content assignment: ${assignment}`);
+        for (const pattern of forbiddenRenderingPatterns) {
+            if (pattern.test(source)) report(file, 'content files must not contain rendering or event logic');
+        }
+    }
+
+    for (const path of ['js/gallery.js', 'js/exhibitions.js', 'js/press.js']) {
+        const file = resolve(root, path);
+        if (!readFileSync(file, 'utf8').startsWith('// Theme renderer.')) {
+            report(file, 'legacy entry must remain a renderer, not a content source');
+        }
+    }
+}
+
 walk(root);
 
 for (const file of jsFiles) {
@@ -287,6 +312,7 @@ for (const file of textFiles) {
 checkGalleryData();
 checkExhibitionData();
 checkSharedContentConsumers();
+checkContentLayer();
 
 if (errors.length) {
     console.error(`Site checks failed with ${errors.length} issue(s):`);

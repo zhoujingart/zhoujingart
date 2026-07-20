@@ -1,7 +1,8 @@
 (function initializeSiteContent() {
-    const artworks = typeof artworksData === 'undefined' ? [] : artworksData;
-    const exhibitionsByYear = typeof exhibitionsData === 'undefined' ? {} : exhibitionsData;
-    const press = typeof pressData === 'undefined' ? {} : pressData;
+    const contentData = window.siteContentData || {};
+    const artworks = contentData.artworks || [];
+    const exhibitionsByYear = contentData.exhibitionsByYear || {};
+    const press = contentData.press || {};
 
     function getExhibitionYears() {
         return Object.keys(exhibitionsByYear).sort((left, right) => Number(right) - Number(left));

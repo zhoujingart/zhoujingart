@@ -1,11 +1,11 @@
 # 展览内容维护
 
-展览数据位于 `js/exhibitions.js` 的 `exhibitionsData`。每次改动后运行 `npm run check`；它会检查 JavaScript 语法、展览 ID 是否重复、中英文内容是否完整，以及所有引用的本地图片是否存在。
+展览数据位于 `content/exhibitions.js` 的 `window.siteContentData.exhibitionsByYear`。每次改动后运行 `npm run check`；它会检查 JavaScript 语法、展览 ID 是否重复、中英文内容是否完整，以及所有引用的本地图片与优化图是否存在。
 
 ## 数据结构
 
 ```javascript
-const exhibitionsData = {
+window.siteContentData.exhibitionsByYear = {
     "2026": [
         {
             id: "2026-example-exhibition",

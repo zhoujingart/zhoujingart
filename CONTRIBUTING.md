@@ -15,11 +15,11 @@ npm run test:browser
 
 ## 内容更新
 
-- 作品集数据：`js/gallery.js`
-- 展览数据：`js/exhibitions.js`，字段说明见 `EXHIBITIONS_CONFIG.md`
-- 媒体报道：`js/press.js`
+- 作品集数据：`content/artworks.js`
+- 展览数据：`content/exhibitions.js`，字段说明见 `EXHIBITIONS_CONFIG.md`
+- 媒体报道：`content/press.js`
 - 双语界面文字：V1 为 `js/language.js`，V2 为 `v2/js/language.js`
-- 共享内容查询：`js/site-content.js`；新渲染器必须使用 `window.siteContent`，不要直接读取 `artworksData`、`exhibitionsData`、`pressData`
+- 共享内容查询：`js/site-content.js`；新渲染器必须使用 `window.siteContent`，不要直接读取内容文件的内部数据变量
 - 双语字段与安全转义：`js/site-i18n.js`
 - 优化图与回退路径：`js/site-media.js`
 - 页面样式：共享规则放在 `css/base/` 或 `css/components/`；仅页面专用的规则放在 `css/pages/`

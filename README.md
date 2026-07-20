@@ -18,6 +18,7 @@ npm run serve
 
 ```text
 ├── *.html                 # 线上页面
+├── content/                # 唯一内容源：作品、展览与媒体记录
 ├── css/
 │   ├── base/              # 变量、重置与全局规则
 │   ├── components/        # 可复用组件
@@ -46,7 +47,7 @@ npm run serve
 
 ## 共享内容架构
 
-内容仍维护在 `js/gallery.js`、`js/exhibitions.js` 与 `js/press.js`，以保持现有编辑格式与内容校验兼容。页面渲染器不得直接读取这些全局变量：应通过 `window.siteContent` 查询作品、展览和媒体数据；双语字段使用 `window.siteI18n`，图片使用 `window.siteMedia`。
+内容维护在 `content/artworks.js`、`content/exhibitions.js` 与 `content/press.js`。`js/gallery.js`、`js/exhibitions.js` 和 `js/press.js` 仅保留 V1 展示及交互逻辑。页面渲染器不得读取内容文件的内部变量：应通过 `window.siteContent` 查询作品、展览和媒体数据；双语字段使用 `window.siteI18n`，图片使用 `window.siteMedia`。
 
 这样 V1 与 V2 可以保持不同的视觉和交互，而同一条内容更新会自动进入两套界面。新增展示主题时，只新增渲染器，不复制内容数据。
 

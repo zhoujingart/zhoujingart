@@ -12,8 +12,8 @@ This is a static artist portfolio site. There is no build step or package manage
 
 ## Shared Content Contract
 
-- Author content in `js/gallery.js`, `js/exhibitions.js`, and `js/press.js`. These are the current canonical records and are validated by `npm run check`.
-- New or migrated renderers must use `window.siteContent` rather than direct `artworksData`, `exhibitionsData`, or `pressData` globals.
+- Author content in `content/artworks.js`, `content/exhibitions.js`, and `content/press.js`. These are the canonical records and are validated by `npm run check`.
+- New or migrated renderers must use `window.siteContent` rather than direct content-file variables.
 - Use `window.siteI18n.text(value, language)` for bilingual content fields and `window.siteI18n.formatDate(value, language)` for dates. Keep theme-specific interface dictionaries in the theme only.
 - Use `window.siteMedia.getOptimizedPath(source, profile, prefix)` and `window.siteMedia.setImageSource(...)` for display images. V2 passes `../` as its prefix; original images remain the fallback.
 - Put cross-theme queries (find by ID, latest records, merged press) in `js/site-content.js`. Put DOM and visual decisions in the V1 or V2 renderer.
