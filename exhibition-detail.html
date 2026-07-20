@@ -76,6 +76,7 @@
     <script src="js/exhibition-detail-bootstrap.js"></script>
     <script src="js/exhibition-detail-helpers.js"></script>
     <script src="js/exhibition-detail-controller.js"></script>
+    <script src="js/exhibition-detail-interactions.js"></script>
     <script>
         // 渲染展览详情页面内容
         function renderExhibitionDetailPage(exhibition) {
@@ -300,33 +301,7 @@
                 const detailContent = document.getElementById('exhibitionDetailContent');
                 detailContent.innerHTML = content;
 
-                const openViewer = (event) => {
-                    const trigger = event.target.closest('.viewer-trigger');
-                    if (!trigger) return;
-
-                    const index = Number(trigger.dataset.viewerIndex);
-                    if (!Number.isInteger(index)) return;
-
-                    if (trigger.dataset.viewerType === 'image') {
-                        openImageViewer(index, exhibition.id);
-                    } else if (trigger.dataset.viewerType === 'artwork') {
-                        const artwork = exhibition.artworks[index];
-                        if (artwork) openArtworkViewer(artwork.image, getArtworkText(artwork, 'title'));
-                    } else if (trigger.dataset.viewerType === 'document') {
-                        const documentItem = exhibition.documents[index];
-                        if (documentItem) openCertificateViewer(documentItem.image, getDocText(documentItem, 'title'));
-                    }
-                };
-
-                detailContent.onclick = openViewer;
-                detailContent.onkeydown = (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        if (event.target.closest('.viewer-trigger')) {
-                            event.preventDefault();
-                            openViewer(event);
-                        }
-                    }
-                };
+                bindExhibitionDetailInteractions(detailContent, exhibition, getArtworkText);
             });
         }
 
