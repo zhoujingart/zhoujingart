@@ -1,74 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-zh="周婧 - 展览" data-en="Zhou Jing - Exhibitions">Zhou Jing - Exhibitions</title>
+    <title data-zh="周婧 - 展览详情" data-en="Zhou Jing - Exhibition Detail">Zhou Jing - Exhibition Detail</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/base.css">
-    <!-- 展览详情页特定样式 -->
-    <link rel="stylesheet" href="css/pages/exhibitions.css">
     <link rel="stylesheet" href="css/pages/exhibition-detail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-
 <body>
     <header class="header">
         <nav class="nav-container">
             <div class="logo" data-i18n="home.title"></div>
-            <button class="mobile-menu-toggle" aria-label="菜单" aria-controls="primary-navigation" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+            <button class="mobile-menu-toggle" aria-label="菜单" aria-controls="primary-navigation" aria-expanded="false"><span></span><span></span><span></span></button>
             <div class="nav-right" id="primary-navigation">
                 <ul class="nav-links">
-                    <li><a href="index.html" class="nav-link" data-i18n="nav.home" title="Home">Home</a></li>
-                    <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery" title="Gallery">Gallery</a></li>
-                    <li><a href="exhibitions.html" class="nav-link active" data-i18n="nav.exhibitions"
-                            title="Exhibitions">Exhibitions</a></li>
-                    <li><a href="about.html" class="nav-link" data-i18n="nav.about" title="About">About</a></li>
-                    <li><a href="press.html" class="nav-link" data-i18n="nav.press" title="Press">Press</a></li>
-                    <li><a href="studio.html" class="nav-link" data-i18n="nav.studio" title="Studio">Studio</a></li>
-                    <li><a href="contact.html" class="nav-link" data-i18n="nav.contact" title="Contact">Contact</a></li>
+                    <li><a href="index.html" class="nav-link" data-i18n="nav.home">Home</a></li>
+                    <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery">Gallery</a></li>
+                    <li><a href="exhibitions.html" class="nav-link active" data-i18n="nav.exhibitions">Exhibitions</a></li>
+                    <li><a href="about.html" class="nav-link" data-i18n="nav.about">About</a></li>
+                    <li><a href="press.html" class="nav-link" data-i18n="nav.press">Press</a></li>
+                    <li><a href="studio.html" class="nav-link" data-i18n="nav.studio">Studio</a></li>
+                    <li><a href="contact.html" class="nav-link" data-i18n="nav.contact">Contact</a></li>
                 </ul>
-                <button class="lang-toggle" aria-label="切换语言">
-                    <span class="lang-text" data-i18n="lang.current"></span>
-                    <i class="fas fa-globe"></i>
-                </button>
+                <button class="lang-toggle" aria-label="切换语言"><span class="lang-text" data-i18n="lang.current"></span><i class="fas fa-globe"></i></button>
             </div>
         </nav>
     </header>
-
-    <!-- 主要内容 -->
-    <main class="exhibition-detail-page site-full-bg">
-        <!-- 返回按钮 -->
-        <div class="back-navigation">
-            <a href="exhibitions.html" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                <span data-i18n="exhibitions.backToList">返回展览列表</span>
-            </a>
-        </div>
-
-        <!-- 展览详情内容 -->
-        <div class="exhibition-detail-container">
-            <div id="exhibitionDetailContent">
-                <!-- 动态加载的展览内容 -->
-                <div class="loading-state">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>加载中...</p>
-                </div>
-            </div>
+    <main class="exhibition-detail-page">
+        <div class="container">
+            <a href="exhibitions.html" class="back-link"><i class="fas fa-arrow-left"></i><span data-i18n="exhibitions.backToList">Back to Exhibition List</span></a>
+            <div id="exhibitionDetailContent"></div>
         </div>
     </main>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <p data-i18n="footer.copyright">© 2026 周婧. 保留所有权利.</p>
-    </footer>
-
-    <!-- JavaScript -->
+    <footer class="footer"><p data-i18n="footer.copyright">© 2026 周婧. 保留所有权利.</p></footer>
     <script src="js/language.js"></script>
     <script src="js/image-optimization.js"></script>
     <script src="js/mobile-menu.js"></script>
@@ -77,237 +43,6 @@
     <script src="js/exhibition-detail-helpers.js"></script>
     <script src="js/exhibition-detail-controller.js"></script>
     <script src="js/exhibition-detail-interactions.js"></script>
-    <script>
-        // 渲染展览详情页面内容
-        function renderExhibitionDetailPage(exhibition) {
-            // 使用 requestAnimationFrame 优化渲染性能
-            requestAnimationFrame(() => {
-                const currentLang = window.languageManager?.currentLang || 'zh';
-                const title = exhibition.title[currentLang] || exhibition.title.zh;
-                const organizer = exhibition.organizer[currentLang] || exhibition.organizer.zh;
-                const location = exhibition.location[currentLang] || exhibition.location.zh;
-                const type = exhibition.country[currentLang] || exhibition.country.zh;
-                const description = exhibition.description[currentLang] || exhibition.description.zh;
-                const organizerDescription = exhibition.organizerDescription[currentLang] || exhibition.organizerDescription.zh;
-                const organizerLink = exhibition.organizerLink ? (exhibition.organizerLink[currentLang] || exhibition.organizerLink.zh) : '';
-
-                const hasOrganizerSection = Boolean((organizerDescription && organizerDescription.trim()) || (organizerLink && organizerLink.trim()));
-                const hasDescriptionSection = Boolean(description && description.trim());
-                const hasOrganizerName = Boolean(organizer && organizer.trim());
-                const hasPeriod = Boolean(exhibition.date && String(exhibition.date).trim());
-                const hasLocation = Boolean(location && location.trim());
-                const hasCountry = Boolean(type && type.trim());
-
-                const getImageText = (image, field) => getDetailLocalizedText(image, field, currentLang);
-                const getArtworkText = (artwork, field) => getDetailLocalizedText(artwork, field, currentLang);
-                const getPressText = (press, field) => getDetailLocalizedText(press, field, currentLang);
-                const getDocText = (documentItem, field) => getDetailLocalizedText(documentItem, field, currentLang);
-
-                // 找到海报图片
-                const posterImage = getDetailPosterImage(exhibition.images, currentLang);
-
-                // 展览现场照片（排除海报）
-                const siteImages = exhibition.images.filter(img => img !== posterImage);
-
-                const content = `
-                <!-- 展览标题 -->
-                <div class="exhibition-header">
-                    <h1 class="exhibition-title">${title}</h1>
-                    <div class="exhibition-info-card">
-                        ${hasOrganizerName ? `
-                        <div class="info-row">
-                            <span class="info-label">${window.getTranslation ? window.getTranslation('exhibitions.organizer') : '主办方'}</span>
-                            <span class="info-value">${organizer}</span>
-                        </div>
-                        ` : ''}
-                        ${hasPeriod ? `
-                        <div class="info-row">
-                            <span class="info-label">${window.getTranslation ? window.getTranslation('exhibitions.period') : '展期'}</span>
-                            <span class="info-value">${exhibition.date}</span>
-                        </div>
-                        ` : ''}
-                        ${hasLocation ? `
-                        <div class="info-row">
-                            <span class="info-label">${window.getTranslation ? window.getTranslation('exhibitions.location') : '地点'}</span>
-                            <span class="info-value">${location}</span>
-                        </div>
-                        ` : ''}
-                        ${hasCountry ? `
-                        <div class="info-row">
-                            <span class="info-label">${window.getTranslation ? window.getTranslation('exhibitions.country') : '国家'}</span>
-                            <span class="info-value">${type}</span>
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
-
-                <!-- 展览海报 -->
-                <div class="exhibition-poster-section">
-                    <div class="poster-container">
-                        <img src="${getDetailImagePath(posterImage.src, 'preview')}"
-                             alt="${getImageText(posterImage, 'title')}"
-                             loading="eager"
-                             decoding="async"
-                             onerror="this.onerror=null;this.src='${posterImage.src}'"
-                             class="viewer-trigger"
-                             role="button"
-                             tabindex="0"
-                             data-viewer-type="image"
-                             data-viewer-index="${exhibition.images.indexOf(posterImage)}"
-                             aria-label="${currentLang === 'en' ? 'View image: ' : '查看大图：'}${getImageText(posterImage, 'title')}">
-                        <div class="poster-caption">${getImageText(posterImage, 'title')}</div>
-                    </div>
-                </div>
-
-                <!-- 主办方介绍 -->
-                ${hasOrganizerSection ? `
-                <div class="exhibition-info-section">
-                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.aboutOrganizer') : '主办方介绍'}</h2>
-                    <div class="organizer-content">
-                        <div class="organizer-name">${organizer}</div>
-                        ${organizerDescription && organizerDescription.trim() ? `<p class="exhibition-aboutOrganizer">${organizerDescription}</p>` : ''}
-                        ${organizerLink && organizerLink.trim() ? `
-                        <div class="organizer-link">
-                            <a href="${organizerLink}" target="_blank" rel="noopener noreferrer" class="organizer-link-btn">
-                                <i class="fas fa-external-link-alt"></i>
-                                <span>${window.getTranslation ? window.getTranslation('exhibitions.learnMore') : '了解更多'}</span>
-                            </a>
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
-                ` : ''}
-
-                <!-- 展览基本信息 -->
-                ${hasDescriptionSection ? `
-                <div class="exhibition-info-section">
-                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.description') : '展览介绍'}</h2>
-                    <p class="exhibition-description">${description}</p>
-                </div>
-                ` : ''}
-
-                <!-- 参展作品 -->
-                ${exhibition.artworks && exhibition.artworks.length > 0 ? `
-                <div class="exhibition-artworks">
-                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.artworks') : '参展作品'}</h2>
-                    <div class="artworks-grid ${exhibition.artworks.length === 1 ? 'single-artwork' : ''}">
-                        ${exhibition.artworks.map((artwork, index) => `
-                            <div class="artwork-card">
-                                ${artwork.image ? `
-                                <div class="artwork-image">
-                                    <img src="${getDetailImagePath(artwork.image, 'card')}"
-                                         alt="${getArtworkText(artwork, 'title')}"
-                                         loading="lazy"
-                                         decoding="async"
-                                         onerror="this.onerror=null;this.src='${artwork.image}'"
-                                         class="viewer-trigger"
-                                         role="button"
-                                         tabindex="0"
-                                         data-viewer-type="artwork"
-                                         data-viewer-index="${index}"
-                                         aria-label="${currentLang === 'en' ? 'View artwork: ' : '查看作品大图：'}${getArtworkText(artwork, 'title')}">
-                                </div>
-                                ` : ''}
-                                <div class="artwork-header">
-                                    <h4>${getArtworkText(artwork, 'title')}</h4>
-                                </div>
-                                <div class="artwork-details">
-                                    <div class="detail-row">
-                                        <span class="detail-label">${window.getTranslation ? window.getTranslation('exhibitions.medium') : '媒材'}：</span>
-                                        <span class="detail-value">${getArtworkText(artwork, 'medium')}</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">${window.getTranslation ? window.getTranslation('exhibitions.size') : '尺寸'}：</span>
-                                        <span class="detail-value">${artwork.size}</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">${window.getTranslation ? window.getTranslation('exhibitions.year') : '年份'}：</span>
-                                        <span class="detail-value">${artwork.year}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                ` : ''}
-
-                <!-- 展会现场照片 -->
-                ${siteImages.length > 0 ? `
-                <div class="exhibition-site">
-                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.exhibitionSite') : '展览现场'}</h2>
-                    <div class="site-images-grid">
-                        ${siteImages.map((img, index) => `
-                            <div class="site-image-item viewer-trigger" role="button" tabindex="0"
-                                 data-viewer-type="image" data-viewer-index="${exhibition.images.indexOf(img)}"
-                                 aria-label="${currentLang === 'en' ? 'View image: ' : '查看大图：'}${getImageText(img, 'title')}">
-                                <img src="${getDetailImagePath(img.src, 'card')}"
-                                     alt="${getImageText(img, 'title')}"
-                                     loading="lazy"
-                                     decoding="async"
-                                     onerror="this.onerror=null;this.src='${img.src}'">
-                                <div class="image-caption">
-                                    <div class="image-title">${getImageText(img, 'title')}</div>
-                                    <div class="image-description">${getImageText(img, 'description')}</div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                ` : ''}
-
-                <!-- 展览文档 -->
-                ${exhibition.documents && exhibition.documents.length > 0 ? `
-                <div class="exhibition-certificates">
-                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.documents') : '展览文档'}</h2>
-                    <div class="certificates-grid ${exhibition.documents.length === 1 ? 'single-document' : ''}">
-                        ${exhibition.documents.map(doc => `
-                            <div class="certificate-item viewer-trigger" role="button" tabindex="0"
-                                 data-viewer-type="document" data-viewer-index="${index}"
-                                 aria-label="${currentLang === 'en' ? 'View document: ' : '查看文档大图：'}${getDocText(doc, 'title')}">
-                                <img src="${getDetailImagePath(doc.image, 'card')}"
-                                     alt="${getDocText(doc, 'title')}"
-                                     loading="lazy"
-                                     decoding="async"
-                                     onerror="this.onerror=null;this.src='${doc.image}'">
-                                <div class="certificate-title">${getDocText(doc, 'title')}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                ` : ''}
-
-                <!-- 媒体报道 -->
-                ${exhibition.press && exhibition.press.length > 0 ? `
-                <div class="exhibition-press">
-                    <h2>${window.getTranslation ? window.getTranslation('exhibitions.press') : '媒体报道'}</h2>
-                    <div class="press-grid">
-                        ${exhibition.press.map(press => `
-                            <div class="press-card">
-                                <h4 class="press-title">
-                                    ${press.url ? `<a href="${press.url}" target="_blank" rel="noopener noreferrer">${getPressText(press, 'title')} <i class="fas fa-external-link-alt"></i></a>` : getPressText(press, 'title')}
-                                </h4>
-                                <div class="press-meta">
-                                    <span class="press-source">${getPressText(press, 'source')}</span>
-                                    <span class="press-date">${press.date}</span>
-                                </div>
-                                ${getPressText(press, 'description') ? `<p class="press-description">${getPressText(press, 'description')}</p>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                ` : ''}
-            `;
-
-                const detailContent = document.getElementById('exhibitionDetailContent');
-                detailContent.innerHTML = content;
-
-                bindExhibitionDetailInteractions(detailContent, exhibition, getArtworkText);
-            });
-        }
-
-        initializeExhibitionDetail(renderExhibitionDetail);
-    </script>
     <script src="js/exhibition-detail-renderer.js"></script>
 </body>
-
 </html>
