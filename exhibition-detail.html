@@ -232,7 +232,12 @@
                              loading="eager"
                              decoding="async"
                              onerror="this.onerror=null;this.src='${posterImage.src}'"
-                             onclick="openImageViewer(${exhibition.images.indexOf(posterImage)}, '${exhibition.id}')">
+                             class="viewer-trigger"
+                             role="button"
+                             tabindex="0"
+                             data-viewer-type="image"
+                             data-viewer-index="${exhibition.images.indexOf(posterImage)}"
+                             aria-label="${currentLang === 'en' ? 'View image: ' : '查看大图：'}${getImageText(posterImage, 'title')}">
                         <div class="poster-caption">${getImageText(posterImage, 'title')}</div>
                     </div>
                 </div>
@@ -278,7 +283,12 @@
                                          loading="lazy"
                                          decoding="async"
                                          onerror="this.onerror=null;this.src='${artwork.image}'"
-                                         onclick="openArtworkViewer('${artwork.image}', '${getArtworkText(artwork, 'title')}')">
+                                         class="viewer-trigger"
+                                         role="button"
+                                         tabindex="0"
+                                         data-viewer-type="artwork"
+                                         data-viewer-index="${index}"
+                                         aria-label="${currentLang === 'en' ? 'View artwork: ' : '查看作品大图：'}${getArtworkText(artwork, 'title')}">
                                 </div>
                                 ` : ''}
                                 <div class="artwork-header">
@@ -310,7 +320,9 @@
                     <h2>${window.getTranslation ? window.getTranslation('exhibitions.exhibitionSite') : '展览现场'}</h2>
                     <div class="site-images-grid">
                         ${siteImages.map((img, index) => `
-                            <div class="site-image-item" onclick="openImageViewer(${exhibition.images.indexOf(img)}, '${exhibition.id}')">
+                            <div class="site-image-item viewer-trigger" role="button" tabindex="0"
+                                 data-viewer-type="image" data-viewer-index="${exhibition.images.indexOf(img)}"
+                                 aria-label="${currentLang === 'en' ? 'View image: ' : '查看大图：'}${getImageText(img, 'title')}">
                                 <img src="${getDisplayImageSrc(img.src, 'card')}"
                                      alt="${getImageText(img, 'title')}"
                                      loading="lazy"
@@ -332,7 +344,9 @@
                     <h2>${window.getTranslation ? window.getTranslation('exhibitions.documents') : '展览文档'}</h2>
                     <div class="certificates-grid ${exhibition.documents.length === 1 ? 'single-document' : ''}">
                         ${exhibition.documents.map(doc => `
-                            <div class="certificate-item" onclick="openCertificateViewer('${doc.image}', '${getDocText(doc, 'title')}')">
+                            <div class="certificate-item viewer-trigger" role="button" tabindex="0"
+                                 data-viewer-type="document" data-viewer-index="${index}"
+                                 aria-label="${currentLang === 'en' ? 'View document: ' : '查看文档大图：'}${getDocText(doc, 'title')}">
                                 <img src="${getDisplayImageSrc(doc.image, 'card')}"
                                      alt="${getDocText(doc, 'title')}"
                                      loading="lazy"
@@ -367,36 +381,36 @@
                 ` : ''}
             `;
 
-                document.getElementById('exhibitionDetailContent').innerHTML = content;
-            });
-        }
+                const detailContent = document.getElementById('exhibitionDetailContent');
+                detailContent.innerHTML = content;
 
-        // 打开证书查看器
-        function openCertificateViewer(imageSrc, title) {
-            // 使用 requestAnimationFrame 优化模态框动画
-            requestAnimationFrame(() => {
-                const displaySrc = window.getOptimizedImagePath ? window.getOptimizedImagePath(imageSrc, 'preview') : imageSrc;
-                const viewer = document.createElement('div');
-                viewer.className = 'certificate-viewer-modal';
-                viewer.innerHTML = `
-                    <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
-                    <div class="viewer-content">
-                        <img src="${displaySrc}"
-                             alt="${title}"
-                             loading="lazy"
-                             decoding="async"
-                             onerror="this.onerror=null;this.src='${imageSrc}'">
-                        <div class="viewer-info">
-                            <h3>${title}</h3>
-                        </div>
-                        <button class="viewer-close" onclick="this.parentElement.parentElement.remove()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `;
+                const openViewer = (event) => {
+                    const trigger = event.target.closest('.viewer-trigger');
+                    if (!trigger) return;
 
-                document.body.appendChild(viewer);
-                setTimeout(() => viewer.classList.add('show'), 10);
+                    const index = Number(trigger.dataset.viewerIndex);
+                    if (!Number.isInteger(index)) return;
+
+                    if (trigger.dataset.viewerType === 'image') {
+                        openImageViewer(index, exhibition.id);
+                    } else if (trigger.dataset.viewerType === 'artwork') {
+                        const artwork = exhibition.artworks[index];
+                        if (artwork) openArtworkViewer(artwork.image, getArtworkText(artwork, 'title'));
+                    } else if (trigger.dataset.viewerType === 'document') {
+                        const documentItem = exhibition.documents[index];
+                        if (documentItem) openCertificateViewer(documentItem.image, getDocText(documentItem, 'title'));
+                    }
+                };
+
+                detailContent.onclick = openViewer;
+                detailContent.onkeydown = (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        if (event.target.closest('.viewer-trigger')) {
+                            event.preventDefault();
+                            openViewer(event);
+                        }
+                    }
+                };
             });
         }
 

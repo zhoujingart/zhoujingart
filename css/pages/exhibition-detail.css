@@ -90,6 +90,11 @@
     image-rendering: optimizeQuality; 
 }
 
+.viewer-trigger:focus-visible {
+    outline: 3px solid var(--secondary-color);
+    outline-offset: 4px;
+}
+
 @media (hover: hover) and (pointer: fine) {
     .poster-container img:hover { 
         transform: scale(1.01); 
@@ -221,4 +226,3 @@
 @media (max-width: 480px) {
     .artworks-grid { gap: 1rem; }
 }
-
