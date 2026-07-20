@@ -1,4 +1,4 @@
-function renderExhibitionDetailPage(exhibition) {
+function renderExhibitionDetailPageExternal(exhibition) {
     requestAnimationFrame(() => {
         const language = window.languageManager?.currentLang || 'zh';
         const text = (item, field) => getDetailLocalizedText(item, field, language);
