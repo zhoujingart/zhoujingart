@@ -74,6 +74,7 @@
     <script src="js/mobile-menu.js"></script>
     <script src="js/exhibitions.js"></script>
     <script src="js/exhibition-detail-bootstrap.js"></script>
+    <script src="js/exhibition-detail-helpers.js"></script>
     <script>
         // 页面渲染器由独立启动脚本在首次加载和语言切换时调用。
         function renderExhibitionDetail(exhibitionId) {
@@ -146,47 +147,13 @@
                 const hasLocation = Boolean(location && location.trim());
                 const hasCountry = Boolean(type && type.trim());
 
-                // 获取多语言图片描述的函数
-                function getImageText(img, field) {
-                    if (typeof img[field] === 'object' && img[field] !== null) {
-                        return img[field][currentLang] || img[field].zh || img[field];
-                    }
-                    return img[field] || '';
-                }
-
-                // 获取作品字段的多语言文本
-                function getArtworkText(artwork, field) {
-                    if (typeof artwork[field] === 'object' && artwork[field] !== null) {
-                        return artwork[field][currentLang] || artwork[field].zh || artwork[field];
-                    }
-                    return artwork[field] || '';
-                }
-
-                // 获取媒体报道字段的多语言文本
-                function getPressText(press, field) {
-                    if (typeof press[field] === 'object' && press[field] !== null) {
-                        return press[field][currentLang] || press[field].zh || press[field];
-                    }
-                    return press[field] || '';
-                }
-
-                // 文档字段多语言文本
-                function getDocText(doc, field) {
-                    if (typeof doc[field] === 'object' && doc[field] !== null) {
-                        return doc[field][currentLang] || doc[field].zh || doc[field];
-                    }
-                    return doc[field] || '';
-                }
-
-                function getDisplayImageSrc(src, profile = 'card') {
-                    return window.getOptimizedImagePath ? window.getOptimizedImagePath(src, profile) : src;
-                }
+                const getImageText = (image, field) => getDetailLocalizedText(image, field, currentLang);
+                const getArtworkText = (artwork, field) => getDetailLocalizedText(artwork, field, currentLang);
+                const getPressText = (press, field) => getDetailLocalizedText(press, field, currentLang);
+                const getDocText = (documentItem, field) => getDetailLocalizedText(documentItem, field, currentLang);
 
                 // 找到海报图片
-                const posterImage = exhibition.images.find(img => {
-                    const title = getImageText(img, 'title');
-                    return title.includes('海报') || title.includes('poster') || title.includes('Poster');
-                }) || exhibition.images[0];
+                const posterImage = getDetailPosterImage(exhibition.images, currentLang);
 
                 // 展览现场照片（排除海报）
                 const siteImages = exhibition.images.filter(img => img !== posterImage);
@@ -226,7 +193,7 @@
                 <!-- 展览海报 -->
                 <div class="exhibition-poster-section">
                     <div class="poster-container">
-                        <img src="${getDisplayImageSrc(posterImage.src, 'preview')}"
+                        <img src="${getDetailImagePath(posterImage.src, 'preview')}"
                              alt="${getImageText(posterImage, 'title')}"
                              loading="eager"
                              decoding="async"
@@ -277,7 +244,7 @@
                             <div class="artwork-card">
                                 ${artwork.image ? `
                                 <div class="artwork-image">
-                                    <img src="${getDisplayImageSrc(artwork.image, 'card')}"
+                                    <img src="${getDetailImagePath(artwork.image, 'card')}"
                                          alt="${getArtworkText(artwork, 'title')}"
                                          loading="lazy"
                                          decoding="async"
@@ -322,7 +289,7 @@
                             <div class="site-image-item viewer-trigger" role="button" tabindex="0"
                                  data-viewer-type="image" data-viewer-index="${exhibition.images.indexOf(img)}"
                                  aria-label="${currentLang === 'en' ? 'View image: ' : '查看大图：'}${getImageText(img, 'title')}">
-                                <img src="${getDisplayImageSrc(img.src, 'card')}"
+                                <img src="${getDetailImagePath(img.src, 'card')}"
                                      alt="${getImageText(img, 'title')}"
                                      loading="lazy"
                                      decoding="async"
@@ -346,7 +313,7 @@
                             <div class="certificate-item viewer-trigger" role="button" tabindex="0"
                                  data-viewer-type="document" data-viewer-index="${index}"
                                  aria-label="${currentLang === 'en' ? 'View document: ' : '查看文档大图：'}${getDocText(doc, 'title')}">
-                                <img src="${getDisplayImageSrc(doc.image, 'card')}"
+                                <img src="${getDetailImagePath(doc.image, 'card')}"
                                      alt="${getDocText(doc, 'title')}"
                                      loading="lazy"
                                      decoding="async"
