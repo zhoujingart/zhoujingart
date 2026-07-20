@@ -233,7 +233,44 @@ function checkExhibitionData() {
                 checkDataImage(file, document?.image, recordName);
                 checkOptimizedImage(file, document?.image, recordName);
             }
+            for (const pressItem of exhibition?.press || []) {
+                checkPressItem(file, pressItem, `${recordName} press item`);
+            }
         }
+    }
+}
+
+function checkPressItem(file, item, recordName) {
+    for (const field of ['title', 'description']) {
+        checkBilingualField(file, item?.[field], field, recordName);
+    }
+    if (!isNonEmptyString(item?.url) || !/^https?:\/\//i.test(item.url)) {
+        report(file, `${recordName}: url must be an HTTP(S) URL`);
+    }
+    if (!isNonEmptyString(item?.date) || !/^\d{4}\.\d{2}\.\d{2}$/.test(item.date)) {
+        report(file, `${recordName}: date must use YYYY.MM.DD`);
+    }
+    if (isNonEmptyString(item?.thumbnail)) {
+        checkDataImage(file, item.thumbnail, recordName);
+        checkOptimizedImage(file, item.thumbnail, recordName, 'pressThumb');
+        checkOptimizedImage(file, item.thumbnail, recordName, 'pressPreview');
+    }
+}
+
+function checkPressData() {
+    const file = resolve(root, 'content/press.js');
+    const press = loadContentData(file, 'press');
+    if (!press || typeof press !== 'object' || Array.isArray(press)) {
+        report(file, 'press must be an object grouped by section');
+        return;
+    }
+
+    for (const [section, value] of Object.entries(press)) {
+        if (!Array.isArray(value?.items)) {
+            report(file, `press section ${section}: items must be an array`);
+            continue;
+        }
+        for (const item of value.items) checkPressItem(file, item, `press item in ${section}`);
     }
 }
 
@@ -311,6 +348,7 @@ for (const file of textFiles) {
 
 checkGalleryData();
 checkExhibitionData();
+checkPressData();
 checkSharedContentConsumers();
 checkContentLayer();
 

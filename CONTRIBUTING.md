@@ -41,7 +41,7 @@ npm run test:browser
 - 全部 HTML 页面的 `lang`、viewport、title 与重复 ID；
 - HTML、CSS、JavaScript 内的本地图片、PDF、样式和脚本引用；
 - 全部 JavaScript 文件的语法。
-- 动态内容对应的优化图是否存在；
+- 动态内容对应的优化图是否存在，媒体报道的 URL、日期、双语字段与预览图是否完整；
 - V2 数据渲染器是否绕过共享内容 API。
 
 GitHub Actions 会在推送和拉取请求时运行相同检查和 Chromium 浏览器回归。修改共享内容层后必须执行 `npm run test:browser`；它会验证 V1/V2 展览数据一致、V2 作品集及详情页均使用共享数据。
