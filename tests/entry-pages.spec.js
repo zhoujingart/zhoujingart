@@ -63,3 +63,28 @@ test('V2 exhibition detail keeps the shared menu translated', async ({ page }) =
     await expect(page.locator('#primary-navigation [data-i18n="nav.home"]')).toHaveText('首页');
     await expect(page.locator('#primary-navigation [data-i18n="nav.exhibitions"]')).toHaveText('展览');
 });
+
+test('V1 mobile navigation manages ARIA state and keyboard focus', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/index.html');
+
+    const menuToggle = page.locator('.mobile-menu-toggle');
+    const navigation = page.locator('#primary-navigation');
+    const firstLink = navigation.locator('.nav-link').first();
+
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(navigation).toHaveAttribute('aria-hidden', 'true');
+
+    await menuToggle.focus();
+    await page.keyboard.press('Enter');
+
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(navigation).toHaveAttribute('aria-hidden', 'false');
+    await expect(firstLink).toBeFocused();
+
+    await page.keyboard.press('Escape');
+
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(navigation).toHaveAttribute('aria-hidden', 'true');
+    await expect(menuToggle).toBeFocused();
+});

@@ -344,6 +344,20 @@ function checkV2Navigation() {
     }
 }
 
+function checkRootMobileNavigation() {
+    const rootHtmlFiles = htmlFiles.filter((file) => !displayPath(file).includes('/'));
+
+    for (const file of rootHtmlFiles) {
+        const source = readFileSync(file, 'utf8');
+        if (!/<button\b[^>]*\bclass=["'][^"']*\bmobile-menu-toggle\b[^"']*["'][^>]*\baria-controls=["']primary-navigation["'][^>]*\baria-expanded=["']false["']/i.test(source)) {
+            report(file, 'mobile menu toggle must be a button with navigation ARIA state');
+        }
+        if (!/<(?:div|nav)\b[^>]*\bclass=["'][^"']*\bnav-right\b[^"']*["'][^>]*\bid=["']primary-navigation["']/i.test(source)) {
+            report(file, 'mobile navigation must expose the primary-navigation target');
+        }
+    }
+}
+
 walk(root);
 
 for (const file of jsFiles) {
@@ -375,6 +389,7 @@ checkPressData();
 checkSharedContentConsumers();
 checkContentLayer();
 checkV2Navigation();
+checkRootMobileNavigation();
 
 if (errors.length) {
     console.error(`Site checks failed with ${errors.length} issue(s):`);
