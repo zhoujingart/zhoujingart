@@ -338,6 +338,11 @@ class LanguageManager {
         if (langText) {
             langText.textContent = this.currentLang === 'zh' ? 'EN' : '中';
         }
+
+        const langToggle = document.querySelector('.lang-toggle');
+        if (langToggle) {
+            langToggle.setAttribute('aria-label', this.getTranslation('lang.switch'));
+        }
     }
 }
 

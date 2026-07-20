@@ -30,3 +30,27 @@ for (const path of entryPages) {
         expect(errors).toEqual([]);
     });
 }
+
+test('V2 navigation is keyboard accessible', async ({ page }) => {
+    await page.goto('/v2/index.html');
+
+    const menuToggle = page.locator('.menu-toggle');
+    const menuOverlay = page.locator('#primary-navigation');
+    const menuClose = page.locator('.menu-close');
+
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(menuOverlay).toHaveAttribute('aria-hidden', 'true');
+
+    await menuToggle.focus();
+    await page.keyboard.press('Enter');
+
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(menuOverlay).toHaveAttribute('aria-hidden', 'false');
+    await expect(menuClose).toBeFocused();
+
+    await page.keyboard.press('Escape');
+
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(menuOverlay).toHaveAttribute('aria-hidden', 'true');
+    await expect(menuToggle).toBeFocused();
+});

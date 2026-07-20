@@ -32,22 +32,22 @@
     <nav class="navbar">
         <div class="logo"><a href="index.html">ZHOU JING</a></div>
         <div class="nav-controls">
-            <div class="lang-toggle">
+            <button type="button" class="lang-toggle" aria-label="Switch language">
                 <span class="lang-text">中</span>
-            </div>
-            <div class="menu-toggle">
+            </button>
+            <button type="button" class="menu-toggle" aria-controls="primary-navigation" aria-expanded="false">
                 <span data-i18n="nav.menu">MENU</span>
                 <div class="hamburger">
                     <div class="line"></div>
                     <div class="line"></div>
                 </div>
-            </div>
+            </button>
         </div>
     </nav>
 
     <!-- Full Screen Menu Overlay -->
-    <div class="menu-overlay">
-        <div class="menu-close">CLOSE</div>
+    <div class="menu-overlay" id="primary-navigation" aria-hidden="true">
+        <button type="button" class="menu-close" data-i18n="nav.close">CLOSE</button>
         <ul class="menu-items">
             <li><a href="index.html" class="menu-link">Home <span class="menu-number">01</span></a></li>
             <li><a href="gallery.html" class="menu-link">Works <span class="menu-number">02</span></a></li>

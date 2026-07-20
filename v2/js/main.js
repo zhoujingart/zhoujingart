@@ -11,11 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuOverlay = document.querySelector('.menu-overlay');
     const menuLinks = document.querySelectorAll('.menu-link');
 
-    function setMenuOpen(isOpen) {
+    let menuTrigger = null;
+
+    function setMenuOpen(isOpen, { restoreFocus = true } = {}) {
         if (!menuOverlay) return;
         menuOverlay.classList.toggle('active', isOpen);
+        menuOverlay.setAttribute('aria-hidden', String(!isOpen));
+        if (menuToggle) {
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+        }
         document.body.classList.toggle('menu-open', isOpen);
         document.body.style.overflow = isOpen ? 'hidden' : '';
+
+        if (isOpen) {
+            menuTrigger = document.activeElement;
+            // Let the triggering keyboard event finish before moving focus.
+            window.setTimeout(() => menuClose?.focus(), 50);
+        } else if (restoreFocus && menuTrigger instanceof HTMLElement) {
+            menuTrigger.focus();
+            menuTrigger = null;
+        }
     }
 
     if (menuToggle && menuOverlay) {
@@ -35,7 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     menuLinks.forEach((link) => {
-        link.addEventListener('click', () => setMenuOpen(false));
+        link.addEventListener('click', () => setMenuOpen(false, { restoreFocus: false }));
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && menuOverlay?.classList.contains('active')) {
+            setMenuOpen(false);
+        }
     });
 
     const scrollIndicator = document.querySelector('.scroll-indicator');

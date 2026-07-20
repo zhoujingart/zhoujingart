@@ -142,9 +142,14 @@ a {
 }
 
 .lang-toggle {
+    border: 0;
+    background: transparent;
+    color: inherit;
     cursor: pointer;
+    font: inherit;
     font-size: 0.9rem;
     letter-spacing: 0.1em;
+    padding: 0;
     transition: opacity 0.3s;
 }
 
@@ -153,10 +158,15 @@ a {
 }
 
 .menu-toggle {
+    border: 0;
+    background: transparent;
+    color: inherit;
     display: flex;
     align-items: center;
     gap: 1rem;
     cursor: pointer;
+    font: inherit;
+    padding: 0;
 }
 
 .menu-toggle span {
@@ -204,12 +214,24 @@ a {
 }
 
 .menu-close {
+    border: 0;
+    background: transparent;
+    color: inherit;
     position: absolute;
     top: 2rem;
     right: 3rem;
     cursor: pointer;
+    font: inherit;
     font-size: 0.8rem;
     letter-spacing: 0.1em;
+    padding: 0;
+}
+
+.lang-toggle:focus-visible,
+.menu-toggle:focus-visible,
+.menu-close:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 5px;
 }
 
 .menu-items {
