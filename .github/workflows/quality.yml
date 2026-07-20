@@ -26,3 +26,7 @@ jobs:
           server_pid=$!
           trap 'kill $server_pid' EXIT
           npm run smoke
+      - name: Install browser for interaction tests
+        run: npx playwright install --with-deps chromium
+      - name: Run browser interaction tests
+        run: npm run test:browser

@@ -6,9 +6,13 @@
   "scripts": {
     "check": "node tools/check-site.mjs",
     "serve": "python3 -m http.server 8000",
-    "smoke": "node tools/smoke-pages.mjs"
+    "smoke": "node tools/smoke-pages.mjs",
+    "test:browser": "playwright test"
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
   }
 }
