@@ -73,11 +73,10 @@
     <script src="js/image-optimization.js"></script>
     <script src="js/mobile-menu.js"></script>
     <script src="js/exhibitions.js"></script>
+    <script src="js/exhibition-detail-bootstrap.js"></script>
     <script>
-        // 页面加载时解析URL参数并显示展览详情
-        document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const exhibitionId = urlParams.get('id');
+        // 页面渲染器由独立启动脚本在首次加载和语言切换时调用。
+        function renderExhibitionDetail(exhibitionId) {
 
             if (exhibitionId) {
                 loadExhibitionDetail(exhibitionId);
@@ -96,7 +95,7 @@
                     window.languageManager.applyTranslations();
                 }
             }
-        });
+        }
 
         // 加载展览详情的函数
         function loadExhibitionDetail(exhibitionId) {
@@ -414,14 +413,7 @@
             });
         }
 
-        // 监听语言切换事件
-        document.addEventListener('languageChanged', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const exhibitionId = urlParams.get('id');
-            if (exhibitionId) {
-                loadExhibitionDetail(exhibitionId);
-            }
-        });
+        initializeExhibitionDetail(renderExhibitionDetail);
     </script>
 </body>
 
