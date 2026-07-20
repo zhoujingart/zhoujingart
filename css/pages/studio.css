@@ -133,6 +133,11 @@
 }
 .collage-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+.studio-viewer-trigger:focus-visible {
+    outline: 3px solid var(--secondary-color);
+    outline-offset: 4px;
+}
+
 @media (hover: hover) and (pointer: fine) {
     .collage-layer:hover {
         transform: rotate(var(--r, 0deg)) translateY(-8px) scale(1.02);

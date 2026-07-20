@@ -1,13 +1,3 @@
-// 工作室页面功能
-function initStudio() {
-    if (window.languageManager?.isInitialized) {
-        renderStudioContent();
-    }
-}
-
-document.addEventListener('languageReady', initStudio);
-if (window.languageManager?.isInitialized) initStudio();
-
 // 工作室本地翻译
 const studioTranslations = {
     // 工作室页面标题和描述
@@ -152,6 +142,8 @@ const studioData = {
     ]
 };
 
+let lastStudioTrigger = null;
+
 // 渲染工作室内容
 function renderStudioContent() {
     const container = document.querySelector('.studio-content');
@@ -174,7 +166,9 @@ function renderStudioContent() {
             </div>
             <div class="hero2-collage">
                 ${heroImages.map((img, i) => `
-                    <div class="collage-layer layer-${i + 1}" onclick="openStudioViewer('${img.src}', '${img.titleKey}', '${img.descriptionKey}')">
+                    <div class="collage-layer layer-${i + 1} studio-viewer-trigger" role="button" tabindex="0"
+                         data-studio-image-index="${i}" data-studio-title-key="${img.titleKey}" data-studio-description-key="${img.descriptionKey}"
+                         aria-label="${getCurrentLanguage() === 'en' ? 'View image: ' : '查看大图：'}${getStudioTranslation(img.titleKey)}">
                         <img src="${getOptimizedStudioImage(img.src, 'card')}" alt="${getStudioTranslation(img.titleKey)}" onerror="this.onerror=null;this.src='${img.src}'" />
                     </div>
                 `).join('')}
@@ -189,7 +183,9 @@ function renderStudioContent() {
                     <div class="steps2-item ${index % 2 === 1 ? 'alt' : ''}">
                         <div class="steps2-node">${index + 1}</div>
                         <div class="steps2-card">
-                            <div class="steps2-thumb" onclick="openStudioViewer('${image.src}', '${image.processKey}', '${image.descriptionKey}')">
+                            <div class="steps2-thumb studio-viewer-trigger" role="button" tabindex="0"
+                                 data-studio-image-index="${index}" data-studio-title-key="${image.processKey}" data-studio-description-key="${image.descriptionKey}"
+                                 aria-label="${getCurrentLanguage() === 'en' ? 'View image: ' : '查看大图：'}${getStudioTranslation(image.processKey)}">
                                 <img src="${getOptimizedStudioImage(image.src, 'card')}" alt="${getStudioTranslation(image.titleKey)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${image.src}'" />
                             </div>
                             <div class="steps2-content">
@@ -241,6 +237,24 @@ function renderStudioContent() {
         </div>
     `;
 
+    const openViewer = (event) => {
+        const trigger = event.target.closest('.studio-viewer-trigger');
+        if (!trigger) return;
+
+        const image = studioData.images[Number(trigger.dataset.studioImageIndex)];
+        if (!image) return;
+
+        lastStudioTrigger = trigger;
+        openStudioViewer(image.src, trigger.dataset.studioTitleKey, trigger.dataset.studioDescriptionKey);
+    };
+    container.onclick = openViewer;
+    container.onkeydown = (event) => {
+        if ((event.key === 'Enter' || event.key === ' ') && event.target.closest('.studio-viewer-trigger')) {
+            event.preventDefault();
+            openViewer(event);
+        }
+    };
+
     // 添加动画效果
     setTimeout(() => {
         const steps2 = document.querySelectorAll('.steps2-item');
@@ -259,23 +273,48 @@ function openStudioViewer(imageSrc, titleKey, descriptionKey) {
 
     const viewer = document.createElement('div');
     viewer.className = 'studio-viewer-modal';
+    viewer.setAttribute('role', 'dialog');
+    viewer.setAttribute('aria-modal', 'true');
+    viewer.setAttribute('aria-label', title);
     viewer.innerHTML = `
-        <div class="viewer-overlay" onclick="this.parentElement.remove()"></div>
+        <div class="viewer-overlay"></div>
         <div class="viewer-content">
             <img src="${displaySrc}" alt="${title}" onerror="this.onerror=null;this.src='${imageSrc}'">
             <div class="viewer-info">
                 <h3>${title}</h3>
                 <p>${description}</p>
             </div>
-            <button class="viewer-close" onclick="this.parentElement.parentElement.remove()">
+            <button type="button" class="viewer-close" aria-label="Close image viewer">
                 <i class="fas fa-times"></i>
             </button>
         </div>
     `;
 
+    const closeButton = viewer.querySelector('.viewer-close');
+    const close = () => {
+        viewer.remove();
+        if (lastStudioTrigger instanceof HTMLElement) lastStudioTrigger.focus();
+        lastStudioTrigger = null;
+    };
+    viewer.querySelector('.viewer-overlay').addEventListener('click', close);
+    closeButton.addEventListener('click', close);
+    viewer.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') close();
+    });
     document.body.appendChild(viewer);
-    setTimeout(() => viewer.classList.add('show'), 10);
+    requestAnimationFrame(() => {
+        viewer.classList.add('show');
+        closeButton.focus();
+    });
 }
+
+// 工作室页面功能
+function initStudio() {
+    if (window.languageManager?.isInitialized) renderStudioContent();
+}
+
+document.addEventListener('languageReady', initStudio);
+if (window.languageManager?.isInitialized) initStudio();
 
 // 监听语言切换
 document.addEventListener('languageChanged', function () {
