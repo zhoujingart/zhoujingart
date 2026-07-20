@@ -20,3 +20,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - name: Smoke-test entry pages
+        run: |
+          npm run serve > /tmp/zhou-jing-art-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid' EXIT
+          npm run smoke
