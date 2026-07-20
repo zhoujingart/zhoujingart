@@ -86,6 +86,10 @@ function checkHtml(file, source) {
 }
 
 function checkTextReferences(file, source) {
+    if (/<[^>]*\bonclick\s*=/i.test(source)) {
+        report(file, 'inline onclick handlers are not allowed; use event listeners instead');
+    }
+
     for (const match of source.matchAll(/(?:images|assets)\/[A-Za-z0-9_./@() -]+\.(?:avif|gif|ico|jpe?g|png|svg|webp|pdf)/gi)) {
         if (match[0].includes('${')) continue;
         checkReference(file, match[0]);
