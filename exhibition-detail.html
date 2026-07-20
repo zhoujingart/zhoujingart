@@ -75,58 +75,8 @@
     <script src="js/exhibitions.js"></script>
     <script src="js/exhibition-detail-bootstrap.js"></script>
     <script src="js/exhibition-detail-helpers.js"></script>
+    <script src="js/exhibition-detail-controller.js"></script>
     <script>
-        // 页面渲染器由独立启动脚本在首次加载和语言切换时调用。
-        function renderExhibitionDetail(exhibitionId) {
-
-            if (exhibitionId) {
-                loadExhibitionDetail(exhibitionId);
-            } else {
-                // 如果没有ID参数，显示错误信息
-                document.getElementById('exhibitionDetailContent').innerHTML = `
-                    <div class="error-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h2 data-i18n="exhibitions.notFound">展览未找到</h2>
-                        <p data-i18n="exhibitions.selectFromList">请从展览列表中选择一个展览查看详情。</p>
-                        <a href="exhibitions.html" class="btn-primary" data-i18n="exhibitions.backToList">返回展览列表</a>
-                    </div>
-                `;
-                // 应用翻译
-                if (window.languageManager) {
-                    window.languageManager.applyTranslations();
-                }
-            }
-        }
-
-        // 加载展览详情的函数
-        function loadExhibitionDetail(exhibitionId) {
-            const exhibition = findExhibitionById(exhibitionId);
-
-            if (!exhibition) {
-                document.getElementById('exhibitionDetailContent').innerHTML = `
-                    <div class="error-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h2 data-i18n="exhibitions.notFound">展览未找到</h2>
-                        <p data-i18n="exhibitions.idNotFound">无法找到ID为 "${exhibitionId}" 的展览。</p>
-                        <a href="exhibitions.html" class="btn-primary" data-i18n="exhibitions.backToList">返回展览列表</a>
-                    </div>
-                `;
-                // 应用翻译
-                if (window.languageManager) {
-                    window.languageManager.applyTranslations();
-                }
-                return;
-            }
-
-            // 更新页面标题
-            const currentLang = window.languageManager?.currentLang || 'zh';
-            const title = exhibition.title[currentLang] || exhibition.title.zh;
-            document.title = `${title} - 周婧`;
-
-            // 渲染展览详情内容
-            renderExhibitionDetailPage(exhibition);
-        }
-
         // 渲染展览详情页面内容
         function renderExhibitionDetailPage(exhibition) {
             // 使用 requestAnimationFrame 优化渲染性能
