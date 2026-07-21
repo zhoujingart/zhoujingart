@@ -14,7 +14,7 @@ npm run test:browser
 
 本地服务默认运行在 `http://localhost:8000`。提交前必须通过 `npm run check`。
 
-根目录 V1 页面的公共导航由 `tools/root-page-shells.mjs` 生成。只编辑该文件，不要逐页修改带有 `BEGIN:ROOT_HEADER` 标记的区域；完成后运行 `npm run sync:shells`。`npm run check` 会拒绝未同步的页面壳。
+根目录 V1 页面与 V2 页面顶部导航由 `tools/root-page-shells.mjs` 生成。只编辑该文件，不要逐页修改带有 `BEGIN:ROOT_HEADER` 或 `BEGIN:V2_NAVIGATION` 标记的区域；完成后运行 `npm run sync:shells`。`npm run check` 会拒绝未同步的页面壳。
 
 ## 内容更新
 

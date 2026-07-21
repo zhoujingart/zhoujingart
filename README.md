@@ -52,7 +52,7 @@ npm run serve
 
 这样 V1 与 V2 可以保持不同的视觉和交互，而同一条内容更新会自动进入两套界面。新增展示主题时，只新增渲染器，不复制内容数据。
 
-V1 根目录页面的导航壳由 `tools/root-page-shells.mjs` 统一生成。修改导航项目、链接或其无障碍标记时，只编辑模板并运行 `npm run sync:shells`；`npm run check` 会验证所有页面已经同步。
+V1 根目录页面与 V2 的顶部导航都由 `tools/root-page-shells.mjs` 统一生成。修改导航项目、链接或其无障碍标记时，只编辑模板并运行 `npm run sync:shells`；`npm run check` 会验证所有页面已经同步。
 
 ## 发布
 
