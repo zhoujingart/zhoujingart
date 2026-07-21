@@ -4,8 +4,9 @@
   "private": true,
   "description": "Static portfolio site for Zhou Jing.",
   "scripts": {
-    "check": "node tools/check-site.mjs",
-    "serve": "python3 -m http.server 8000",
+    "check": "node tools/check-site.mjs && node tools/sync-page-shells.mjs --check",
+    "sync:shells": "node tools/sync-page-shells.mjs",
+    "serve": "node tools/static-server.mjs 8000",
     "smoke": "node tools/smoke-pages.mjs",
     "test:browser": "playwright test"
   },

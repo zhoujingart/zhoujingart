@@ -37,7 +37,8 @@ npm run serve
 | 命令 | 用途 |
 | --- | --- |
 | `npm run check` | 校验语法、基础元数据、本地资源、内容数据与禁用的内联点击事件 |
-| `npm run serve` | 启动本地静态服务器 |
+| `npm run sync:shells` | 从公共模板同步 V1 页面导航壳；模板改动后执行 |
+| `npm run serve` | 启动与 CI 相同的并发静态服务器 |
 | `npm run smoke` | 在本地服务启动后检查全部线上入口页 |
 | `npm run test:browser` | 在 Chromium 中验证 V1/V2 核心内容流与交互 |
 
@@ -50,6 +51,8 @@ npm run serve
 内容维护在 `content/artworks.js`、`content/exhibitions.js` 与 `content/press.js`。`js/gallery.js`、`js/exhibitions.js` 和 `js/press.js` 仅保留 V1 展示及交互逻辑。页面渲染器不得读取内容文件的内部变量：应通过 `window.siteContent` 查询作品、展览和媒体数据；双语字段使用 `window.siteI18n`，图片使用 `window.siteMedia`。
 
 这样 V1 与 V2 可以保持不同的视觉和交互，而同一条内容更新会自动进入两套界面。新增展示主题时，只新增渲染器，不复制内容数据。
+
+V1 根目录页面的导航壳由 `tools/root-page-shells.mjs` 统一生成。修改导航项目、链接或其无障碍标记时，只编辑模板并运行 `npm run sync:shells`；`npm run check` 会验证所有页面已经同步。
 
 ## 发布
 

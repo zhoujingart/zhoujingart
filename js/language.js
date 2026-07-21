@@ -2,6 +2,7 @@
 const translations = {
     // 导航
     nav: {
+        menu: { zh: "打开导航菜单", en: "Open navigation menu" },
         home: { zh: "首页", en: "Home" },
         gallery: { zh: "作品集", en: "Gallery" },
         exhibitions: { zh: "展览", en: "Exhibitions" },
@@ -376,6 +377,12 @@ class LanguageManager {
             if (translation) {
                 element.setAttribute('placeholder', translation);
             }
+        });
+
+        const ariaLabelElements = document.querySelectorAll('[data-i18n-aria]');
+        ariaLabelElements.forEach(element => {
+            const translation = this.getTranslation(element.getAttribute('data-i18n-aria'));
+            if (translation) element.setAttribute('aria-label', translation);
         });
 
         // 更新页面标题

@@ -17,6 +17,7 @@ This is a static artist portfolio site. There is no build step or package manage
 - Use `window.siteI18n.text(value, language)` for bilingual content fields and `window.siteI18n.formatDate(value, language)` for dates. Keep theme-specific interface dictionaries in the theme only.
 - Use `window.siteMedia.getOptimizedPath(source, profile, prefix)` and `window.siteMedia.setImageSource(...)` for display images. V2 passes `../` as its prefix; original images remain the fallback.
 - Put cross-theme queries (find by ID, latest records, merged press) in `js/site-content.js`. Put DOM and visual decisions in the V1 or V2 renderer.
+- The root V1 navigation shell is generated from `tools/root-page-shells.mjs`. Change it there and run `npm run sync:shells`; never hand-edit the generated `BEGIN:ROOT_HEADER` regions in individual pages.
 
 ## Performance Rules
 
