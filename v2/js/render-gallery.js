@@ -92,6 +92,7 @@ function renderGalleryGrid(container) {
 
         const item = document.createElement('div');
         item.className = 'gallery-item';
+        item.id = artwork.id;
         item.setAttribute('data-category', category);
 
         const imagePath = window.getV2ImagePath

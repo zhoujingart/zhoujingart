@@ -1,5 +1,17 @@
 // Language Configuration for V2
 const translations = {
+    folio: {
+        practice: { zh: '绘画与综合材料', en: 'PAINTING & MIXED MEDIA' },
+        index: { zh: '艺术家手记', en: 'AN ARTIST’S INDEX' },
+        invitation: { zh: '走近一点。另一个世界。', en: 'A closer look. A different world.' },
+        margin: { zh: '色彩 / 肌理 / 记忆', en: 'COLOUR / TEXTURE / MEMORY' },
+        artist: { zh: '关于艺术家', en: 'THE ARTIST' },
+        statement: { zh: '在色彩与日常之间。', en: 'Between colour and the everyday.' },
+        selection: { zh: '作品选辑', en: 'A SMALL SELECTION' },
+        studioTitle: { zh: '作品，从这里开始。', en: 'Where a work begins.' },
+        visitStudio: { zh: '走进工作室', en: 'Inside the studio' },
+        contactLabel: { zh: '作品 / 展览 / 对话', en: 'WORKS / EXHIBITIONS / CONVERSATIONS' }
+    },
     // Navigation
     nav: {
         home: { zh: "首页", en: "Home" },
@@ -52,7 +64,7 @@ const translations = {
 
     // Footer
     footer: {
-        title: { zh: "让我们共同创造美好", en: "Let's Create Something Beautiful" },
+        title: { zh: "让对话开始。", en: "Let’s be in touch." },
         explore: { zh: "探索", en: "Explore" },
         artist: { zh: "艺术家", en: "Artist" },
         connect: { zh: "联系", en: "Connect" },
