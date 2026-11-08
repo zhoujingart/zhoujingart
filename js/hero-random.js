@@ -1,35 +1,47 @@
-// Random hero background image from images/paintings (jpg/png)
-// 使用 requestAnimationFrame 优化性能
-document.addEventListener('DOMContentLoaded', () => {
-    const heroImg = document.getElementById('heroRandomImage');
-    if (!heroImg) return;
-
-    // Maintain an allow-list to avoid non-art files if any
-    const candidates = [
-        'painting_01.jpg', 'painting_02.jpg', 'painting_03.jpg', 'painting_04.png', 'painting_05.jpg', 'painting_06.jpg',
-        'painting_07.jpg', 'painting_08.jpg', 'painting_09.jpg', 'painting_10.jpg', 'painting_11.jpg', 'painting_12.jpg',
-        'painting_13.jpg', 'painting_14.jpg', 'painting_15.jpg', 'painting_16.jpg', 'painting_17.jpg', 'painting_18.jpg',
-        'painting_19.jpg', 'painting_33.jpg', 'painting_34.jpg', 'painting_35.jpg', 'painting_36.jpg', 'painting_37.png',
-        'painting_38.png', 'painting_39.png', 'painting_40.png', 'painting_41.png'
+(function () {
+    const heroPaintings = [
+        'painting_01.jpg', 'painting_02.jpg', 'painting_03.jpg', 'painting_04.png',
+        'painting_05.jpg', 'painting_06.jpg', 'painting_07.jpg', 'painting_08.jpg',
+        'painting_09.jpg', 'painting_10.jpg', 'painting_11.jpg', 'painting_12.jpg',
+        'painting_13.jpg', 'painting_14.jpg', 'painting_15.jpg', 'painting_16.jpg',
+        'painting_17.jpg', 'painting_18.jpg', 'painting_19.jpg', 'painting_20.png',
+        'painting_21.png', 'painting_22.png', 'painting_23.png', 'painting_24.png',
+        'painting_25.png', 'painting_26.png', 'painting_27.png', 'painting_28.png',
+        'painting_29.png', 'painting_30.png', 'painting_31.png', 'painting_32.png',
+        'painting_33.jpg', 'painting_34.jpg', 'painting_35.jpg', 'painting_36.jpg',
+        'painting_37.png', 'painting_38.png'
     ];
 
-    const pick = candidates[Math.floor(Math.random() * candidates.length)];
-    const path = `images/paintings/${pick}`;
-    const displayPath = window.getOptimizedImagePath
-        ? window.getOptimizedImagePath(path, 'hero')
-        : path;
+    function getRandomPaintingPath() {
+        const fileName = heroPaintings[Math.floor(Math.random() * heroPaintings.length)];
+        return `images/paintings/${fileName}`;
+    }
 
-    // Preload then swap for smoother UX with requestAnimationFrame
-    const img = new Image();
-    img.onload = () => {
-        requestAnimationFrame(() => {
-            heroImg.src = displayPath;
-        });
-    };
-    img.onerror = () => {
-        if (displayPath !== path) {
-            heroImg.src = path;
-        }
-    };
-    img.src = displayPath;
-});
+    function setHeroBackground(hero, src) {
+        hero.style.backgroundImage = `url('${src}')`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const hero = document.querySelector('[data-random-hero]');
+        if (!hero) return;
+
+        const originalPath = getRandomPaintingPath();
+        const displayPath = window.getArtistImagePath
+            ? window.getArtistImagePath(originalPath, 'hero')
+            : `${originalPath}`;
+        const fallbackPath = window.getArtistOriginalPath
+            ? window.getArtistOriginalPath(originalPath)
+            : `${originalPath}`;
+
+        const image = new Image();
+        image.onload = () => {
+            requestAnimationFrame(() => setHeroBackground(hero, displayPath));
+        };
+        image.onerror = () => {
+            if (fallbackPath && fallbackPath !== displayPath) {
+                setHeroBackground(hero, fallbackPath);
+            }
+        };
+        image.src = displayPath;
+    });
+}());

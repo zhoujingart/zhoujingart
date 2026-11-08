@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.loading = hero ? 'eager' : 'lazy';
             img.decoding = 'async';
             if (hero) img.fetchPriority = 'high';
-            window.siteMedia.setImageSource(img, work.image, 'card', '../');
+            window.siteMedia.setImageSource(img, work.image, 'card', '');
             img.loading = hero ? 'eager' : 'lazy';
             link.append(img);
             const caption = document.createElement('figcaption');

@@ -276,10 +276,10 @@ function checkPressData() {
 
 function checkSharedContentConsumers() {
     const consumers = [
-        ['v2/js/render-gallery.js', ['artworksData']],
-        ['v2/js/render-exhibitions.js', ['exhibitionsData']],
-        ['v2/js/render-exhibition-detail.js', ['exhibitionsData']],
-        ['v2/js/render-press.js', ['pressData', 'exhibitionsData']]
+        ['js/render-gallery.js', ['artworksData']],
+        ['js/render-exhibitions.js', ['exhibitionsData']],
+        ['js/render-exhibition-detail.js', ['exhibitionsData']],
+        ['js/render-press.js', ['pressData', 'exhibitionsData']]
     ];
 
     for (const [path, legacyGlobals] of consumers) {
@@ -313,7 +313,7 @@ function checkContentLayer() {
         }
     }
 
-    for (const path of ['js/gallery.js', 'js/exhibitions.js', 'js/press.js']) {
+    for (const path of ['history/v1/js/gallery.js', 'history/v1/js/exhibitions.js', 'history/v1/js/press.js']) {
         const file = resolve(root, path);
         if (!readFileSync(file, 'utf8').startsWith('// Theme renderer.')) {
             report(file, 'legacy entry must remain a renderer, not a content source');
@@ -321,31 +321,32 @@ function checkContentLayer() {
     }
 }
 
-function checkV2Navigation() {
+function checkSiteNavigation() {
     const requiredNavKeys = ['home', 'works', 'exhibitions', 'about', 'press', 'studio', 'contact'];
-    const v2HtmlFiles = htmlFiles.filter((file) => displayPath(file).startsWith('v2/'));
+    const siteHtmlFiles = htmlFiles.filter((file) => !displayPath(file).includes('/')
+        && !displayPath(file).startsWith('history/'));
 
-    for (const file of v2HtmlFiles) {
+    for (const file of siteHtmlFiles) {
         const source = readFileSync(file, 'utf8');
         if (!/<button\b[^>]*\bclass=["'][^"']*\bmenu-toggle\b[^"']*["'][^>]*\baria-controls=["']primary-navigation["'][^>]*\baria-expanded=["']false["']/i.test(source)) {
-            report(file, 'V2 menu toggle must be a button with navigation ARIA state');
+            report(file, 'menu toggle must be a button with navigation ARIA state');
         }
         if (!/<div\b[^>]*\bclass=["'][^"']*\bmenu-overlay\b[^"']*["'][^>]*\bid=["']primary-navigation["'][^>]*\baria-hidden=["']true["']/i.test(source)) {
-            report(file, 'V2 menu overlay must expose primary-navigation ARIA state');
+            report(file, 'menu overlay must expose primary-navigation ARIA state');
         }
         if (!/<button\b[^>]*\bclass=["'][^"']*\bmenu-close\b[^"']*["'][^>]*\bdata-i18n=["']nav\.close["']/i.test(source)) {
-            report(file, 'V2 menu close control must be a translated button');
+            report(file, 'menu close control must be a translated button');
         }
         for (const key of requiredNavKeys) {
             if (!new RegExp(`data-i18n=["']nav\\.${key}["']`, 'i').test(source)) {
-                report(file, `V2 menu is missing translated nav.${key} label`);
+                report(file, `menu is missing translated nav.${key} label`);
             }
         }
     }
 }
 
 function checkRootMobileNavigation() {
-    const rootHtmlFiles = htmlFiles.filter((file) => !displayPath(file).includes('/'));
+    const rootHtmlFiles = [];
 
     for (const file of rootHtmlFiles) {
         const source = readFileSync(file, 'utf8');
@@ -370,7 +371,7 @@ for (const file of jsFiles) {
 for (const file of pythonFiles) {
     const result = spawnSync('python3', ['-c', 'import ast, pathlib, sys; ast.parse(pathlib.Path(sys.argv[1]).read_text())', file], { encoding: 'utf8' });
     if (result.status !== 0) {
-        report(file, result.stderr.trim() || 'Python syntax check failed');
+        report(file, result.error?.message || result.stderr?.trim() || 'Python syntax check failed');
     }
 }
 
@@ -388,7 +389,7 @@ checkExhibitionData();
 checkPressData();
 checkSharedContentConsumers();
 checkContentLayer();
-checkV2Navigation();
+checkSiteNavigation();
 checkRootMobileNavigation();
 
 if (errors.length) {

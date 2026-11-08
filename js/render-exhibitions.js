@@ -58,10 +58,10 @@ function renderExhibitionsList(container) {
             imgDiv.className = 'ex-list-image';
             if (ex.images && ex.images.length > 0) {
                 const img = document.createElement('img');
-                if (window.setV2ImageSource) {
-                    window.setV2ImageSource(img, ex.images[0].src, 'card');
+                if (window.setArtistImageSource) {
+                    window.setArtistImageSource(img, ex.images[0].src, 'card');
                 } else {
-                    img.src = '../' + ex.images[0].src;
+                    img.src = '' + ex.images[0].src;
                 }
                 img.alt = getExhibitionText(ex.title);
                 imgDiv.appendChild(img);
@@ -86,7 +86,7 @@ function renderExhibitionsList(container) {
             const country = getExhibitionText(ex.country);
             if (country) {
                 // Extract city/country if possible, or just append
-                // V1 data: "Westmount, Quebed, Canada"
+                // Shared data: "Westmount, Quebed, Canada"
                 const parts = country.split(',');
                 const countryName = parts[parts.length - 1].trim();
                 locationStr += `, ${countryName}`;
@@ -144,22 +144,17 @@ function renderExhibitionsPreview(container) {
             // Handle relative path if needed, but usually src in data is relative to root
             // Since we are in index.html (root), images/ works.
             // If we are in pages/exhibitions.html, it might need ../
-            // But wait, index.html is in v2/index.html? No, workspace info says /Users/michael/Documents/GitHub/zhoujing/index.html
+            // But wait, index.html is in index.html? No, workspace info says /Users/michael/Documents/GitHub/zhoujing/index.html
             // But I am editing v2 files.
             // Let's check where index.html is.
             // Workspace info:
             // index.html
-            // v2/index.html (implied by context of editing v2 files)
+            // index.html (implied by context of editing v2 files)
 
-            // If I am editing v2/js/render-exhibitions.js, it is used by v2/index.html.
-            // v2/index.html is in v2/. Images are in ../images/ (based on v2/studio.html using ../images/)
-            // The data in js/exhibitions.js has "images/exhibitions/..."
-            // So for v2/index.html, the path should be "../images/exhibitions/..."
-
-            if (window.setV2ImageSource) {
-                window.setV2ImageSource(img, ex.images[0].src, 'card');
+            if (window.setArtistImageSource) {
+                window.setArtistImageSource(img, ex.images[0].src, 'card');
             } else {
-                img.src = '../' + ex.images[0].src;
+                img.src = '' + ex.images[0].src;
             }
             img.alt = getExhibitionText(ex.title);
             imgDiv.appendChild(img);

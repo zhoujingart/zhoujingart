@@ -10,7 +10,7 @@ async function captureFolio(page, path) {
 }
 
 test('artist folio shows canonical works and switches their captions', async ({ page }) => {
-    await page.goto('/v2/index.html');
+    await page.goto('/index.html');
     await expect(page.locator('.folio-work')).toHaveCount(5);
     const image = page.locator('#folio-feature img');
     await expect(image).toHaveAttribute('loading', 'eager');
@@ -27,7 +27,7 @@ test('artist folio shows canonical works and switches their captions', async ({ 
 
 test('mobile folio fits viewport and navigation remains usable', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/v2/index.html');
+    await page.goto('/index.html');
     await expect(page.locator('.folio-work')).toHaveCount(5);
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await captureFolio(page, 'test-results/folio-mobile.png');
@@ -37,12 +37,12 @@ test('mobile folio fits viewport and navigation remains usable', async ({ page }
     await expect(page).toHaveURL(/gallery.html$/);
 });
 
-test('V2 inner pages fit mobile and desktop layouts', async ({ page }) => {
+test('Artist inner pages fit mobile and desktop layouts', async ({ page }) => {
     for (const width of [390, 1440]) {
         await page.setViewportSize({ width, height: 900 });
         for (const route of ['gallery', 'exhibitions', 'about', 'press', 'studio', 'contact', 'exhibition-detail?id=2025-05-fractured-horizons-new-york']) {
             const [name, query] = route.split('?');
-            await page.goto(`/v2/${name}.html${query ? '?' + query : ''}`);
+            await page.goto(`/${name}.html${query ? '?' + query : ''}`);
             await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
             await page.screenshot({ path: `test-results/folio-${name}-${width}.png` });
         }

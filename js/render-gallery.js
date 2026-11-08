@@ -95,10 +95,10 @@ function renderGalleryGrid(container) {
         item.id = artwork.id;
         item.setAttribute('data-category', category);
 
-        const imagePath = window.getV2ImagePath
-            ? window.getV2ImagePath(artwork.image, 'card')
-            : `../${artwork.image}`;
-        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(artwork.image) : '';
+        const imagePath = window.getArtistImagePath
+            ? window.getArtistImagePath(artwork.image, 'card')
+            : `${artwork.image}`;
+        const fallbackAttr = window.getArtistFallbackAttr ? window.getArtistFallbackAttr(artwork.image) : '';
 
         const viewText = getGalleryText({ en: 'View', zh: '查看' });
         const soldText = getGalleryText({ en: 'Sold Out', zh: '已售出' });
@@ -122,7 +122,7 @@ function renderGalleryGrid(container) {
         // Add click event for lightbox or detail view
         // For now, we'll just use the lightbox logic if it exists in main.js, 
         // or we can implement a simple redirect if that's the intended behavior.
-        // The V2 gallery.html didn't seem to have links, just "View" buttons.
+        // The Artist gallery.html didn't seem to have links, just "View" buttons.
         // Let's assume we want to open a lightbox. 
         // Note: main.js might need to re-bind lightbox events if they are attached on load.
         // Let's check main.js for lightbox logic later. 

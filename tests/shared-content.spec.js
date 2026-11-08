@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 const contentRenderTimeout = 10_000;
 
 test.describe('shared content layer', () => {
-    test('drives the same exhibition records in both themes', async ({ browser }) => {
+    test('drives the same exhibition records on the active site', async ({ browser }) => {
         const classic = await browser.newPage();
         await classic.goto('/exhibitions.html');
         await expect(classic.locator('.exhibition-item').first()).toBeVisible({ timeout: contentRenderTimeout });
@@ -12,14 +12,14 @@ test.describe('shared content layer', () => {
         expect(classicIds).toEqual(expectedIds);
 
         const modern = await browser.newPage();
-        await modern.goto('/v2/exhibitions.html');
+        await modern.goto('/exhibitions.html');
         await expect(modern.locator('.exhibition-item-row').first()).toBeVisible({ timeout: contentRenderTimeout });
         await expect(modern.locator('.exhibition-item-row')).toHaveCount(expectedIds.length);
         const modernIds = await modern.locator('.exhibition-item-row').evaluateAll((items) => items.map((item) => item.dataset.exhibitionId));
         expect(modernIds).toEqual(expectedIds);
     });
 
-    test('renders shared artwork data in both themes', async ({ browser }) => {
+    test('renders shared artwork data on the active site', async ({ browser }) => {
         const classic = await browser.newPage();
         await classic.goto('/gallery.html');
         await expect(classic.locator('.gallery-artwork-card').first()).toBeVisible({ timeout: contentRenderTimeout });
@@ -27,13 +27,13 @@ test.describe('shared content layer', () => {
         await expect(classic.locator('.gallery-artwork-card')).toHaveCount(contentCount);
 
         const modern = await browser.newPage();
-        await modern.goto('/v2/gallery.html');
+        await modern.goto('/gallery.html');
         await expect(modern.locator('.gallery-item').first()).toBeVisible({ timeout: contentRenderTimeout });
         await expect(modern.locator('.gallery-item')).toHaveCount(contentCount);
     });
 
-    test('uses shared exhibition lookup in V2 detail', async ({ page }) => {
-        await page.goto('/v2/exhibition-detail.html?id=2025-05-fractured-horizons-new-york');
+    test('uses shared exhibition lookup in Artist detail', async ({ page }) => {
+        await page.goto('/exhibition-detail.html?id=2025-05-fractured-horizons-new-york');
         await expect(page.locator('.ex-title')).toBeVisible({ timeout: contentRenderTimeout });
 
         const expectedTitle = await page.evaluate(() => {
@@ -43,7 +43,7 @@ test.describe('shared content layer', () => {
         await expect(page.locator('.ex-title')).toHaveText(expectedTitle);
     });
 
-    test('renders the shared media feed in both themes', async ({ browser }) => {
+    test('renders the shared media feed on the active site', async ({ browser }) => {
         const classic = await browser.newPage();
         await classic.goto('/press.html');
         await expect(classic.locator('.press-item').first()).toBeVisible({ timeout: contentRenderTimeout });
@@ -51,7 +51,7 @@ test.describe('shared content layer', () => {
         await expect(classic.locator('.press-item')).toHaveCount(contentCount);
 
         const modern = await browser.newPage();
-        await modern.goto('/v2/press.html');
+        await modern.goto('/press.html');
         await expect(modern.locator('.press-item').first()).toBeVisible({ timeout: contentRenderTimeout });
         await expect(modern.locator('.press-item')).toHaveCount(contentCount);
     });

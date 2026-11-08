@@ -1,6 +1,6 @@
 # 内容层维护说明
 
-`content/` 是 V1、V2 以及未来主题唯一可编辑的内容来源。这里的文件只能定义记录；不要加入 DOM 查询、事件监听、页面选择器、动画或主题样式。
+`content/` 是 当前网站及未来主题唯一可编辑的内容来源。这里的文件只能定义记录；不要加入 DOM 查询、事件监听、页面选择器、动画或主题样式。
 
 - `artworks.js`：作品记录，写入 `window.siteContentData.artworks`。
 - `exhibitions.js`：按年份分组的展览记录，写入 `window.siteContentData.exhibitionsByYear`。

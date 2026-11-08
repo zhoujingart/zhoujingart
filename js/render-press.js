@@ -74,16 +74,16 @@ function renderPressList(container, limit) {
         pressItem.className = 'press-item';
 
         const thumbnail = item.thumbnail || '';
-        const imagePath = window.getV2ImagePath
-            ? window.getV2ImagePath(thumbnail, 'pressThumb')
-            : `../${thumbnail}`;
-        const previewPath = window.getV2ImagePath
-            ? window.getV2ImagePath(thumbnail, 'pressPreview')
-            : `../${thumbnail}`;
-        const originalPath = window.getV2OriginalPath
-            ? window.getV2OriginalPath(thumbnail)
-            : `../${thumbnail}`;
-        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(thumbnail) : '';
+        const imagePath = window.getArtistImagePath
+            ? window.getArtistImagePath(thumbnail, 'pressThumb')
+            : `${thumbnail}`;
+        const previewPath = window.getArtistImagePath
+            ? window.getArtistImagePath(thumbnail, 'pressPreview')
+            : `${thumbnail}`;
+        const originalPath = window.getArtistOriginalPath
+            ? window.getArtistOriginalPath(thumbnail)
+            : `${thumbnail}`;
+        const fallbackAttr = window.getArtistFallbackAttr ? window.getArtistFallbackAttr(thumbnail) : '';
 
         // Handle date which might be an object or string
         const dateStr = getPressText(item.date);

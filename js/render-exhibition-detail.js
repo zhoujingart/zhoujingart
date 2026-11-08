@@ -101,10 +101,10 @@ function renderHero(exhibition) {
     const posterSource = exhibition.images && exhibition.images.length > 0
         ? exhibition.images[0].src
         : 'images/Jing-Zhou-portrait.jpg';
-    const posterImage = window.getV2ImagePath
-        ? window.getV2ImagePath(posterSource, 'card')
-        : `../${posterSource}`;
-    const posterFallback = window.getV2FallbackAttr ? window.getV2FallbackAttr(posterSource) : '';
+    const posterImage = window.getArtistImagePath
+        ? window.getArtistImagePath(posterSource, 'card')
+        : `${posterSource}`;
+    const posterFallback = window.getArtistFallbackAttr ? window.getArtistFallbackAttr(posterSource) : '';
 
     const title = getDetailText(exhibition.title);
     const location = getDetailText(exhibition.country);
@@ -184,8 +184,8 @@ function renderGallery(exhibition) {
     const images = exhibition.images;
 
     const imagesHtml = images.map(img => {
-        const imagePath = window.getV2ImagePath ? window.getV2ImagePath(img.src, 'card') : `../${img.src}`;
-        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(img.src) : '';
+        const imagePath = window.getArtistImagePath ? window.getArtistImagePath(img.src, 'card') : `${img.src}`;
+        const fallbackAttr = window.getArtistFallbackAttr ? window.getArtistFallbackAttr(img.src) : '';
 
         return `
         <div class="gallery-item">
@@ -224,8 +224,8 @@ function renderArtworks(exhibition) {
     }
 
     const artworksHtml = exhibition.artworks.map(artwork => {
-        const imagePath = window.getV2ImagePath ? window.getV2ImagePath(artwork.image, 'card') : `../${artwork.image}`;
-        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(artwork.image) : '';
+        const imagePath = window.getArtistImagePath ? window.getArtistImagePath(artwork.image, 'card') : `${artwork.image}`;
+        const fallbackAttr = window.getArtistFallbackAttr ? window.getArtistFallbackAttr(artwork.image) : '';
 
         return `
         <div class="gallery-item">
@@ -267,10 +267,10 @@ function renderPress(exhibition) {
 
     const pressHtml = exhibition.press.map(item => {
         const thumbnail = item.thumbnail || '';
-        const imagePath = window.getV2ImagePath ? window.getV2ImagePath(thumbnail, 'pressThumb') : `../${thumbnail}`;
-        const previewPath = window.getV2ImagePath ? window.getV2ImagePath(thumbnail, 'pressPreview') : `../${thumbnail}`;
-        const originalPath = window.getV2OriginalPath ? window.getV2OriginalPath(thumbnail) : `../${thumbnail}`;
-        const fallbackAttr = window.getV2FallbackAttr ? window.getV2FallbackAttr(thumbnail) : '';
+        const imagePath = window.getArtistImagePath ? window.getArtistImagePath(thumbnail, 'pressThumb') : `${thumbnail}`;
+        const previewPath = window.getArtistImagePath ? window.getArtistImagePath(thumbnail, 'pressPreview') : `${thumbnail}`;
+        const originalPath = window.getArtistOriginalPath ? window.getArtistOriginalPath(thumbnail) : `${thumbnail}`;
+        const fallbackAttr = window.getArtistFallbackAttr ? window.getArtistFallbackAttr(thumbnail) : '';
         const title = getDetailText(item.title);
 
         return `

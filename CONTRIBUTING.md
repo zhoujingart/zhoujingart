@@ -2,7 +2,7 @@
 
 ## 日常开发
 
-本项目是无构建步骤的静态网站。需要 Node.js 20+（仓库以 `.nvmrc` 固定为 22）与 Python 3。根目录 V1 与 `v2/` 是两套展示主题，必须使用相同的内容流。
+本项目是无构建步骤的静态网站。需要 Node.js 20+（仓库以 `.nvmrc` 固定为 22）与 Python 3。根目录为当前网站展示；旧版页面与脚本归档在 `history/v1/`。
 
 ```bash
 npm ci
@@ -14,14 +14,14 @@ npm run test:browser
 
 本地服务默认运行在 `http://localhost:8000`。提交前必须通过 `npm run check`。
 
-根目录 V1 页面与 V2 页面顶部导航由 `tools/root-page-shells.mjs` 生成。只编辑该文件，不要逐页修改带有 `BEGIN:ROOT_HEADER` 或 `BEGIN:V2_NAVIGATION` 标记的区域；完成后运行 `npm run sync:shells`。`npm run check` 会拒绝未同步的页面壳。
+网站顶部导航由 `tools/root-page-shells.mjs` 生成。只编辑该文件，不要逐页修改带有 `BEGIN:SITE_NAVIGATION` 标记的区域；完成后运行 `npm run sync:shells`。`npm run check` 会拒绝未同步的页面壳。
 
 ## 内容更新
 
 - 作品集数据：`content/artworks.js`
 - 展览数据：`content/exhibitions.js`，字段说明见 `EXHIBITIONS_CONFIG.md`
 - 媒体报道：`content/press.js`
-- 双语界面文字：V1 为 `js/language.js`，V2 为 `v2/js/language.js`
+- 双语界面文字：`js/language.js`
 - 共享内容查询：`js/site-content.js`；新渲染器必须使用 `window.siteContent`，不要直接读取内容文件的内部数据变量
 - 双语字段与安全转义：`js/site-i18n.js`
 - 优化图与回退路径：`js/site-media.js`
@@ -35,7 +35,7 @@ npm run test:browser
 
 列表和卡片必须使用 `js/site-media.js` 提供的优化路径；原图只作为查看器或加载失败时的后备。`npm run check` 会验证动态内容对应的 card 优化图存在。
 
-不要为 V1、V2 或未来主题复制内容数据。主题只实现自己的 DOM、样式和交互；排序、按 ID 查询、媒体合并等共用操作应加到 `site-content.js`。
+不要复制内容数据。页面渲染器只实现 DOM、样式和交互；排序、按 ID 查询、媒体合并等共用操作应加到 `site-content.js`。
 
 ## 质量门禁
 
@@ -45,9 +45,9 @@ npm run test:browser
 - HTML、CSS、JavaScript 内的本地图片、PDF、样式和脚本引用；
 - 全部 JavaScript 文件的语法。
 - 动态内容对应的优化图是否存在，媒体报道的 URL、日期、双语字段与预览图是否完整；
-- V2 数据渲染器是否绕过共享内容 API。
+- 页面数据渲染器是否绕过共享内容 API。
 
-GitHub Actions 会在推送和拉取请求时运行相同检查和 Chromium 浏览器回归。修改共享内容层后必须执行 `npm run test:browser`；它会验证 V1/V2 展览数据一致、V2 作品集及详情页均使用共享数据。
+GitHub Actions 会在推送和拉取请求时运行相同检查和 Chromium 浏览器回归。修改共享内容层后必须执行 `npm run test:browser`；它会验证 展览、作品集及详情页均使用共享数据。
 
 ## 提交约定
 
